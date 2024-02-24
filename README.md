@@ -2,7 +2,7 @@
 CSS 475 - All files associated with the final project
 
 ## Details
-Project: Gymnastics Gym Scheduler
+Project: Gymnastics Gym Scheduler<br>
 Authors: Anna Rivas, Nasheeta Lott, [Christopher Long](https://www.linkedin.com/in/christopher--long/), Nathaniel Fincham, Noas Uritsky<br>
 Date: 2/24/2024<br>
 

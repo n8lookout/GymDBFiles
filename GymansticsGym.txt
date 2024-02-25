@@ -1,0 +1,143 @@
+\qecho Hex Girls' Final Project
+
+\c postgres
+DROP DATABASE gymnasticsgym;
+SELECT current_database();
+CREATE DATABASE GymnasticsGym;
+\c gymnasticsgym
+SELECT current_database();
+
+
+CREATE TABLE Student (
+	studentID			SERIAL not null unique,
+	firstName			VARCHAR(15) not null,
+	lastName			VARCHAR(25) not null,
+	birthDate			DATE not null,
+	phoneNumber			VARCHAR(10),
+	email				VARCHAR(30),
+	isActive			BOOLEAN not null,
+	
+	Primary Key			(studentID)
+	);
+
+CREATE TABLE Emergency_Contact (
+	emergencyContactID	SERIAL not null unique,
+	studentID			INTEGER not null,
+	firstName			VARCHAR(15) not null,
+	lastName			VARCHAR(25) not null,
+	phoneNumber			VARCHAR(10) not null,
+	email				VARCHAR(30) not null,
+	
+	Primary Key			(emergencyContactID),
+	Foreign Key			(studentID) references Student(studentID)
+						Deferrable Initially Deferred
+	);
+
+CREATE TABLE Coach(
+	coachID				SERIAL not null unique,
+	firstName	 		VARCHAR(15) not null,
+	lastName			VARCHAR(25) not null,
+	phoneNumber			VARCHAR(10) not null,
+	email				VARCHAR(30) not null,
+	
+	Primary Key			(coachID)
+	);
+	
+CREATE TABLE Availability_Period (
+	availPeriodID		SERIAL not null unique,
+	availStartTime 		TIMESTAMP,
+	availEndTime		TIMESTAMP,
+	
+	Primary Key			(availPeriodID)
+	);
+
+
+CREATE TABLE Coach_Schedule (
+	coachScheduleID		SERIAL not null unique,
+	coachID				INTEGER not null,
+	availPeriodID		INTEGER not null,
+	
+	Primary Key			(coachScheduleID),
+	Foreign Key			(coachID) references Coach(coachID)
+						Deferrable Initially Deferred,
+	Foreign Key			(availPeriodID) references Availability_Period(availPeriodID)
+						Deferrable Initially Deferred
+	);
+
+CREATE TABLE Event (
+	eventID				SERIAL not null unique,
+	eventName	 		VARCHAR(20) not null,
+	
+	Primary Key			(eventID)
+	);
+	
+CREATE TABLE DifficultyLevel (
+	difficultyID		SERIAL not null unique,
+	difficultyName	 	VARCHAR(20) not null,
+	
+	Primary Key			(difficultyID)
+	);
+	
+
+CREATE TABLE Class_Status (
+	statusID			SERIAL not null unique,
+	statusName	 		VARCHAR(15) not null,
+	
+	Primary Key			(statusID)
+	);	
+	
+CREATE TABLE Student_DifficultyLevel (
+	difficultyID		INTEGER not null unique,
+	studentID	 		INTEGER not null,
+	
+	Primary Key			(difficultyID, studentID),
+	Foreign Key			(difficultyID) references DifficultyLevel(difficultyID)
+						Deferrable Initially Deferred,
+	Foreign Key			(studentID) references Student(studentID)
+						Deferrable Initially Deferred
+	);
+	
+
+CREATE TABLE Class (
+	classID				SERIAL not null unique,
+	startTime			TIMESTAMP not null,
+	duration			INTERVAL not null,
+	eventID				INTEGER not null,
+	difficultyID		INTEGER not null,
+	statusID			INTEGER not null,
+	
+	Primary Key			(classID),
+	Foreign Key			(eventID) references Event(eventID)
+						Deferrable Initially Deferred,
+	Foreign Key			(difficultyID) references DifficultyLevel(difficultyID)
+						Deferrable Initially Deferred,
+	Foreign Key			(statusID) references Class_Status(statusID)
+						Deferrable Initially Deferred
+	);
+	
+CREATE TABLE Attendees (
+	studentID			INTEGER not null,
+	classID	 			INTEGER not null,
+	
+	Primary Key			(studentID, classID),
+	Foreign Key			(studentID) references Student(studentID)
+						Deferrable Initially Deferred,
+	Foreign Key			(classID) references Class(classID)
+						Deferrable Initially Deferred
+	);
+
+CREATE TABLE Class_Coach (
+	coachID				INTEGER not null,
+	classID	 			INTEGER not null,
+	
+	Primary Key			(coachID, classID),
+	Foreign Key			(coachID) references Coach(coachID)
+						Deferrable Initially Deferred,
+	Foreign Key			(classID) references Class(classID)
+						Deferrable Initially Deferred
+	);
+	
+\c postgres
+SELECT current_database();
+\c gymnasticsgym
+SELECT current_database();

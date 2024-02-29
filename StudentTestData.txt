@@ -1,0 +1,20 @@
+\qecho Create Student Test Data - Nathaniel Fincham
+\qecho Usage - Within the Gymnastics Gym DB \i /<parent folder>/studentTestData.txt
+\qecho
+/*
+    Insert 8 unique copies of Student Test Data into Student Entity - SQL query
+*/
+
+INSERT INTO Student (
+    student_userName, firstName, lastName, birthDate, phoneNumber, email, isActive
+)
+VALUES 
+    (bob_johnson, Robert, Johnson, 2014-02-05, 5551234567, bobjohnsonjr@email.com, TRUE),
+    (john_johnson, John, Johnson, 2012-11-25, 5555555555, johnjohnson@email.com, TRUE),
+    (jane_jones, Jane, Jones, 2013-07-12, 5j59876543, janejones@email.com, TRUE),
+    (sarah_jones, Sarah, Jones, 2011-06-30, 5551112222, sarahjones@email.com, TRUE),
+    (mike_brown, Mike, Brown, 2010-09-15, 5552223333, mikebrown@email.com, TRUE),
+    (emily_brown, Emily, Brown, 2009-04-20, 5554445555, emilybrown@email.com, TRUE),
+    (alexander_davis, Alexander, Davis, 2008-01-10, 5556667777, alexdavis@email.com, TRUE),
+    (olivia_johnson, Olivia, Johnson, 2007-03-18, 5557778888, oliviajohnson@email.com, TRUE)
+;

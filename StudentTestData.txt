@@ -15,6 +15,6 @@ VALUES
     (sarah_jones, Sarah, Jones, 2011-06-30, 5551112222, sarahjones@email.com, TRUE),
     (mike_brown, Mike, Brown, 2010-09-15, 5552223333, mikebrown@email.com, TRUE),
     (emily_brown, Emily, Brown, 2009-04-20, 5554445555, emilybrown@email.com, TRUE),
-    (alexander_davis, Alexander, Davis, 2008-01-10, 5556667777, alexdavis@email.com, TRUE),
-    (olivia_johnson, Olivia, Johnson, 2007-03-18, 5557778888, oliviajohnson@email.com, TRUE)
+    (alex_davis, Alexander, Davis, 2008-01-10, 5556667777, alexdavis@email.com, TRUE),
+    (liv_johnson, Olivia, Johnson, 2007-03-18, 5557778888, oliviajohnson@email.com, TRUE)
 ;

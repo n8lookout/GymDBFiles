@@ -10,6 +10,7 @@ SELECT current_database();
 
 CREATE TABLE Student (
 	studentID			SERIAL not null unique,
+	student_userName	VARCHAR (15) not null unique,
 	firstName			VARCHAR(15) not null,
 	lastName			VARCHAR(25) not null,
 	birthDate			DATE not null,
@@ -22,6 +23,7 @@ CREATE TABLE Student (
 
 CREATE TABLE Emergency_Contact (
 	emergencyContactID	SERIAL not null unique,
+	emergcon_userName	VARCHAR (15) not null unique,
 	studentID			INTEGER not null,
 	firstName			VARCHAR(15) not null,
 	lastName			VARCHAR(25) not null,
@@ -35,6 +37,7 @@ CREATE TABLE Emergency_Contact (
 
 CREATE TABLE Coach(
 	coachID				SERIAL not null unique,
+	coach_userName		VARCHAR (15) not null unique,
 	firstName	 		VARCHAR(15) not null,
 	lastName			VARCHAR(25) not null,
 	phoneNumber			VARCHAR(10) not null,
@@ -54,6 +57,7 @@ CREATE TABLE Availability_Period (
 
 CREATE TABLE Coach_Schedule (
 	coachScheduleID		SERIAL not null unique,
+	scheduleName		VARCHAR (15) not null unique,
 	coachID				INTEGER not null,
 	availPeriodID		INTEGER not null,
 	
@@ -100,6 +104,7 @@ CREATE TABLE Student_DifficultyLevel (
 
 CREATE TABLE Class (
 	classID				SERIAL not null unique,
+	className			VARCHAR (15) not null unique,
 	startTime			TIMESTAMP not null,
 	duration			INTERVAL not null,
 	eventID				INTEGER not null,

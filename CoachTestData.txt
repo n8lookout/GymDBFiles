@@ -1,0 +1,14 @@
+\qecho Create Emergency Contact Test Data - @WristBandShackles
+\qecho Usage - Within the Gymnastics Gym DB \i /<parent folder>/CoachTestData.txt
+\qecho
+/*
+    Insert 4 unique copies of Coach Test Data into Coach Entity - SQL query
+*/
+
+INSERT INTO Coach ( coach_userName, firstName, lastName, phoneNumber, email )
+VALUES 
+    ('nachHadaway', 'Nachmanke', 'Hadaway', '4455999344', 'nachmankehadaway@acusage.net' ),
+    ( 'diki.la','Diki', 'Lauterbach', '7753359233', 'dikila@acusage.net' ),
+    ( 'sBlades','Spencer', 'Blades', '5034927327', 'spen.bl@arvinmeritor.info' ),
+    ( 'summi_flu','Sumanna', 'Fluharty', '3648641104', 'sumanna@progressenergyinc.info' )
+;

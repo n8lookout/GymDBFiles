@@ -1,0 +1,13 @@
+\qecho Create Event Test Data - @Nashlott
+\qecho Usage - Within the Gymnastics Gym DB \i /<parent folder>/EventTestData.txt
+\qecho
+/*
+    Insert Sample events into Event Entity - SQL query
+*/
+
+INSERT INTO Event ( eventName )
+VALUES ('Floor Exercise'),
+	   ('Uneven Bars'),
+	   ('Vault'),
+	   ('Balance Beam')
+;

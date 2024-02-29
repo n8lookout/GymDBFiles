@@ -1,0 +1,15 @@
+\qecho Create Class Status Test Data - @anna-rivme
+\qecho Usage - Within the Gymnastics Gym DB \i /<parent folder>/ClassStatusTestData.txt
+\qecho
+/*
+    Insert Sample Statuses into Class_Status Entity - SQL query
+*/
+
+INSERT INTO Class_Status ( statusName )
+VALUES ('Coming up'),
+	   ('In progess'),
+	   ('Cancelled'),
+	   ('Postponed'),
+	   ('Moved up'),
+	   ('Completed')
+;

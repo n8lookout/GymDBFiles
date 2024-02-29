@@ -1,0 +1,20 @@
+\qecho Create Emergency Contact Test Data - Nathaniel Fincham
+\qecho Usage - Within the Gymnastics Gym DB \i /<parent folder>/EmergencyContactTestData.txt
+\qecho
+/*
+    Insert 8 unique copies of Emergency Contact Test Data into Emergency_Contact Entity - SQL query
+*/
+
+INSERT INTO Emergency_Contact (
+    emergcon_userName, student_userName, firstName, lastName, phoneNumber, email
+)
+VALUES 
+    (alicia_johnson, bob_johnson, Alicia, Johnson, 5551234567, ajohnson@email.com),
+    (alicia_johnson, john_johnson, Alicia, Johnson, 5551234567, ajohnson@email.com),
+    (alicia_johnson, liv_johnson, Alicia, Johnson, 5551234567, ajohnson@email.com),
+    (dev_jones, jane_jones, Deveraux, Jones, 5559993434, djones@email.com),
+    (dev_jones, sarah_jones, Deveraux, Jones, 5559993434, djones@email.com),
+    (dest_brown, mike_brown, Destiny, Brown, 5552345432, dbrown@email.com),
+    (dest_brown, emily_brown, Destiny, Brown, 5552345432, dbrown@email.com),
+    (bri_davis, alex_davis, Brianna, Davis, 5559891357, bdavis@email.com)
+;

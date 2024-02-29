@@ -1,5 +1,5 @@
 \qecho Create Student Test Data - Nathaniel Fincham
-\qecho Usage - Within the Gymnastics Gym DB \i /<parent folder>/studentTestData.txt
+\qecho Usage - Within the Gymnastics Gym DB \i /<parent folder>/StudentTestData.txt
 \qecho
 /*
     Insert 8 unique copies of Student Test Data into Student Entity - SQL query

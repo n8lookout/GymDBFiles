@@ -1,4 +1,4 @@
-\qecho Create Class Status Test Data - @WristBandShackles
+\qecho Create Availability_Period Test Data - @WristBandShackles
 \qecho Usage - Within the Gymnastics Gym DB \i /<parent folder>/AvailTestData.txt
 \qecho
 /*

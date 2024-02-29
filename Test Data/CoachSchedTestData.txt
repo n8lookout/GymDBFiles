@@ -1,0 +1,15 @@
+\qecho Create Coach Schedule Test Data - @WristBandShackles
+\qecho Usage - Within the Gymnastics Gym DB \i /<parent folder>/CoachSchedTestData.txt
+\qecho
+/*
+    Insert Sample Coach Schedules into Coach_Schedule Entity - SQL query
+*/
+
+INSERT INTO Coach_Schedule (scheduleName,coachID,availPeriodID )
+VALUES ('NH32024AM',1, 1),
+	   ('NH32024PM',1, 2),
+	   ('DL30824AM',2,3),
+	   ('SB31224AM',3,4),
+	   ('SB31224PM',3,5),
+	   ('SL32824AM',4, 6)
+;

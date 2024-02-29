@@ -1,0 +1,13 @@
+\qecho Create Class Coach Test Data - @WristBandShackles
+\qecho Usage - Within the Gymnastics Gym DB \i /<parent folder>/ClassCoachTestData.txt
+\qecho
+/*
+    Insert Sample Class Coach Relations into Class_Coach Entity - SQL query
+*/
+
+INSERT INTO Class_Coach (coachID,classID )
+VALUES (2, 2),
+	   (3, 3),
+	   (4,4),
+	   (1,1)
+;

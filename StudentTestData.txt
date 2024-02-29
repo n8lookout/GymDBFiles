@@ -11,7 +11,7 @@ INSERT INTO Student (
 VALUES 
     (bob_johnson, Robert, Johnson, 2014-02-05, 5551234567, bobjohnsonjr@email.com, TRUE),
     (john_johnson, John, Johnson, 2012-11-25, 5555555555, johnjohnson@email.com, TRUE),
-    (jane_jones, Jane, Jones, 2013-07-12, 5j59876543, janejones@email.com, TRUE),
+    (jane_jones, Jane, Jones, 2013-07-12, 5559876543, janejones@email.com, TRUE),
     (sarah_jones, Sarah, Jones, 2011-06-30, 5551112222, sarahjones@email.com, TRUE),
     (mike_brown, Mike, Brown, 2010-09-15, 5552223333, mikebrown@email.com, TRUE),
     (emily_brown, Emily, Brown, 2009-04-20, 5554445555, emilybrown@email.com, TRUE),

@@ -1,4 +1,4 @@
-\qecho Create Emergency Contact Test Data - @WristBandShackles
+\qecho Create Coach Test Data - @WristBandShackles
 \qecho Usage - Within the Gymnastics Gym DB \i /<parent folder>/CoachTestData.txt
 \qecho
 /*

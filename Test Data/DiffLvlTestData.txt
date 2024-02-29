@@ -1,0 +1,12 @@
+\qecho Create DifficultyLevel Test Data - @NoaU2
+\qecho Usage - Within the Gymnastics Gym DB \i /<parent folder>/DiffLvlTestData.txt
+\qecho
+/*
+    Insert Beginner, Intermediate, Advanced levels into DifficultyLevel Entity - SQL query
+*/
+
+INSERT INTO DifficultyLevel ( difficultyName )
+VALUES ('Beginner'),
+	   ('Intermediate'),
+	   ('Advanced')
+;

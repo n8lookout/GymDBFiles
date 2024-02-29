@@ -1,4 +1,4 @@
-\qecho Create Emergency Contact Test Data - Nathaniel Fincham
+\qecho Create Emergency Contact Test Data - @n8lookout
 \qecho Usage - Within the Gymnastics Gym DB \i /<parent folder>/EmergencyContactTestData.txt
 \qecho
 /*

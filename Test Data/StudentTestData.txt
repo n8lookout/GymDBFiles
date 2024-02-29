@@ -1,4 +1,4 @@
-\qecho Create Student Test Data - Nathaniel Fincham
+\qecho Create Student Test Data - @n8lookout
 \qecho Usage - Within the Gymnastics Gym DB \i /<parent folder>/StudentTestData.txt
 \qecho
 /*

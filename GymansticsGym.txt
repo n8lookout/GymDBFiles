@@ -24,14 +24,14 @@ CREATE TABLE Student (
 CREATE TABLE Emergency_Contact (
 	emergencyContactID	SERIAL not null unique,
 	emergcon_userName	VARCHAR (15) not null unique,
-	studentID			INTEGER not null,
+	student_userName	INTEGER not null,
 	firstName			VARCHAR(15) not null,
 	lastName			VARCHAR(25) not null,
 	phoneNumber			VARCHAR(10) not null,
 	email				VARCHAR(30) not null,
 	
 	Primary Key			(emergencyContactID),
-	Foreign Key			(studentID) references Student(studentID)
+	Foreign Key			(student_userName) references Student(student_userName)
 						Deferrable Initially Deferred
 	);
 

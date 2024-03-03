@@ -1,3 +1,12 @@
+/**
+ * CSS 475 Team Project
+ * @team Hex Girls
+ * @authors Anna Rivas, Nasheeta Lott, Christopher Long, Nathaniel Fincham, Noa Uritsky
+ * @version 3/8/2024
+ */
+//////////////////////////////////////////////////////////////
+//                         IMPORTS                          //
+//////////////////////////////////////////////////////////////
 import java.util.HashMap;
 
 public class Classes {

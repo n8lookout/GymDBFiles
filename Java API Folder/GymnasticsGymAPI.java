@@ -1,82 +1,134 @@
 
-import java.util.InputMismatchException;
-import java.util.Scanner;
+
 class GymnasticsGymAPI {
     public static void main(String[] args) {
-        Scanner in = new Scanner(System.in); 
-        boolean exit = false;
-        
-        while(!exit) {
-            System.out.println("Enter integer to choose action from menu:\n 1) Create \n" 
-                            + " 2) Update\n 3) Schedule\n" 
-                            + " 4) list \n 5) Get\n 6) Notification\n 7) Exit");
+        System.out.println("Welcome to the Gymnastics Gym Management System!");
+        System.out.println("Type '?' or 'help' to list all available APIs.");
+        System.out.println("Type 'exit' to quit the program.");
+        System.out.println("");
 
-           
-           int action = 0;
-            try {
-                action = in.nextInt();
-            }
-            catch(InputMismatchException input){
-                System.err.println("Integers only.");
-                in.next();
-            }
-            
+        String cmd = "";
+        while(!cmd.equalsIgnoreCase("exit"))
+        {
+            System.out.print("GymnasticsGymSystem> ");
+            cmd = System.console().readLine();
 
-            switch (action) {
-                case 1 : 
-                    create(in);
+            String[] mainCmdArr = cmd.split(" ", 2);
+
+            if(mainCmdArr.length > 1)
+            {
+                System.out.println("Providing more than one command not supported");
+                System.out.println("");
+                continue;
+            }
+
+            switch(mainCmdArr[0]) {
+
+                // General commands
+                case "?":
+                case "help":
+                    listOfApis();
+                  break;
+                  case "exit":
+                  // quitting
+                  break;                  
+
+                // Students
+                case Students.cmdlistAllStudents:
+                        Students.listAllStudents(mainCmdArr);
                     break;
-                case 2 : 
-                    update(in);
-                    break;
-                case 3 : 
-                    schedule(in);
-                    break;
-                case 4 : 
-                    list(in);
-                    break;
-                case 5 : 
-                    get(in);
-                    break;
-                case 6 : 
-                    notification(in);
-                    break;
-                case 7 : 
-                    exit = true;
-                    System.out.println("System exiting. Thank you!");
-                    break;
+                case Students.cmdlistAllStudentsByDiffLevel:
+                    Students.listAllStudentsByDiffLevel(mainCmdArr);
+                break;
+                case Students.cmdlistAllStudentsByStatus:
+                    Students.listAllStudentsByStatus(mainCmdArr);
+                break;
+                case Students.cmdlistAllClassesForAStudent:
+                    Students.listAllClassesForAStudent(mainCmdArr);
+                break;
+                case Students.cmdgetStudentInfo:
+                    Students.getStudentInfo(mainCmdArr);
+                break;
+                case Students.cmdgetStudentEmerContact:
+                    Students.getStudentEmerContact(mainCmdArr);
+                break;
+                case Students.cmdgetStudentDiffLevel:
+                    Students.getStudentDiffLevel(mainCmdArr);
+                break;
+
+                // Coaches
+                case Coaches.cmdlistAllCoaches:
+                    Coaches.listAllCoaches(mainCmdArr);
+                break;
+                case Coaches.cmdlistAllAvailCoachByDateRange:
+                    Coaches.listAllAvailCoachByDateRange(mainCmdArr);
+                break;                
+                case Coaches.cmdgetCoachInfo:
+                    Coaches.getCoachInfo(mainCmdArr);
+                break;
+                case Coaches.cmdgetCoachAvail:
+                    Coaches.getCoachAvail(mainCmdArr);
+                break;
+
+                // Classes
+                case Classes.cmdlistAllClassesbyMissingCoach:
+                    Classes.listAllClassesbyMissingCoach(mainCmdArr);
+                break;                
+                case Classes.cmdlistAllClassesByDate:
+                    Classes.listAllClassesByDate(mainCmdArr);
+                break; 
+                case Classes.cmdlistAllClassAttendees:
+                    Classes.listAllClassAttendees(mainCmdArr);
+                break; 
+                case Classes.cmdlistClassByDifficultyLevel:
+                    Classes.listClassByDifficultyLevel(mainCmdArr);
+                break; 
+                case Classes.cmdlistClassByEvent:
+                    Classes.listClassByEvent(mainCmdArr);
+                break; 
+                case Classes.cmdgetClassStatus:
+                    Classes.getClassStatus(mainCmdArr);
+                break; 
+                case Classes.cmdgetClassAttendees:
+                    Classes.getClassAttendees(mainCmdArr);
+                break; 
+                case Classes.cmdsendStatusNotification:
+                    Classes.sendStatusNotification(mainCmdArr);
+                break; 
+                case Classes.cmdgetClassEvent:
+                    Classes.getClassEvent(mainCmdArr);
+                break; 
+
                 default:
-                    System.err.println("Please enter a valid value.");
-            }
-            
-
+                    System.out.println("Command not recognized, please try again");
+              }
+              System.out.println("");
         }
-        in.close();
     }
 
-    public static void create(Scanner in){
-        System.out.println("Enter integer to choose enitity to create:\n " +
-                            "1) classes\n 2) Students\n 3) Coaches\n " +
-                            "4) Emergency contact\n 5) Coach Schedule");  
-    }
+    private static void listOfApis()
+    {
+        Students.listAllStudents(null);
+        Students.listAllStudentsByDiffLevel(null);
+        Students.listAllStudentsByStatus(null);
+        Students.listAllClassesForAStudent(null);
+        Students.getStudentInfo(null);
+        Students.getStudentEmerContact(null);
+        Students.getStudentDiffLevel(null);
 
-    public static void update(Scanner in){
+        Coaches.listAllCoaches(null);
+        Coaches.listAllAvailCoachByDateRange(null);
+        Coaches.getCoachInfo(null);
+        Coaches.getCoachAvail(null);
 
-    }
-
-    public static void schedule(Scanner in){
-
-    }
-
-    public static void list(Scanner in){
-
-    }
-
-    public static void get(Scanner in){
-
-    }
-
-    public static void notification(Scanner in){
-
-    }
+        Classes.listAllClassesbyMissingCoach(null);
+        Classes.listAllClassesByDate(null);
+        Classes.listAllClassAttendees(null);
+        Classes.listClassByDifficultyLevel(null);
+        Classes.listClassByEvent(null);
+        Classes.getClassStatus(null);
+        Classes.getClassAttendees(null);
+        Classes.sendStatusNotification(null);
+        Classes.getClassEvent(null);
+    }      
 }

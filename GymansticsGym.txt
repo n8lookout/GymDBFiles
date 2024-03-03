@@ -24,14 +24,22 @@ CREATE TABLE Student (
 CREATE TABLE Emergency_Contact (
 	emergencyContactID	SERIAL not null unique,
 	emergcon_userName	VARCHAR (15) not null unique,
-	student_userName	INTEGER not null,
 	firstName			VARCHAR(15) not null,
 	lastName			VARCHAR(25) not null,
 	phoneNumber			VARCHAR(10) not null,
 	email				VARCHAR(30) not null,
 	
-	Primary Key			(emergencyContactID),
+	Primary Key			(emergencyContactID)
+	);
+	
+CREATE TABLE Student_EmergContact (
+	student_userName	VARCHAR(15) not null,
+	emergcon_userName	VARCHAR(15) not null,
+	
+	Primary Key			(student_userName, emergcon_userName),
 	Foreign Key			(student_userName) references Student(student_userName)
+						Deferrable Initially Deferred,
+	Foreign Key			(emergcon_userName) references Emergency_Contact(emergcon_userName)
 						Deferrable Initially Deferred
 	);
 
@@ -46,25 +54,16 @@ CREATE TABLE Coach(
 	Primary Key			(coachID)
 	);
 	
-CREATE TABLE Availability_Period (
-	availPeriodID		SERIAL not null unique,
-	availStartTime 		TIMESTAMP,
-	availEndTime		TIMESTAMP,
-	
-	Primary Key			(availPeriodID)
-	);
-
 
 CREATE TABLE Coach_Schedule (
 	coachScheduleID		SERIAL not null unique,
 	scheduleName		VARCHAR (15) not null unique,
 	coachID				INTEGER not null,
-	availPeriodID		INTEGER not null,
+	availStartTime		TIMESTAMP not null,
+	availEndTime		TIMESTAMP not null,
 	
 	Primary Key			(coachScheduleID),
 	Foreign Key			(coachID) references Coach(coachID)
-						Deferrable Initially Deferred,
-	Foreign Key			(availPeriodID) references Availability_Period(availPeriodID)
 						Deferrable Initially Deferred
 	);
 
@@ -91,7 +90,7 @@ CREATE TABLE Class_Status (
 	);	
 	
 CREATE TABLE Student_DifficultyLevel (
-	difficultyID		INTEGER not null unique,
+	difficultyID		INTEGER not null,
 	studentID	 		INTEGER not null,
 	
 	Primary Key			(difficultyID, studentID),

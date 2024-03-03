@@ -1,5 +1,6 @@
 
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -10,6 +11,14 @@ public class Util {
     private static final DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
+    /**
+     * Method to parse Input parameters
+     * @author Anna Rivas
+     *
+     * @params String array of required input parameters
+     * 
+     * @return HashMap of Key/Value of required input parameters
+     */    
     public static HashMap<String, String> ParseInputParams(String[] params)
     {
         HashMap<String, String> map = new HashMap<>();
@@ -34,6 +43,15 @@ public class Util {
         return map;
     }
 
+    /**
+     * Method to validate known Parameters values or format
+     * @author Anna Rivas
+     *
+     * @paramName Input parameter Name
+     * @paramValue Input parameter Value
+     * 
+     * @return true if parameter value passed the validation
+     */     
     private static boolean CheckKnownParamValues(String paramName, String paramValue)
     {
         boolean valueOk = true;

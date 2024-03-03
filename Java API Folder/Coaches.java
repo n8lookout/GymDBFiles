@@ -8,6 +8,12 @@ public class Coaches {
     public static final String cmdgetCoachInfo = "getCoachInfo";
     public static final String cmdgetCoachAvail = "getCoachAvail";
 
+    /**
+     * Return list of all coaches
+     * @author Anna Rivas
+     *
+     * @params Input parameter
+     */       
     public static void listAllCoaches(String[] params)
     {
         System.out.println("");
@@ -26,6 +32,12 @@ public class Coaches {
         }
     }  
     
+    /**
+     * Return list of all coaches that are available on a specific time range
+     * @author Anna Rivas
+     *
+     * @params Input parameter
+     */     
     public static void listAllAvailCoachByDateRange(String[] params)
     {
         System.out.println("");
@@ -44,6 +56,12 @@ public class Coaches {
         }
     }   
     
+    /**
+     * Return Coach Contact Information Phone/Email
+     * @author Nasheeta Lott
+     *
+     * @params Input parameter
+     */      
     public static void getCoachInfo(String[] params)
     {
         System.out.println("");
@@ -62,12 +80,18 @@ public class Coaches {
         }
     } 
     
+    /**
+     * Returns a specific Coaches Availability times from a specific date
+     * @author Nasheeta Lott
+     *
+     * @params Input parameter
+     */       
     public static void getCoachAvail(String[] params)
     {
         System.out.println("");
         if(params == null || params.length == 0)
         {
-            System.out.println("getCoachAvail - Returns a specific Coaches’ Availability times from a specific date");
+            System.out.println("getCoachAvail - Returns a specific Coaches Availability times from a specific date");
             System.out.println("command: getCoachAvail UserName:xxx hh:mm Date:YYYY/MM/DD hh:mm");
         }
         else

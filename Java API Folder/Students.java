@@ -11,6 +11,12 @@ public class Students {
     public static final String cmdgetStudentEmerContact = "getStudentEmerContact";
     public static final String cmdgetStudentDiffLevel = "getStudentDiffLevel";
 
+    /**
+     * Return students names ordered by last name and their unique user name
+     * @author Anna Rivas
+     *
+     * @params Input parameter
+     */       
     public static void listAllStudents(String[] params)
     {
         System.out.println("");
@@ -29,6 +35,12 @@ public class Students {
         }
     }
 
+    /**
+     * Return list of students filtered by difficulty level
+     * @author Anna Rivas
+     *
+     * @params Input parameter
+     */       
     public static void listAllStudentsByDiffLevel(String[] params)
     {
         System.out.println("");
@@ -47,6 +59,12 @@ public class Students {
         }
     } 
     
+    /**
+     * Return list of students filtered by their status
+     * @author Anna Rivas
+     *
+     * @params Input parameter
+     */       
     public static void listAllStudentsByStatus(String[] params)
     {
         System.out.println("");
@@ -65,6 +83,12 @@ public class Students {
         }
     }  
 
+    /**
+     * Returns a list of active classes where a specific student is listed as attendee
+     * @author Anna Rivas
+     *
+     * @params Input parameter
+     */       
     public static void listAllClassesForAStudent(String[] params)
     {
         System.out.println("");
@@ -83,6 +107,12 @@ public class Students {
         }
     }   
 
+    /**
+     * Return Student Name/Phone/Email/EmerContact
+     * @author Nasheeta Lott
+     *
+     * @params Input parameter
+     */      
     public static void getStudentInfo(String[] params)
     {
         System.out.println("");
@@ -101,6 +131,12 @@ public class Students {
         }
     } 
     
+    /**
+     * Returns the EmerContact from a specific student if any. If not it returns null
+     * @author Nasheeta Lott
+     *
+     * @params Input parameter
+     */     
     public static void getStudentEmerContact(String[] params)
     {
         System.out.println("");
@@ -119,6 +155,12 @@ public class Students {
         }
     }   
     
+    /**
+     * Return Difficulty Level of a specific student
+     * @author Nasheeta Lott
+     *
+     * @params Input parameter
+     */    
     public static void getStudentDiffLevel(String[] params)
     {
         System.out.println("");

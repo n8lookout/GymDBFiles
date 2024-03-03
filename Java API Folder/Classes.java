@@ -12,12 +12,18 @@ public class Classes {
     public static final String cmdgetClassEvent = "getClassEvent";
     public static final String cmdsendStatusNotification = "sendStatusNotification";
 
+    /**
+     * Return list of all active classes that do not have a coach assigned
+     * @author Anna Rivas
+     *
+     * @params Input parameter
+     */      
     public static void listAllClassesbyMissingCoach(String[] params)
     {
         System.out.println("");
         if(params == null || params.length == 0)
         {
-            System.out.println("listAllClassesbyMissingCoach - Return list of all active classes that don’t have a coach assigned");
+            System.out.println("listAllClassesbyMissingCoach - Return list of all active classes that do not have a coach assigned");
             System.out.println("command: listAllClassesbyMissingCoach");
         }
         else
@@ -30,6 +36,12 @@ public class Classes {
         }
     }  
 
+    /**
+     * Return list of all classes on given date
+     * @author Anna Rivas
+     *
+     * @params Input parameter
+     */      
     public static void listAllClassesByDate(String[] params)
     {
         System.out.println("");
@@ -48,6 +60,12 @@ public class Classes {
         }
     }  
     
+    /**
+     * Return list of all classes on given date
+     * @author Anna Rivas
+     *
+     * @params Input parameter
+     */      
     public static void listAllClassAttendees(String[] params)
     {
         System.out.println("");
@@ -66,6 +84,12 @@ public class Classes {
         }
     }     
 
+    /**
+     * Return list of all classes on given date
+     * @author Anna Rivas
+     *
+     * @params Input parameter
+     */       
     public static void listClassByDifficultyLevel(String[] params)
     {
         System.out.println("");
@@ -84,6 +108,12 @@ public class Classes {
         }
     }        
 
+    /**
+     * Return list of all active classes on a given event
+     * @author Anna Rivas
+     *
+     * @params Input parameter
+     */         
     public static void listClassByEvent(String[] params)
     {
         System.out.println("");
@@ -102,6 +132,12 @@ public class Classes {
         }
     }     
 
+    /**
+     * Return the status of a specific class (Active, Canceled, Completed)
+     * @author Nasheeta Lott
+     *
+     * @params Input parameter
+     */      
     public static void getClassStatus(String[] params)
     {
         System.out.println("");
@@ -120,6 +156,12 @@ public class Classes {
         }
     } 
     
+    /**
+     * Returns list students attending a specific class
+     * @author Nasheeta Lott
+     *
+     * @params Input parameter
+     */     
     public static void getClassAttendees(String[] params)
     {
         System.out.println("");
@@ -138,6 +180,12 @@ public class Classes {
         }
     }     
 
+    /**
+     * Retrieves attendees from a specific class  and sends a SMS notification
+     * @author Anna Rivas
+     *
+     * @params Input parameter
+     */        
     public static void sendStatusNotification(String[] params)
     {
         System.out.println("");
@@ -156,6 +204,12 @@ public class Classes {
         }
     }  
     
+    /**
+     * Returns the type of event from a specific class
+     * @author Nasheeta Lott
+     *
+     * @params Input parameter
+     */      
     public static void getClassEvent(String[] params)
     {
         System.out.println("");

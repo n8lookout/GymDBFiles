@@ -1,6 +1,7 @@
 
 
 class GymnasticsGymAPI {
+
     public static void main(String[] args) {
         System.out.println("Welcome to the Gymnastics Gym Management System!");
         System.out.println("Type '?' or 'help' to list all available APIs.");

@@ -13,4 +13,3 @@ Due: March 8th, 2024<br>
 
 ## Schema
 ![Copy of Gymnastics Gym (3)](https://github.com/n8lookout/GymDBFiles/assets/129123436/d19b29a9-7595-44da-b7cb-6a4c6d9072f3)
-8301/ae59b697-a782-4ea7-b759-23a2d0cc9b76)

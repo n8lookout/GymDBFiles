@@ -18,6 +18,23 @@ public class Util {
     private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     /**
+     * Check string for null
+     * @author Anna Rivas
+     *
+     * @value String value to check
+     * 
+     * @return String value or empty string if null
+     */      
+    public static String CheckStringForNull(String value)
+    {
+        if(value == null || value.equals("null"))
+        {
+            return "";
+        }
+        return value;
+    }
+
+    /**
      * Method to parse Input parameters
      * @author Anna Rivas
      *

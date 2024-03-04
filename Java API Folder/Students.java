@@ -8,6 +8,7 @@
 //////////////////////////////////////////////////////////////
 //                         IMPORTS                          //
 //////////////////////////////////////////////////////////////
+import java.sql.SQLException;
 import java.util.HashMap;
 
 public class Students {
@@ -21,7 +22,7 @@ public class Students {
     public static final String cmdgetStudentDiffLevel = "getStudentDiffLevel";
 
     /**
-     * Return students names ordered by last name and their unique user name
+     * Returns a list of all students with their information including their usernames. The list is ordered by their last names in aplhabetic order.
      * @author Anna Rivas
      *
      * @params Input parameter
@@ -31,7 +32,7 @@ public class Students {
         System.out.println("");
         if(params == null || params.length == 0)
         {
-            System.out.println("listAllStudents - Return students names ordered by last name and their unique user name");
+            System.out.println("listAllStudents - Returns a list of all students with their information including their usernames. The list is ordered by their last names in aplhabetic order.");
             System.out.println("command: listAllStudents");
         }
         else
@@ -39,7 +40,12 @@ public class Students {
             HashMap<String, String> apiParams = Util.ParseInputParams(new String[] {});
             if(apiParams != null)
             {
-                System.out.println("Executing listAllStudents API from GymnasticsGymAPI");
+                try {
+                    GymnasticsGymDB.listAllStudents(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -63,7 +69,12 @@ public class Students {
             HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "DifficultyLevel" });
             if(apiParams != null)
             {
-                System.out.println("Executing listAllStudentsByDiffLevel API from GymnasticsGymAPI");
+                try {
+                    GymnasticsGymDB.listAllStudentsByDiffLevel(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
         }
     } 
@@ -87,7 +98,12 @@ public class Students {
             HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "StudentStatus" });
             if(apiParams != null)
             {
-                System.out.println("Executing listAllStudentsByStatus API from GymnasticsGymAPI");
+                try {
+                    GymnasticsGymDB.listAllStudentsByStatus(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
         }
     }  
@@ -111,14 +127,19 @@ public class Students {
             HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "UserName" });
             if(apiParams != null)
             {
-                System.out.println("Executing listAllClassesForAStudent API from GymnasticsGymAPI");
+                try {
+                    GymnasticsGymDB.listAllClassesForAStudent(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }            
         }
     }   
 
     /**
      * Return Student Name/Phone/Email/EmerContact
-     * @author Nasheeta Lott
+     * @author Nasheeta Lott (with assitance of Anna Rivas)
      *
      * @params Input parameter
      */      
@@ -135,14 +156,19 @@ public class Students {
             HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "UserName" });
             if(apiParams != null)
             {
-                System.out.println("Executing getStudentInfo API from GymnasticsGymAPI");
+                try {
+                    GymnasticsGymDB.getStudentInfo(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }            
         }
     } 
     
     /**
-     * Returns the EmerContact from a specific student if any. If not it returns null
-     * @author Nasheeta Lott
+     * Returns the EmerContact from a specific student if any.
+     * @author Nasheeta Lott (with assitance of Anna Rivas)
      *
      * @params Input parameter
      */     
@@ -151,7 +177,7 @@ public class Students {
         System.out.println("");
         if(params == null || params.length == 0)
         {
-            System.out.println("getStudentEmerContact - Returns the EmerContact from a specific student if any. If not it returns null");
+            System.out.println("getStudentEmerContact - Returns the EmerContact from a specific student if any.");
             System.out.println("command: getStudentEmerContact UserName:xxx");
         }
         else
@@ -159,14 +185,19 @@ public class Students {
             HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "UserName" });
             if(apiParams != null)
             {
-                System.out.println("Executing getStudentEmerContact API from GymnasticsGymAPI");
+                try {
+                    GymnasticsGymDB.getStudentEmerContact(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }            
         }
     }   
     
     /**
      * Return Difficulty Level of a specific student
-     * @author Nasheeta Lott
+     * @author Nasheeta Lott (with assitance of Anna Rivas)
      *
      * @params Input parameter
      */    
@@ -183,7 +214,12 @@ public class Students {
             HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "UserName" });
             if(apiParams != null)
             {
-                System.out.println("Executing getStudentDiffLevel API from GymnasticsGymAPI");
+                try {
+                    GymnasticsGymDB.getStudentDiffLevel(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }            
         }
     }      

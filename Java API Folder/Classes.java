@@ -17,7 +17,6 @@ public class Classes {
     public static final String cmdlistClassByDifficultyLevel = "listClassByDifficultyLevel";
     public static final String cmdlistClassByEvent = "listClassByEvent";
     public static final String cmdgetClassStatus = "getClassStatus";
-    public static final String cmdgetClassAttendees = "getClassAttendees";
     public static final String cmdgetClassEvent = "getClassEvent";
     public static final String cmdsendStatusNotification = "sendStatusNotification";
 
@@ -57,7 +56,7 @@ public class Classes {
         if(params == null || params.length == 0)
         {
             System.out.println("listAllClassesByDate - Return list of all classes on given date");
-            System.out.println("command: listAllClassesByDate Date:YYYY/MM/DD hh:mm");
+            System.out.println("command: listAllClassesByDate Date:YYYY-MM-DD");
         }
         else
         {
@@ -165,30 +164,6 @@ public class Classes {
         }
     } 
     
-    /**
-     * Returns list students attending a specific class
-     * @author Nasheeta Lott
-     *
-     * @params Input parameter
-     */     
-    public static void getClassAttendees(String[] params)
-    {
-        System.out.println("");
-        if(params == null || params.length == 0)
-        {
-            System.out.println("getClassAttendees - Returns list students attending a specific class");
-            System.out.println("command: getClassAttendees ClassName:xxx");
-        }
-        else
-        {
-            HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "ClassName" });
-            if(apiParams != null)
-            {
-                System.out.println("Executing getClassAttendees API from GymnasticsGymAPI");
-            }            
-        }
-    }     
-
     /**
      * Retrieves attendees from a specific class  and sends a SMS notification
      * @author Anna Rivas

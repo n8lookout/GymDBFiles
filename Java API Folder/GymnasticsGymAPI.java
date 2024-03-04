@@ -1,3 +1,4 @@
+import java.sql.SQLException;
 
 /**
  * CSS 475 Team Project
@@ -11,6 +12,11 @@
 
 class GymnasticsGymAPI {
 
+    /**
+     * Metin Method
+     * @author The Team
+     *
+     */
     public static void main(String[] args) {
         System.out.println("Welcome to the Gymnastics Gym Management System!");
         System.out.println("Type '?' or 'help' to list all available APIs.");
@@ -20,7 +26,7 @@ class GymnasticsGymAPI {
         String cmd = "";
         while(!cmd.equalsIgnoreCase("exit"))
         {
-            System.out.print("GymnasticsGymSystem> ");
+            System.out.print("GymnasticsGymSystem-# ");
             cmd = System.console().readLine();
 
             String[] mainCmdArr = cmd.split(" ", 2);
@@ -99,9 +105,6 @@ class GymnasticsGymAPI {
                 case Classes.cmdgetClassStatus:
                     Classes.getClassStatus(mainCmdArr);
                 break; 
-                case Classes.cmdgetClassAttendees:
-                    Classes.getClassAttendees(mainCmdArr);
-                break; 
                 case Classes.cmdsendStatusNotification:
                     Classes.sendStatusNotification(mainCmdArr);
                 break; 
@@ -114,8 +117,15 @@ class GymnasticsGymAPI {
               }
               System.out.println("");
         }
+
+        GymnasticsGymDB.disconnect();
     }
 
+    /**
+     * List all available APIs
+     * @author The Team
+     *
+     */    
     private static void listOfApis()
     {
         Students.listAllStudents(null);
@@ -137,7 +147,6 @@ class GymnasticsGymAPI {
         Classes.listClassByDifficultyLevel(null);
         Classes.listClassByEvent(null);
         Classes.getClassStatus(null);
-        Classes.getClassAttendees(null);
         Classes.sendStatusNotification(null);
         Classes.getClassEvent(null);
     }      

@@ -1,0 +1,6 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "RunThisFirst/postgresql-42.7.2.jar"
+    ]
+}

@@ -8,6 +8,7 @@
 //////////////////////////////////////////////////////////////
 //                         IMPORTS                          //
 //////////////////////////////////////////////////////////////
+import java.sql.SQLException;
 import java.util.HashMap;
 
 public class Coaches {
@@ -36,7 +37,12 @@ public class Coaches {
             HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { });
             if(apiParams != null)
             {
-                System.out.println("Executing listAllCoaches API from GymnasticsGymAPI");
+                try {
+                    GymnasticsGymDB.listAllCoaches(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
         }
     }  
@@ -53,21 +59,26 @@ public class Coaches {
         if(params == null || params.length == 0)
         {
             System.out.println("listAllAvailCoachByDateRange - Return list of all coaches that are available on a specific time range");
-            System.out.println("command: listAllAvailCoachByDateRange StartTime:YYYY/MM/DD hh:mm EndTime:YYYY/MM/DD hh:mm");
+            System.out.println("command: listAllAvailCoachByDateRange StartTime:YYYY-MM-DD hh:mm EndTime:YYYY-MM-DD hh:mm");
         }
         else
         {
             HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "StartTime", "EndTime" });
             if(apiParams != null)
             {
-                System.out.println("Executing listAllAvailCoachByDateRange API from GymnasticsGymAPI");
+                try {
+                    GymnasticsGymDB.listAllAvailCoachByDateRange(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }            
         }
     }   
     
     /**
      * Return Coach Contact Information Phone/Email
-     * @author Nasheeta Lott
+     * @author Nasheeta Lott (with assitance of Anna Rivas)
      *
      * @params Input parameter
      */      
@@ -84,14 +95,19 @@ public class Coaches {
             HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "UserName" });
             if(apiParams != null)
             {
-                System.out.println("Executing getCoachInfo API from GymnasticsGymAPI");
+                try {
+                    GymnasticsGymDB.getCoachInfo(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }            
         }
     } 
     
     /**
      * Returns a specific Coaches Availability times from a specific date
-     * @author Nasheeta Lott
+     * @author Nasheeta Lott (with assitance of Anna Rivas)
      *
      * @params Input parameter
      */       
@@ -101,14 +117,19 @@ public class Coaches {
         if(params == null || params.length == 0)
         {
             System.out.println("getCoachAvail - Returns a specific Coaches Availability times from a specific date");
-            System.out.println("command: getCoachAvail UserName:xxx hh:mm Date:YYYY/MM/DD hh:mm");
+            System.out.println("command: getCoachAvail UserName:xxx hh:mm Date:YYYY-MM-DD");
         }
         else
         {
             HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "UserName", "Date" });
             if(apiParams != null)
             {
-                System.out.println("Executing getCoachAvail API from GymnasticsGymAPI");
+                try {
+                    GymnasticsGymDB.getCoachAvail(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }            
         }
     }     

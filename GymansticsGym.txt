@@ -55,7 +55,7 @@ CREATE TABLE Coach(
 	);
 	
 
-CREATE TABLE Coach_Schedule (
+CREATE TABLE Coach_Availability (
 	coachScheduleID		SERIAL not null unique,
 	scheduleName		VARCHAR (15) not null unique,
 	coachID				INTEGER not null,

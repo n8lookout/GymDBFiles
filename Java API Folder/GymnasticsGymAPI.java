@@ -1,5 +1,3 @@
-import java.sql.SQLException;
-
 /**
  * CSS 475 Team Project
  * @team Hex Girls

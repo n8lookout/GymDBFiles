@@ -7,18 +7,27 @@
 //////////////////////////////////////////////////////////////
 //                         IMPORTS                          //
 //////////////////////////////////////////////////////////////
+import java.sql.SQLException;
 import java.util.HashMap;
 
 public class Classes {
     
+    //////////////////////////////////////////////////////////////
+    //                    GLOBAL VARIABLES                      //
+    //////////////////////////////////////////////////////////////    
     public static final String cmdlistAllClassesbyMissingCoach = "listAllClassesbyMissingCoach";
     public static final String cmdlistAllClassesByDate = "listAllClassesByDate";
     public static final String cmdlistAllClassAttendees = "listAllClassAttendees";
     public static final String cmdlistClassByDifficultyLevel = "listClassByDifficultyLevel";
     public static final String cmdlistClassByEvent = "listClassByEvent";
+    public static final String cmdlistClassByEventandDiffLevel = "listClassByEventandDiffLevel";
+    public static final String cmdsendStatusNotification = "sendStatusNotification";
     public static final String cmdgetClassStatus = "getClassStatus";
     public static final String cmdgetClassEvent = "getClassEvent";
-    public static final String cmdsendStatusNotification = "sendStatusNotification";
+
+    //////////////////////////////////////////////////////////////
+    //                       METHODS                            //
+    //////////////////////////////////////////////////////////////
 
     /**
      * Return list of all active classes that do not have a coach assigned
@@ -39,7 +48,12 @@ public class Classes {
             HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { });
             if(apiParams != null)
             {
-                System.out.println("Executing listAllClassesbyMissingCoach API from GymnasticsGymAPI");
+                try {
+                    GymnasticsGymDB.listAllClassesbyMissingCoach(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
         }
     }  
@@ -63,7 +77,12 @@ public class Classes {
             HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "Date" });
             if(apiParams != null)
             {
-                System.out.println("Executing listAllClassesByDate API from GymnasticsGymAPI");
+                try {
+                    GymnasticsGymDB.listAllClassesByDate(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }            
         }
     }  
@@ -87,7 +106,12 @@ public class Classes {
             HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "ClassName" });
             if(apiParams != null)
             {
-                System.out.println("Executing listAllClassAttendees API from GymnasticsGymAPI");
+                try {
+                    GymnasticsGymDB.listAllClassAttendees(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }            
         }
     }     
@@ -111,7 +135,12 @@ public class Classes {
             HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "DifficultyLevel" });
             if(apiParams != null)
             {
-                System.out.println("Executing listClassByDifficultyLevel API from GymnasticsGymAPI");
+                try {
+                    GymnasticsGymDB.listClassByDifficultyLevel(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }            
         }
     }        
@@ -135,37 +164,47 @@ public class Classes {
             HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "EventName" });
             if(apiParams != null)
             {
-                System.out.println("Executing listClassByEvent API from GymnasticsGymAPI");
+                try {
+                    GymnasticsGymDB.listClassByEvent(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }            
         }
     }     
 
     /**
-     * Return the status of a specific class (Active, Canceled, Completed)
-     * @author Nasheeta Lott
+     * Retrieves attendees from a specific class  and sends a SMS notification
+     * @author Anna Rivas
      *
      * @params Input parameter
-     */      
-    public static void getClassStatus(String[] params)
+     */        
+    public static void listClassByEventandDiffLevel(String[] params)
     {
         System.out.println("");
         if(params == null || params.length == 0)
         {
-            System.out.println("getClassStatus - Return the status of a specific class (Active, Canceled, Completed)");
-            System.out.println("command: getClassStatus ClassName:xxx");
+            System.out.println("listClassByEventandDiffLevel - Return list of all active classes on a given event and level of difficulty");
+            System.out.println("command: listClassByEventandDiffLevel EventName:xxx ClassName:xxx");
         }
         else
         {
-            HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "ClassName" });
+            HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "EventName", "DifficultyLevel" });
             if(apiParams != null)
             {
-                System.out.println("Executing getClassStatus API from GymnasticsGymAPI");
+                try {
+                    GymnasticsGymDB.listClassByEventandDiffLevel(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }            
         }
-    } 
-    
+    }  
+
     /**
-     * Retrieves attendees from a specific class  and sends a SMS notification
+     * Retrieves attendees from a specific class and sends a SMS notification
      * @author Anna Rivas
      *
      * @params Input parameter
@@ -175,7 +214,7 @@ public class Classes {
         System.out.println("");
         if(params == null || params.length == 0)
         {
-            System.out.println("sendStatusNotification - Retrieves attendees from a specific class  and sends a SMS notification");
+            System.out.println("sendStatusNotification - Retrieves attendees from a specific class and sends a SMS notification");
             System.out.println("command: sendStatusNotification ClassName:xxx");
         }
         else
@@ -183,14 +222,48 @@ public class Classes {
             HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "ClassName" });
             if(apiParams != null)
             {
-                System.out.println("Executing sendStatusNotification API from GymnasticsGymAPI");
+                try {
+                    GymnasticsGymDB.sendStatusNotification(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }            
         }
     }  
-    
+
+    /**
+     * Return the status of a specific class (Active, Canceled, Completed, etc.)
+     * @author Nasheeta Lott (with assitance of Anna Rivas)
+     *
+     * @params Input parameter
+     */      
+    public static void getClassStatus(String[] params)
+    {
+        System.out.println("");
+        if(params == null || params.length == 0)
+        {
+            System.out.println("getClassStatus - Return the status of a specific class (Active, Canceled, Completed, etc.)");
+            System.out.println("command: getClassStatus ClassName:xxx");
+        }
+        else
+        {
+            HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "ClassName" });
+            if(apiParams != null)
+            {
+                try {
+                    GymnasticsGymDB.getClassStatus(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }            
+        }
+    } 
+        
     /**
      * Returns the type of event from a specific class
-     * @author Nasheeta Lott
+     * @author Nasheeta Lott (with assitance of Anna Rivas)
      *
      * @params Input parameter
      */      
@@ -207,7 +280,12 @@ public class Classes {
             HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "ClassName" });
             if(apiParams != null)
             {
-                System.out.println("Executing getClassEvent API from GymnasticsGymAPI");
+                try {
+                    GymnasticsGymDB.getClassEvent(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }            
         }
     }     

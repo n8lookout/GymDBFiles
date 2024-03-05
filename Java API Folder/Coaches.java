@@ -13,10 +13,18 @@ import java.util.HashMap;
 
 public class Coaches {
     
+    //////////////////////////////////////////////////////////////
+    //                    GLOBAL VARIABLES                      //
+    //////////////////////////////////////////////////////////////    
     public static final String cmdlistAllCoaches = "listAllCoaches";
     public static final String cmdlistAllAvailCoachByDateRange = "listAllAvailCoachByDateRange";
     public static final String cmdgetCoachInfo = "getCoachInfo";
     public static final String cmdgetCoachAvail = "getCoachAvail";
+    public static final String cmdgetCoach_userName = "getCoach_userName";
+    
+    //////////////////////////////////////////////////////////////
+    //                       METHODS                            //
+    //////////////////////////////////////////////////////////////
 
     /**
      * Return list of all coaches
@@ -133,5 +141,34 @@ public class Coaches {
             }            
         }
     }     
+
+    /**
+     * Returns Coach’s username
+     * @author Nasheeta Lott (with assitance of Anna Rivas)
+     *
+     * @params Input parameter
+     */      
+    public static void getCoach_userName(String[] params)
+    {
+        System.out.println("");
+        if(params == null || params.length == 0)
+        {
+            System.out.println("getCoach_userName - Coach's username");
+            System.out.println("command: getCoach_userName FirstName:xxx LastName:xxx");
+        }
+        else
+        {
+            HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "FirstName", "LastName" });
+            if(apiParams != null)
+            {
+                try {
+                    GymnasticsGymDB.getCoach_userName(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }            
+        }
+    } 
 
 }

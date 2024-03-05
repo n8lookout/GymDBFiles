@@ -13,6 +13,9 @@ import java.util.HashMap;
 
 public class Students {
 
+    //////////////////////////////////////////////////////////////
+    //                    GLOBAL VARIABLES                      //
+    //////////////////////////////////////////////////////////////    
     public static final String cmdlistAllStudents = "listAllStudents";
     public static final String cmdlistAllStudentsByDiffLevel = "listAllStudentsByDiffLevel";
     public static final String cmdlistAllStudentsByStatus = "listAllStudentsByStatus";
@@ -20,6 +23,12 @@ public class Students {
     public static final String cmdgetStudentInfo = "getStudentInfo";
     public static final String cmdgetStudentEmerContact = "getStudentEmerContact";
     public static final String cmdgetStudentDiffLevel = "getStudentDiffLevel";
+    public static final String cmdgetStudent_userName = "getStudent_userName";
+    public static final String cmdgetEmerContact_userName = "getEmerContact_userName";
+
+    //////////////////////////////////////////////////////////////
+    //                       METHODS                            //
+    //////////////////////////////////////////////////////////////
 
     /**
      * Returns a list of all students with their information including their usernames. The list is ordered by their last names in aplhabetic order.
@@ -223,5 +232,63 @@ public class Students {
             }            
         }
     }      
-      
+
+    /**
+     * Return Student’s userName
+     * @author Nasheeta Lott (with assitance of Anna Rivas)
+     *
+     * @params Input parameter
+     */      
+    public static void getStudent_userName(String[] params)
+    {
+        System.out.println("");
+        if(params == null || params.length == 0)
+        {
+            System.out.println("getStudent_userName - Student's userName");
+            System.out.println("command: getStudent_userName FirstName:xxx LastName:xxx");
+        }
+        else
+        {
+            HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "FirstName", "LastName" });
+            if(apiParams != null)
+            {
+                try {
+                    GymnasticsGymDB.getStudent_userName(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }            
+        }
+    } 
+
+    /**
+     * Returns Emergency Contact’s username
+     * @author Nasheeta Lott (with assitance of Anna Rivas)
+     *
+     * @params Input parameter
+     */      
+    public static void getEmerContact_userName(String[] params)
+    {
+        System.out.println("");
+        if(params == null || params.length == 0)
+        {
+            System.out.println("getEmerContact_userName - Emergency Contact's username");
+            System.out.println("command: getEmerContact_userName FirstName:xxx LastName:xxx");
+        }
+        else
+        {
+            HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "FirstName", "LastName" });
+            if(apiParams != null)
+            {
+                try {
+                    GymnasticsGymDB.getEmerContact_userName(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }            
+        }
+    } 
+    
 }

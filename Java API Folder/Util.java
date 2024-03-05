@@ -19,7 +19,7 @@ public class Util {
 
     /**
      * Check string for null
-     * @author Anna Rivas
+     * @author The Team
      *
      * @value String value to check
      * 
@@ -36,7 +36,7 @@ public class Util {
 
     /**
      * Method to parse Input parameters
-     * @author Anna Rivas
+     * @author The Team
      *
      * @params String array of required input parameters
      * 
@@ -68,7 +68,7 @@ public class Util {
 
     /**
      * Method to validate known Parameters values or format
-     * @author Anna Rivas
+     * @author The Team
      *
      * @paramName Input parameter Name
      * @paramValue Input parameter Value
@@ -93,6 +93,17 @@ public class Util {
                     System.out.println(" - Unexpected value, expecting [Active|Inactive]");
                     valueOk = false;
                 }     
+                break;
+            case "UserName":
+            case "FirstName":
+            case "LastName":
+            case "ClassName":
+            case "EventName":
+                if(paramValue == null || paramValue.length() == 0)
+                {
+                    System.out.println(" - Unexpected value, value can not be empty");
+                    valueOk = false;
+                }             
                 break;
             case "StartTime":
             case "EndTime":

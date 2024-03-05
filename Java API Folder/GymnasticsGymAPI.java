@@ -4,9 +4,6 @@
  * @authors Anna Rivas, Nasheeta Lott, Christopher Long, Nathaniel Fincham, Noa Uritsky
  * @version 3/8/2024
  */
-//////////////////////////////////////////////////////////////
-//                         IMPORTS                          //
-//////////////////////////////////////////////////////////////
 
 class GymnasticsGymAPI {
 
@@ -49,7 +46,7 @@ class GymnasticsGymAPI {
 
                 // Students
                 case Students.cmdlistAllStudents:
-                        Students.listAllStudents(mainCmdArr);
+                    Students.listAllStudents(mainCmdArr);
                     break;
                 case Students.cmdlistAllStudentsByDiffLevel:
                     Students.listAllStudentsByDiffLevel(mainCmdArr);
@@ -69,6 +66,10 @@ class GymnasticsGymAPI {
                 case Students.cmdgetStudentDiffLevel:
                     Students.getStudentDiffLevel(mainCmdArr);
                 break;
+                case Students.cmdgetStudent_userName:
+                    Students.getStudent_userName(mainCmdArr);
+                case Students.cmdgetEmerContact_userName:
+                    Students.getEmerContact_userName(mainCmdArr);
 
                 // Coaches
                 case Coaches.cmdlistAllCoaches:
@@ -83,6 +84,8 @@ class GymnasticsGymAPI {
                 case Coaches.cmdgetCoachAvail:
                     Coaches.getCoachAvail(mainCmdArr);
                 break;
+                case Coaches.cmdgetCoach_userName:
+                    Coaches.getCoach_userName(mainCmdArr);
 
                 // Classes
                 case Classes.cmdlistAllClassesbyMissingCoach:
@@ -100,11 +103,13 @@ class GymnasticsGymAPI {
                 case Classes.cmdlistClassByEvent:
                     Classes.listClassByEvent(mainCmdArr);
                 break; 
-                case Classes.cmdgetClassStatus:
-                    Classes.getClassStatus(mainCmdArr);
-                break; 
+                case Classes.cmdlistClassByEventandDiffLevel:
+                    Classes.listClassByEventandDiffLevel(mainCmdArr);
                 case Classes.cmdsendStatusNotification:
                     Classes.sendStatusNotification(mainCmdArr);
+                break; 
+                case Classes.cmdgetClassStatus:
+                    Classes.getClassStatus(mainCmdArr);
                 break; 
                 case Classes.cmdgetClassEvent:
                     Classes.getClassEvent(mainCmdArr);
@@ -133,19 +138,23 @@ class GymnasticsGymAPI {
         Students.getStudentInfo(null);
         Students.getStudentEmerContact(null);
         Students.getStudentDiffLevel(null);
+        Students.getStudent_userName(null);
+        Students.getEmerContact_userName(null);
 
         Coaches.listAllCoaches(null);
         Coaches.listAllAvailCoachByDateRange(null);
         Coaches.getCoachInfo(null);
         Coaches.getCoachAvail(null);
+        Coaches.getCoach_userName(null);
 
         Classes.listAllClassesbyMissingCoach(null);
         Classes.listAllClassesByDate(null);
         Classes.listAllClassAttendees(null);
         Classes.listClassByDifficultyLevel(null);
         Classes.listClassByEvent(null);
-        Classes.getClassStatus(null);
+        Classes.listClassByEventandDiffLevel(null);
         Classes.sendStatusNotification(null);
+        Classes.getClassStatus(null);
         Classes.getClassEvent(null);
     }      
 }

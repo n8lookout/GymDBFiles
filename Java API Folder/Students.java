@@ -25,6 +25,10 @@ public class Students {
     public static final String cmdgetStudentDiffLevel = "getStudentDiffLevel";
     public static final String cmdgetStudent_userName = "getStudent_userName";
     public static final String cmdgetEmerContact_userName = "getEmerContact_userName";
+    public static final String cmdupdateStudentDiffLevel = "updateStudentDiffLevel";
+    public static final String cmdupdateStudentStatus = "updateStudentStatus";
+    public static final String cmdupdateStudentEmerContact = "updateStudentEmerContact";
+    public static final String cmdupdateStudentSchedule = "updateStudentSchedule";
 
     //////////////////////////////////////////////////////////////
     //                       METHODS                            //

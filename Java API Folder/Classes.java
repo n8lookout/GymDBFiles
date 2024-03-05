@@ -24,6 +24,9 @@ public class Classes {
     public static final String cmdsendStatusNotification = "sendStatusNotification";
     public static final String cmdgetClassStatus = "getClassStatus";
     public static final String cmdgetClassEvent = "getClassEvent";
+    public static final String cmdupdateClassStatus = "updateClassStatus";
+    public static final String cmdupdateClassCoach = "updateClassCoach";
+    public static final String cmdupdateClassEvent = "updateClassEvent";
 
     //////////////////////////////////////////////////////////////
     //                       METHODS                            //

@@ -160,5 +160,8 @@ class GymnasticsGymAPI {
         Classes.sendStatusNotification(null);
         Classes.getClassStatus(null);
         Classes.getClassEvent(null);
+        Classes.updateClassCoach(null);
+        Classes.updateClassEvent(null);
+        Classes.updateClassStatus(null);
     }      
 }

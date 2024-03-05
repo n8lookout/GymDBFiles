@@ -144,6 +144,10 @@ class GymnasticsGymAPI {
         Students.getStudentDiffLevel(null);
         Students.getStudent_userName(null);
         Students.getEmerContact_userName(null);
+        Students.updateStudentDiffLevel(null);
+        Students.updateStudentStatus(null);
+        Students.updateStudentEmerContact(null);
+        Students.updateStudentSchedule(null);
 
         Coaches.listAllCoaches(null);
         Coaches.listAllAvailCoachByDateRange(null);

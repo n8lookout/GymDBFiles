@@ -290,5 +290,121 @@ public class Students {
             }            
         }
     } 
-    
+    /**
+     * Update Student Difficulty Level
+     * Gather student's username and new difficulty level
+     * Returns boolean for success or failure
+     * @author @n8lookout
+     * 
+     * @params Input parameter
+     */
+    public static boolean updateStudentDiffLevel(String[] params) {
+        // System.out.println("");
+        // if(params == null || params.length == 0)
+        // {
+        //     System.out.println("updateStudentDiffLevel - Update Student Difficulty Level");
+        //     System.out.println("command: updateStudentDiffLevel UserName:xxx DifficultyLevel:[Beginner|Intermediate|Advanced]");
+        // }
+        // else
+        // {
+        //     HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "UserName", "DifficultyLevel" });
+        //     if(apiParams != null)
+        //     {
+        //         try {
+        //             return GymnasticsGymDB.updateStudentDiffLevel(apiParams);
+        //         } catch (SQLException e) {
+        //             // TODO Auto-generated catch block
+        //             e.printStackTrace();
+        //         }
+        //     }            
+        // }
+        return false;
+    }
+    /**
+     * Update Student Status
+     * Gather student's username and new status
+     * Returns boolean for success or failure
+     * @author @n8lookout
+     * @param params
+     */
+    public static boolean updateStudentStatus(String[] params) {
+        // System.out.println("");
+        // if(params == null || params.length == 0)
+        // {
+        //     System.out.println("updateStudentStatus - Update Student Status");
+        //     System.out.println("command: updateStudentStatus UserName:xxx StudentStatus:[Active|Inactive]");
+        // }
+        // else
+        // {
+        //     HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "UserName", "StudentStatus" });
+        //     if(apiParams != null)
+        //     {
+        //         try {
+        //             return GymnasticsGymDB.updateStudentStatus(apiParams);
+        //         } catch (SQLException e) {
+        //             // TODO Auto-generated catch block
+        //             e.printStackTrace();
+        //         }
+        //     }
+        // }
+        return false;
+    }
+    /**
+     * Update Student Emergency Contact
+     * Gather student's username and new emergency contact
+     * Returns boolean for success or failure
+     * @author @n8lookout
+     * @param params
+     */
+    public static boolean updateStudentEmerContact(String[] params) {
+        // System.out.println("");
+        // if(params == null || params.length == 0)
+        // {
+        //     System.out.println("updateStudentEmerContact - Update Student Emergency Contact");
+        //     System.out.println("command: updateStudentEmerContact UserName:xxx EmerContact:xxx");
+        // }
+        // else
+        // {
+        //     HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "UserName", "EmerContact" });
+        //     if(apiParams != null)
+        //     {
+        //         try {
+        //             return GymnasticsGymDB.updateStudentEmerContact(apiParams);
+        //         } catch (SQLException e) {
+        //             // TODO Auto-generated catch block
+        //             e.printStackTrace();
+        //         }
+        //     }
+        // }
+        return false;
+    }
+    /**
+     * Update Student Schedule
+     * Gather student's username and new schedule
+     * Returns boolean for success or failure
+     * @author @n8lookout
+     * @param params
+     */
+    public static boolean updateStudentSchedule(String[] params) {
+        // System.out.println("");
+        // if(params == null || params.length == 0)
+        // {
+        //     System.out.println("updateStudentSchedule - Update Student Schedule");
+        //     System.out.println("command: updateStudentSchedule UserName:xxx Schedule:xxx");
+        // }
+        // else
+        // {
+        //     HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "UserName", "Schedule" });
+        //     if(apiParams != null)
+        //     {
+        //         try {
+        //             return GymnasticsGymDB.updateStudentSchedule(apiParams);
+        //         } catch (SQLException e) {
+        //             // TODO Auto-generated catch block
+        //             e.printStackTrace();
+        //         }
+        //     }
+        // }
+        return false;
+    }
 }

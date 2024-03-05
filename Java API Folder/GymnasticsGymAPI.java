@@ -50,70 +50,74 @@ class GymnasticsGymAPI {
                     break;
                 case Students.cmdlistAllStudentsByDiffLevel:
                     Students.listAllStudentsByDiffLevel(mainCmdArr);
-                break;
+                    break;
                 case Students.cmdlistAllStudentsByStatus:
                     Students.listAllStudentsByStatus(mainCmdArr);
-                break;
+                    break;
                 case Students.cmdlistAllClassesForAStudent:
                     Students.listAllClassesForAStudent(mainCmdArr);
-                break;
+                    break;
                 case Students.cmdgetStudentInfo:
                     Students.getStudentInfo(mainCmdArr);
-                break;
+                    break;
                 case Students.cmdgetStudentEmerContact:
                     Students.getStudentEmerContact(mainCmdArr);
-                break;
+                    break;
                 case Students.cmdgetStudentDiffLevel:
                     Students.getStudentDiffLevel(mainCmdArr);
-                break;
+                    break;
                 case Students.cmdgetStudent_userName:
                     Students.getStudent_userName(mainCmdArr);
+                    break;
                 case Students.cmdgetEmerContact_userName:
                     Students.getEmerContact_userName(mainCmdArr);
+                    break;
 
                 // Coaches
                 case Coaches.cmdlistAllCoaches:
                     Coaches.listAllCoaches(mainCmdArr);
-                break;
+                    break;
                 case Coaches.cmdlistAllAvailCoachByDateRange:
                     Coaches.listAllAvailCoachByDateRange(mainCmdArr);
-                break;                
+                    break;                
                 case Coaches.cmdgetCoachInfo:
                     Coaches.getCoachInfo(mainCmdArr);
-                break;
+                    break;
                 case Coaches.cmdgetCoachAvail:
                     Coaches.getCoachAvail(mainCmdArr);
-                break;
+                    break;
                 case Coaches.cmdgetCoach_userName:
                     Coaches.getCoach_userName(mainCmdArr);
+                    break;
 
                 // Classes
                 case Classes.cmdlistAllClassesbyMissingCoach:
                     Classes.listAllClassesbyMissingCoach(mainCmdArr);
-                break;                
+                    break;                
                 case Classes.cmdlistAllClassesByDate:
                     Classes.listAllClassesByDate(mainCmdArr);
-                break; 
+                    break; 
                 case Classes.cmdlistAllClassAttendees:
                     Classes.listAllClassAttendees(mainCmdArr);
-                break; 
+                    break; 
                 case Classes.cmdlistClassByDifficultyLevel:
                     Classes.listClassByDifficultyLevel(mainCmdArr);
-                break; 
+                    break; 
                 case Classes.cmdlistClassByEvent:
                     Classes.listClassByEvent(mainCmdArr);
-                break; 
+                    break; 
                 case Classes.cmdlistClassByEventandDiffLevel:
                     Classes.listClassByEventandDiffLevel(mainCmdArr);
+                    break;
                 case Classes.cmdsendStatusNotification:
                     Classes.sendStatusNotification(mainCmdArr);
-                break; 
+                    break; 
                 case Classes.cmdgetClassStatus:
                     Classes.getClassStatus(mainCmdArr);
-                break; 
+                    break; 
                 case Classes.cmdgetClassEvent:
                     Classes.getClassEvent(mainCmdArr);
-                break; 
+                    break; 
 
                 default:
                     System.out.println("Command not recognized, please try again");

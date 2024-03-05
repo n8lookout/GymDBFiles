@@ -204,7 +204,7 @@ public class Classes {
     }  
 
     /**
-     * Retrieves attendees from a specific class and sends a SMS notification
+     * Retrieves active attendees from a specific class and sends a SMS notification specifying the class status
      * @author Anna Rivas
      *
      * @params Input parameter
@@ -214,7 +214,7 @@ public class Classes {
         System.out.println("");
         if(params == null || params.length == 0)
         {
-            System.out.println("sendStatusNotification - Retrieves attendees from a specific class and sends a SMS notification");
+            System.out.println("sendStatusNotification - Retrieves active attendees from a specific class and sends a SMS notification specifying the class status");
             System.out.println("command: sendStatusNotification ClassName:xxx");
         }
         else

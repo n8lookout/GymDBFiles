@@ -8,10 +8,11 @@
 //                         IMPORTS                          //
 //////////////////////////////////////////////////////////////
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Properties;
-
-import org.w3c.dom.events.Event;
 
 /***
  * Gymnastics Gym API that uses JDBC to connect to a PostgreSQL database.
@@ -24,7 +25,7 @@ public class GymnasticsGymDB {
     //////////////////////////////////////////////////////////////
 
     // JDBC URL, username, and password of PostgreSQL server
-    private static final String URL = "jdbc:postgresql://10.0.0.9:5432/gymnasticsgym"; 
+    private static final String URL = "jdbc:postgresql://10.0.0.11:5432/gymnasticsgym"; 
     private static final String USER = "postgres";
     private static final String PASSWORD = "2606";
     private static Connection connection = null;
@@ -60,7 +61,7 @@ public class GymnasticsGymDB {
         
                 connection = DriverManager.getConnection(URL, connectionProps);
 
-                if(!connection.isValid(10000))
+                if(!connection.isValid(100))
                 {
                     connection = null;
                     throw new SQLException("Connection not Valid");
@@ -71,16 +72,18 @@ public class GymnasticsGymDB {
 
                 if(connectionAttempts >= 10)
                 {
+                    connection = null;
                     throw e;
                 }
 
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(10000);
                 } catch (InterruptedException e1) {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
-            }            
+            }  
+            System.out.println("");          
         }
         
         return connection;
@@ -757,7 +760,7 @@ public class GymnasticsGymDB {
             String sql = "SELECT Coach.coach_userName, Coach.firstName, Coach.lastName " +
                          "FROM Coach_Availability " +
                          "  JOIN Coach ON Coach.coachID = Coach_Availability.coachID " +
-                         "WHERE Coach_Availability.availStartTime <= ? AND Coach_Availability.availEndTime >= ?";
+                         "WHERE Coach_Availability.availStartTime <= TO_TIMESTAMP(?,'YYYY-MM-DD HH24:MI') AND Coach_Availability.availEndTime >= TO_TIMESTAMP(?,'YYYY-MM-DD HH24:MI')";
 
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, apiParams.get("StartTime"));
@@ -783,7 +786,6 @@ public class GymnasticsGymDB {
         } catch (SQLException e) {
             
             e.printStackTrace();
-
         } finally {
             if (preparedStatement != null) {
                 preparedStatement.close();
@@ -879,8 +881,8 @@ public class GymnasticsGymDB {
                          "FROM Coach_Availability " +
                          "  JOIN Coach ON Coach.coachID = Coach_Availability.coachID " +
                          "WHERE Coach.coach_userName = ? " +
-                         " AND (Coach_Availability.availStartTime > ? AND Coach_Availability.availStartTime < DATE_ADD(?, INTERVAL '1 DAY')) " +
-                         " AND (Coach_Availability.availEndTime   > ? AND Coach_Availability.availEndTime   < DATE_ADD(?, INTERVAL '1 DAY'))";                              
+                         " AND (Coach_Availability.availStartTime > TO_DATE(?,'YYYY-MM-DD') AND Coach_Availability.availStartTime < DATE_ADD(TO_DATE(?,'YYYY-MM-DD'), INTERVAL '1 DAY')) " +
+                         " AND (Coach_Availability.availEndTime   > TO_DATE(?,'YYYY-MM-DD') AND Coach_Availability.availEndTime   < DATE_ADD(TO_DATE(?,'YYYY-MM-DD'), INTERVAL '1 DAY'))";                              
 
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, apiParams.get("UserName"));
@@ -1076,7 +1078,7 @@ public class GymnasticsGymDB {
                             "JOIN Class_Status ON Class_Status.statusID = Class.statusID " +
                             "LEFT JOIN Class_Coach ON Class_Coach.classID = Class.classID " +
                             "LEFT JOIN Coach ON Coach.coachID = Class_Coach.coachID " +
-                         "WHERE Class.startTime >= ? AND Class.startTime < DATE_ADD(?, INTERVAL '1 DAY'); ";
+                         "WHERE Class.startTime >= TO_DATE(?,'YYYY-MM-DD') AND Class.startTime < DATE_ADD(TO_DATE(?,'YYYY-MM-DD'), INTERVAL '1 DAY'); ";
 
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, apiParams.get("Date"));
@@ -1346,7 +1348,7 @@ public class GymnasticsGymDB {
      
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, apiParams.get("EventName"));
-            preparedStatement.setString(1, apiParams.get("DifficultyLevel"));
+            preparedStatement.setString(2, apiParams.get("DifficultyLevel"));
             resultSet = preparedStatement.executeQuery();
 
             boolean gotRecords = false;
@@ -1385,7 +1387,7 @@ public class GymnasticsGymDB {
     }
 
     /**
-     * Retrieves attendees from a specific class and sends a SMS notification
+     * Retrieves active attendees from a specific class and sends a SMS notification specifying the class status
      * @author Anna Rivas
      *
      * @apiParams Input parameter list
@@ -1423,7 +1425,8 @@ public class GymnasticsGymDB {
             {
                 if(!gotRecords)
                 {
-                    System.out.println("Sending Notification that class: " + resultSet.getString("className") + " got " + resultSet.getString("statusName") + " to:");
+                    System.out.println("Sending Notification that class: [" + resultSet.getString("className") + "] has the status of [" + resultSet.getString("statusName") + "] to:");
+                    System.out.println("");
                 }
                 gotRecords = true;
                 System.out.println(resultSet.getString("firstName") + " "+ resultSet.getString("lastName"));

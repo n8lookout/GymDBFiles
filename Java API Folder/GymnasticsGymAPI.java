@@ -167,5 +167,7 @@ class GymnasticsGymAPI {
         Classes.updateClassCoach(null);
         Classes.updateClassEvent(null);
         Classes.updateClassStatus(null);
+
+        EmergencyContacts.updateEmergencyContact(null);
     }      
 }

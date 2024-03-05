@@ -288,5 +288,37 @@ public class Classes {
                 }
             }            
         }
-    }     
+    }
+    /**
+     * Updates the status of a specific class (Active, Canceled, Completed, etc.) 
+     * to a new status (Active, Canceled, Completed, etc.).
+     * returns true if successful and false if operation failed.
+     * @author @n8lookout
+     *
+     * @params Input parameter - ClassName, NewStatus
+     */
+    public static boolean updateClassStatus(String[] params){
+        // TODO: Implement this method
+        return false;
+    }
+    /**
+     * Updates the coach of a specific class to a new coach.
+     * returns true if successful and false if operation failed.
+     * @param Input parameter - ClassName, NewCoach
+     * @return boolean
+     */
+    public static boolean updateClassCoach(String[] params){
+        // TODO: Implement this method
+        return false;
+    }
+    /**
+     * Updates the event of a specific class to a new event.
+     * returns true if successful and false if operation failed.
+     * @param Input parameter - ClassName, NewEvent
+     * @return boolean
+     */
+    public static boolean updateClassEvent(String[] params){
+        // TODO: Implement this method
+        return false;
+    }      
 }

@@ -8,10 +8,7 @@
 //                         IMPORTS                          //
 //////////////////////////////////////////////////////////////
 import java.sql.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Properties;
 
 /***
@@ -25,7 +22,7 @@ public class GymnasticsGymDB {
     //////////////////////////////////////////////////////////////
 
     // JDBC URL, username, and password of PostgreSQL server
-    private static final String URL = "jdbc:postgresql://10.0.0.11:5432/gymnasticsgym"; 
+    private static final String URL = "jdbc:postgresql://localhost:5432/gymnasticsgym"; 
     private static final String USER = "postgres";
     private static final String PASSWORD = "2606";
     private static Connection connection = null;

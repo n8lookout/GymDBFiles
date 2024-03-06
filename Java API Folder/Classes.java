@@ -307,6 +307,8 @@ public class Classes {
     /**
      * Updates the coach of a specific class to a new coach.
      * returns true if successful and false if operation failed.
+     * @author @n8lookout
+     * 
      * @param Input parameter - ClassName, NewCoach
      * @return boolean
      */
@@ -317,11 +319,25 @@ public class Classes {
     /**
      * Updates the event of a specific class to a new event.
      * returns true if successful and false if operation failed.
+     * @author @n8lookout
+     * 
      * @param Input parameter - ClassName, NewEvent
      * @return boolean
      */
     public static boolean updateClassEvent(String[] params){
         // TODO: Implement this method
         return false;
-    }      
+    }  
+    /**
+     * Update the start time of a specific class to a new start time.
+     * returns true if successful and false if operation failed.
+     * @author @n8lookout
+     * 
+     * @param Input parameter - ClassName, NewStartTime
+     * @return boolean
+     */
+    public static boolean updateClassStartTime(String[] params){
+        // TODO: Implement this method
+        return false;
+    }    
 }

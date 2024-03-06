@@ -148,6 +148,7 @@ class GymnasticsGymAPI {
         Students.updateStudentStatus(null);
         Students.updateStudentEmerContact(null);
         Students.updateStudentSchedule(null);
+        Students.addStudentToClass(null);
 
         Coaches.listAllCoaches(null);
         Coaches.listAllAvailCoachByDateRange(null);
@@ -167,6 +168,7 @@ class GymnasticsGymAPI {
         Classes.updateClassCoach(null);
         Classes.updateClassEvent(null);
         Classes.updateClassStatus(null);
+        Classes.updateClassStartTime(null);
 
         EmergencyContacts.updateEmergencyContact(null);
     }      

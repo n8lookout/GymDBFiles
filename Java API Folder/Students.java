@@ -329,7 +329,7 @@ public class Students {
      * Gather student's username and new status
      * Returns boolean for success or failure
      * @author @n8lookout
-     * @param params
+     * @param Input parameter
      */
     public static boolean updateStudentStatus(String[] params) {
         // System.out.println("");
@@ -358,7 +358,7 @@ public class Students {
      * Gather student's username and new emergency contact
      * Returns boolean for success or failure
      * @author @n8lookout
-     * @param params
+     * @param Input parameters
      */
     public static boolean updateStudentEmerContact(String[] params) {
         // System.out.println("");
@@ -383,26 +383,29 @@ public class Students {
         return false;
     }
     /**
-     * Update Student Schedule
-     * Gather student's username and new schedule
+     * Add Student to Class
+     * Gather student's username and className
+     * Check if student is already in class
+     * Check if student has other classes at the same time
      * Returns boolean for success or failure
      * @author @n8lookout
-     * @param params
+     * 
+     * @param input parameters
      */
-    public static boolean updateStudentSchedule(String[] params) {
+    public static boolean addStudentToClass(String[] params) {
         // System.out.println("");
         // if(params == null || params.length == 0)
         // {
-        //     System.out.println("updateStudentSchedule - Update Student Schedule");
-        //     System.out.println("command: updateStudentSchedule UserName:xxx Schedule:xxx");
+        //     System.out.println("addStudentToClass - Add Student to Class");
+        //     System.out.println("command: addStudentToClass UserName:xxx ClassName:xxx");
         // }
         // else
         // {
-        //     HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "UserName", "Schedule" });
+        //     HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "UserName", "ClassName" });
         //     if(apiParams != null)
         //     {
         //         try {
-        //             return GymnasticsGymDB.updateStudentSchedule(apiParams);
+        //             return GymnasticsGymDB.addStudentToClass(apiParams);
         //         } catch (SQLException e) {
         //             // TODO Auto-generated catch block
         //             e.printStackTrace();

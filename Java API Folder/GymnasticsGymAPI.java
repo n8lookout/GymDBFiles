@@ -144,11 +144,11 @@ class GymnasticsGymAPI {
         Students.getStudentDiffLevel(null);
         Students.getStudent_userName(null);
         Students.getEmerContact_userName(null);
-        Students.updateStudentDiffLevel(null);
-        Students.updateStudentStatus(null);
-        Students.updateStudentEmerContact(null);
-        Students.updateStudentSchedule(null);
-        Students.addStudentToClass(null);
+        // Students.updateStudentDiffLevel(null);
+        // Students.updateStudentStatus(null);
+        // Students.updateStudentEmerContact(null);
+        // Students.updateStudentSchedule(null);
+        // Students.addStudentToClass(null);
 
         Coaches.listAllCoaches(null);
         Coaches.listAllAvailCoachByDateRange(null);
@@ -165,11 +165,11 @@ class GymnasticsGymAPI {
         Classes.sendStatusNotification(null);
         Classes.getClassStatus(null);
         Classes.getClassEvent(null);
-        Classes.updateClassCoach(null);
-        Classes.updateClassEvent(null);
-        Classes.updateClassStatus(null);
-        Classes.updateClassStartTime(null);
+        // Classes.updateClassCoach(null);
+        // Classes.updateClassEvent(null);
+        // Classes.updateClassStatus(null);
+        // Classes.updateClassStartTime(null);
 
-        EmergencyContacts.updateEmergencyContact(null);
+        // EmergencyContacts.updateEmergencyContact(null);
     }      
 }

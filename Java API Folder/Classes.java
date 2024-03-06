@@ -300,9 +300,28 @@ public class Classes {
      *
      * @params Input parameter - ClassName, NewStatus
      */
-    public static boolean updateClassStatus(String[] params){
-        // TODO: Implement this method
-        return false;
+    public static boolean updateClassStatus(String[] params)
+    {
+        System.out.println("");
+        if(params == null || params.length == 0)
+        {
+            System.out.println("updateClassStatus - Updates the status of a specific class (Active, Canceled, Completed, etc.) to a new status (Active, Canceled, Completed, etc.)");
+            System.out.println("command: updateClassStatus ClassName:xxx NewStatus:[Active|Canceled|Completed]");
+            return false;
+        }
+        else
+        {
+            HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "ClassName", "NewStatus" });
+            if(apiParams != null)
+            {
+                try {
+                    return GymnasticsGymDB.updateClassStatus(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }            
+        }
     }
     /**
      * Updates the coach of a specific class to a new coach.

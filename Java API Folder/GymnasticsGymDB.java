@@ -822,6 +822,105 @@ public class GymnasticsGymDB {
             }   
         }
     }
+    /**
+     * Add Student to a Class
+     * Use student's username and className
+     * Check if student is already in class
+     * Check if student has other classes at the same time
+     * Returns boolean for success or failure
+     * @author @n8lookout
+     * 
+     * @param apiParams
+     * @throws SQLException
+     */
+    public static boolean addStudentToClass(HashMap<String, String> apiParams) throws SQLException {
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+        try {
+            // Get DB connection
+            Connection connection = getConnection();
+
+            // SQL PreparedStatement
+            String sql = "SELECT * " +
+                         "FROM Attendees " +
+                         "  JOIN Class ON Class.classID = Attendees.classID " +
+                         "WHERE studentID = (SELECT studentID " +
+                         "                   FROM Student " +
+                         "                   WHERE student_userName = ?) " +
+                         "  AND className = ?"; 
+
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, apiParams.get("UserName"));
+            preparedStatement.setString(2, apiParams.get("ClassName"));
+            resultSet = preparedStatement.executeQuery();
+
+            if(resultSet != null && resultSet.next())
+            {
+                System.out.println("Student is already in the class !");
+                System.out.println("");
+                return false;
+            }
+
+            sql = "SELECT * " +
+                  "FROM Attendees " +
+                  "  JOIN Class ON Class.classID = Attendees.classID " +
+                  "WHERE studentID = (SELECT studentID " +
+                  "                   FROM Student " +
+                  "                   WHERE student_userName = ?) " +
+                  "  AND (startTime, startTime + interval '1 hour') OVERLAPS (SELECT startTime, startTime + interval '1 hour' " +
+                  "                                                           FROM Class " +
+                  "                                                           WHERE className = ?)"; 
+
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, apiParams.get("UserName"));
+            preparedStatement.setString(2, apiParams.get("ClassName"));
+            resultSet = preparedStatement.executeQuery();
+
+            if(resultSet != null && resultSet.next())
+            {
+                System.out.println("Student has another class at the same time !");
+                System.out.println("");
+                return false;
+            }
+
+            sql = "INSERT INTO Attendees (studentID, classID) " +
+                  "VALUES ((SELECT studentID " +
+                  "         FROM Student " +
+                  "         WHERE student_userName = ?), " +
+                  "        (SELECT classID " +
+                  "         FROM Class " +
+                  "         WHERE className = ?))"; 
+
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, apiParams.get("UserName"));
+            preparedStatement.setString(2, apiParams.get("ClassName"));
+            int rows = preparedStatement.executeUpdate();
+
+            if(rows > 0)
+            {
+                System.out.println("Student added to the class successfully !");
+                System.out.println("");
+                return true;
+            } 
+            else
+            {
+                System.out.println("Student addition to the class failed !");
+                System.out.println("");
+                return false;
+            }
+        } catch (SQLException e) {                
+                e.printStackTrace();
+                return false;
+            } finally {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }   
+                
+                if (resultSet != null) {
+                    resultSet.close();
+                }             
+            }
+    }
 
     //////////////////////////////////////////////////////////////
     //                       COACHES                            //

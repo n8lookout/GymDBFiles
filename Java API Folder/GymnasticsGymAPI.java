@@ -89,6 +89,9 @@ class GymnasticsGymAPI {
                 case Coaches.cmdgetCoach_userName:
                     Coaches.getCoach_userName(mainCmdArr);
                     break;
+                case Coaches.cmdShowCoachSchedule:
+                    Coaches.showCoachSchedule(mainCmdArr);
+                    break;
 
                 // Classes
                 case Classes.cmdlistAllClassesbyMissingCoach:
@@ -117,7 +120,10 @@ class GymnasticsGymAPI {
                     break; 
                 case Classes.cmdgetClassEvent:
                     Classes.getClassEvent(mainCmdArr);
-                    break; 
+                    break;
+                case Classes.cmdassignClassCoach:
+                    Classes.assignClassCoach(mainCmdArr);
+                    break;
 
                 default:
                     System.out.println("Command not recognized, please try again");
@@ -155,6 +161,7 @@ class GymnasticsGymAPI {
         Coaches.getCoachInfo(null);
         Coaches.getCoachAvail(null);
         Coaches.getCoach_userName(null);
+        Coaches.showCoachSchedule(null);
 
         Classes.listAllClassesbyMissingCoach(null);
         Classes.listAllClassesByDate(null);
@@ -169,6 +176,7 @@ class GymnasticsGymAPI {
         // Classes.updateClassEvent(null);
         // Classes.updateClassStatus(null);
         // Classes.updateClassStartTime(null);
+        Classes.assignClassCoach(null);
 
         // EmergencyContacts.updateEmergencyContact(null);
     }      

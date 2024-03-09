@@ -27,6 +27,7 @@ public class Classes {
     public static final String cmdupdateClassStatus = "updateClassStatus";
     public static final String cmdupdateClassCoach = "updateClassCoach";
     public static final String cmdupdateClassEvent = "updateClassEvent";
+    public static final String cmdassignClassCoach = "assignClassCoach";
 
     //////////////////////////////////////////////////////////////
     //                       METHODS                            //
@@ -358,5 +359,36 @@ public class Classes {
     // public static boolean updateClassStartTime(String[] params){
     //     // TODO: Implement this method
     //     return false;
-    // }    
+    // }
+    
+    
+    /**
+     * Assigns a coach to a class based on their schedule and class requirements
+     * 
+     * @author Christopher Long
+     *
+     * @params Input parameter
+     */      
+    public static void assignClassCoach(String[] params)
+    {
+        System.out.println("");
+        if(params == null || params.length == 0)
+        {
+            System.out.println("assignClassCoach - Assigns a coach to a class based on their schedule and class requirements");
+            System.out.println("command: assignClassCoach Coach UserName:xxx Class Name:xxx");
+        }
+        else
+        {
+            HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "Coach UserName", "Class Name" });
+            if(apiParams != null)
+            {
+                try {
+                    GymnasticsGymDB.assignClassCoach(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }            
+        }
+    }
 }

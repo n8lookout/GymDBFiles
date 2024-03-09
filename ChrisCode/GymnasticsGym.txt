@@ -1,0 +1,249 @@
+\qecho Hex Girls' Final Project
+
+\c postgres
+DROP DATABASE gymnasticsgym;
+SELECT current_database();
+CREATE DATABASE GymnasticsGym;
+\c gymnasticsgym
+SELECT current_database();
+
+
+CREATE TABLE Student (
+	studentID			SERIAL not null unique,
+	student_userName	VARCHAR (15) not null unique,
+	firstName			VARCHAR(15) not null,
+	lastName			VARCHAR(25) not null,
+	birthDate			DATE not null,
+	phoneNumber			VARCHAR(10),
+	email				VARCHAR(30),
+	isActive			BOOLEAN not null,
+	
+	Primary Key			(studentID)
+	);
+
+CREATE TABLE Emergency_Contact (
+	emergencyContactID	SERIAL not null unique,
+	emergcon_userName	VARCHAR (15) not null unique,
+	firstName			VARCHAR(15) not null,
+	lastName			VARCHAR(25) not null,
+	phoneNumber			VARCHAR(10) not null,
+	email				VARCHAR(30) not null,
+	
+	Primary Key			(emergencyContactID)
+	);
+	
+CREATE TABLE Student_EmergContact (
+	student_userName	VARCHAR(15) not null,
+	emergcon_userName	VARCHAR(15) not null,
+	
+	Primary Key			(student_userName, emergcon_userName),
+	Foreign Key			(student_userName) references Student(student_userName)
+						Deferrable Initially Deferred,
+	Foreign Key			(emergcon_userName) references Emergency_Contact(emergcon_userName)
+						Deferrable Initially Deferred
+	);
+
+CREATE TABLE Coach(
+	coachID				SERIAL not null unique,
+	coach_userName		VARCHAR (15) not null unique,
+	firstName	 		VARCHAR(15) not null,
+	lastName			VARCHAR(25) not null,
+	phoneNumber			VARCHAR(10) not null,
+	email				VARCHAR(30) not null,
+	
+	Primary Key			(coachID)
+	);
+	
+
+CREATE TABLE Coach_Availability (
+	coachScheduleID		SERIAL not null unique,
+	scheduleName		VARCHAR (15) not null unique,
+	coachID				INTEGER not null,
+	availStartTime		TIMESTAMP not null,
+	availEndTime		TIMESTAMP not null,
+	
+	Primary Key			(coachScheduleID),
+	Foreign Key			(coachID) references Coach(coachID)
+						Deferrable Initially Deferred
+	);
+
+CREATE TABLE Event (
+	eventID				SERIAL not null unique,
+	eventName	 		VARCHAR(20) not null,
+	
+	Primary Key			(eventID)
+	);
+	
+CREATE TABLE DifficultyLevel (
+	difficultyID		SERIAL not null unique,
+	difficultyName	 	VARCHAR(20) not null,
+	
+	Primary Key			(difficultyID)
+	);
+	
+
+CREATE TABLE Class_Status (
+	statusID			SERIAL not null unique,
+	statusName	 		VARCHAR(15) not null,
+	
+	Primary Key			(statusID)
+	);	
+	
+CREATE TABLE Student_DifficultyLevel (
+	difficultyID		INTEGER not null,
+	studentID	 		INTEGER not null,
+	
+	Primary Key			(difficultyID, studentID),
+	Foreign Key			(difficultyID) references DifficultyLevel(difficultyID)
+						Deferrable Initially Deferred,
+	Foreign Key			(studentID) references Student(studentID)
+						Deferrable Initially Deferred
+	);
+	
+
+CREATE TABLE Class (
+	classID				SERIAL not null unique,
+	className			VARCHAR (15) not null unique,
+	startTime			TIMESTAMP not null,
+	duration			INTERVAL not null,
+	eventID				INTEGER not null,
+	difficultyID		INTEGER not null,
+	statusID			INTEGER not null,
+	
+	Primary Key			(classID),
+	Foreign Key			(eventID) references Event(eventID)
+						Deferrable Initially Deferred,
+	Foreign Key			(difficultyID) references DifficultyLevel(difficultyID)
+						Deferrable Initially Deferred,
+	Foreign Key			(statusID) references Class_Status(statusID)
+						Deferrable Initially Deferred
+	);
+	
+CREATE TABLE Attendees (
+	studentID			INTEGER not null,
+	classID	 			INTEGER not null,
+	
+	Primary Key			(studentID, classID),
+	Foreign Key			(studentID) references Student(studentID)
+						Deferrable Initially Deferred,
+	Foreign Key			(classID) references Class(classID)
+						Deferrable Initially Deferred
+	);
+
+CREATE TABLE Class_Coach (
+	coachID				INTEGER not null,
+	classID	 			INTEGER not null,
+	
+	Primary Key			(coachID, classID),
+	Foreign Key			(coachID) references Coach(coachID)
+						Deferrable Initially Deferred,
+	Foreign Key			(classID) references Class(classID)
+						Deferrable Initially Deferred
+	);
+	
+\c postgres
+SELECT current_database();
+\c gymnasticsgym
+SELECT current_database();
+
+
+INSERT INTO Coach ( coach_userName, firstName, lastName, phoneNumber, email )
+VALUES ('nachHadaway', 'Nachmanke', 'Hadaway', '4455999344', 'nachmankehadaway@acusage.net' ),
+       ( 'diki.la','Diki', 'Lauterbach', '7753359233', 'dikila@acusage.net' ),
+       ( 'sBlades','Spencer', 'Blades', '5034927327', 'spen.bl@arvinmeritor.info' ),
+       ( 'summi_flu','Sumanna', 'Fluharty', '3648641104', 'sumanna@progressenergyinc.info' );
+
+INSERT INTO DifficultyLevel ( difficultyName )
+VALUES ('Beginner'),
+	   ('Intermediate'),
+	   ('Advanced');
+	   
+INSERT INTO Event ( eventName )
+VALUES ('Floor Exercise'),
+	   ('Uneven Bars'),
+	   ('Vault'),
+	   ('Balance Beam');	
+
+INSERT INTO Class_Status ( statusName )
+VALUES ('Coming up'),
+	   ('In progess'),
+	   ('Cancelled'),
+	   ('Postponed'),
+	   ('Moved up'),
+	   ('Completed');
+	   
+
+INSERT INTO Class ( className, startTime, duration, eventID, difficultyID, statusID )
+VALUES ('Beam30824A', '2024-02-28 14:10:00', '60M', 4, 1, 6),
+	   ('V31024C', '2024-03-08 16:30:00', '120M', 3, 3, 1),
+	   ('F31224B', '2024-03-12 12:00:00', '60M', 1, 2, 1),
+	   ('Bars32824A','2024-03-28 09:30:00', '90M',2, 1, 1),
+	   ('Beam32024C', '2024-03-20 15:25:00', '120M', 4, 3, 1);
+
+INSERT INTO Coach_Availability (scheduleName,coachID,availStartTime, availEndTime )
+VALUES ('NH32024AM',1, '2024-03-20 9:30:00','2024-03-20 13:30:00' ),
+	   ('NH32024PM',1, '2024-03-20 14:30:00', '2024-03-20 19:00:00'),
+	   ('DL30824AM',2,'2024-03-08 11:45:00', '2024-03-08 19:00:00'),
+	   ('SB31224AM',3,'2024-03-12 9:00:00','2024-03-12 16:00:00' ),
+	   ('SB31224PM',3,'2024-03-12 16:30:00', '2024-03-12 17:30:00'),
+	   ('SL32824AM',4 ,'2024-03-28 08:30:00', '2024-03-28 13:30:00');
+
+INSERT INTO Class_Coach (coachID,classID )
+VALUES (2, 2),
+	   (3, 3),
+	   (4,4),
+	   (1,5);
+
+INSERT INTO Student ( student_userName, firstName, lastName, birthDate, phoneNumber, email, isActive)
+VALUES ('bob_johnson', 'Robert', 'Johnson', '2014-02-05', '5551234567', 'bobjohnsonjr@email.com', TRUE),
+       ('john_johnson', 'John', 'Johnson', '2012-11-25', '5555555555', 'johnjohnson@email.com', TRUE),
+       ('jane_jones', 'Jane', 'Jones', '2013-07-12', '5559876543', 'janejones@email.com', TRUE),
+       ('sarah_jones', 'Sarah', 'Jones', '2011-06-30', '5551112222', 'sarahjones@email.com', TRUE),
+       ('mike_brown', 'Mike', 'Brown', '2010-09-15', '5552223333', 'mikebrown@email.com', TRUE),
+       ('emily_brown', 'Emily', 'Brown', '2009-04-20', '5554445555', 'emilybrown@email.com', TRUE),
+       ('alex_davis', 'Alexander', 'Davis', '2008-01-10', '5556667777', 'alexdavis@email.com', TRUE),
+       ('liv_johnson', 'Olivia', 'Johnson', '2007-03-18', '5557778888', 'oliviajohnson@email.com', TRUE);
+
+INSERT INTO Emergency_Contact ( emergcon_userName,firstName, lastName, phoneNumber, email)
+VALUES ('alicia_johnson', 'Alicia', 'Johnson', '5551234567', 'ajohnson@email.com'),
+       ('dev_jones', 'Deveraux', 'Jones', '5559993434', 'djones@email.com'),
+       ('dest_brown', 'Destiny', 'Brown', '5552345432', 'dbrown@email.com'),
+       ('bri_davis', 'Brianna', 'Davis', '5559891357', 'bdavis@email.com');
+	   
+INSERT INTO Student_EmergContact (student_userName, emergcon_userName)
+VALUES ('bob_johnson', 'alicia_johnson' ),
+	   ('john_johnson', 'alicia_johnson'),
+	   ('liv_johnson', 'alicia_johnson'),
+	   ('jane_jones', 'dev_jones'),
+	   ('sarah_jones', 'dev_jones'),
+	   ('mike_brown', 'dest_brown'),
+	   ('emily_brown', 'dest_brown'),
+	   ('alex_davis', 'bri_davis');	   
+	   	   
+	   
+INSERT INTO Student_DifficultyLevel (difficultyID, studentID)
+VALUES (1, 1),
+	   (2, 2),
+	   (1, 3),
+	   (3, 4),
+	   (2, 5),
+	   (3, 6),
+	   (2, 7),
+	   (3, 8);
+
+
+INSERT INTO Attendees (studentID, classID)
+VALUES (1,4),
+       (1,1),
+	   (2,3),
+	   (3,1),
+	   (4,5),
+	   (5,3),
+	   (6,2),
+	   (7,3),
+	   (8,5),
+	   (8,2);
+	   
+
+
+

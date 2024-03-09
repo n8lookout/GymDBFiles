@@ -8,6 +8,7 @@
 //                         IMPORTS                          //
 //////////////////////////////////////////////////////////////
 import java.sql.*;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -24,7 +25,7 @@ public class GymnasticsGymDB {
     // JDBC URL, username, and password of PostgreSQL server
     private static final String URL = "jdbc:postgresql://localhost:5432/gymnasticsgym"; 
     private static final String USER = "postgres";
-    private static final String PASSWORD = "2606";
+    private static final String PASSWORD = "net1net2";
     private static Connection connection = null;
 
     //////////////////////////////////////////////////////////////
@@ -1225,6 +1226,128 @@ public class GymnasticsGymDB {
         }
     }
 
+    /**
+     * Retrieves the availability schedule for a specific coach on a specific date. 
+     * This schedule will only show their available times and exclude the time they are in their assigned classes.
+     * 
+     * @author Christopher Long
+     *
+     * @apiParams Input parameter list
+     * 
+     * @throws SQLException Connection to database times out
+     */
+    public static void showCoachSchedule(HashMap<String, String> apiParams) throws SQLException {
+        PreparedStatement preparedStatement = null;
+        ResultSet coachesAvilability = null;
+        ResultSet coachesClassesSchedule = null;
+        
+        try {
+            // Get DB connection
+            connection = getConnection();
+
+            // Extract parameters
+            String coach_userName = apiParams.get("Coach UserName");
+            String date = apiParams.get("Date");
+
+            // Prepare SQL statement
+            String sql =    "SELECT " +
+                                "Coach_Availability.availStartTime::time AS starttime, " +
+                                "Coach_Availability.availEndTime::time AS endtime " +
+                            "FROM " +
+                                "Coach_Availability " +
+                                "JOIN Coach ON ( Coach_Availability.coachID = Coach.CoachID ) " +
+                            "WHERE " +
+                                "Coach.Coach_userName = ? AND " +
+                                "Coach_Availability.availStartTime::date = TO_DATE(?,'YYYY-MM-DD') " +
+                            "ORDER BY " +
+                                "Coach_Availability.availStartTime";
+
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, coach_userName);
+            preparedStatement.setString(2, date);
+
+            // Execute query
+            coachesAvilability = preparedStatement.executeQuery();
+
+            // Process results
+            boolean gotRecords = false;
+            String availStartTime = "";
+            String availEndTime = "";
+            if (coachesAvilability.next()) {
+                gotRecords = true;
+                availStartTime = coachesAvilability.getString("starttime");
+                availEndTime =  coachesAvilability.getString("endtime");
+            }
+
+            sql =   "SELECT " +
+                        "Class.startTime::time AS starttime, " +
+                        "( Class.startTime + Class.duration )::time AS endtime, " +
+                        "Class.className " +
+                    "FROM " +
+                        "Class " +
+                        "JOIN Class_Coach ON ( Class.classID = Class_Coach.classID ) " +
+                        "JOIN Coach ON ( Class_Coach.coachID = Coach.coachID ) " +
+                    "WHERE " +
+                        "Coach.Coach_userName = ? AND " +
+                        "Class.startTime::date = TO_DATE(?,'YYYY-MM-DD') AND " +
+                        "Class.startTime::time > ?::time AND " +
+                        "( Class.startTime + Class.duration )::time < ?::time " +
+                    "ORDER BY " +
+                        "Class.startTime";
+
+
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, coach_userName);
+            preparedStatement.setString(2, date);
+            preparedStatement.setString(3, availStartTime);
+            preparedStatement.setString(4, availEndTime);
+
+            // Execute query
+            coachesClassesSchedule = preparedStatement.executeQuery();
+
+            if(gotRecords) {
+                System.out.println("Start of Availability: " + availStartTime);
+
+
+                while(coachesClassesSchedule != null && coachesClassesSchedule.next()) {
+                    if(coachesClassesSchedule.getString("starttime").equals(availEndTime)) {
+                        System.out.println("UNAVAILABLE - Teaching " + coachesClassesSchedule.getString("className"));
+                    } else {
+                        System.out.println("===========");
+                        System.out.println(coachesClassesSchedule.getString("starttime"));
+                        System.out.println("UNAVAILABLE - Teaching " + coachesClassesSchedule.getString("className"));
+                    }
+                    
+                    if(!coachesClassesSchedule.getString("endtime").equals(availEndTime)) {
+                        System.out.println(coachesClassesSchedule.getString("endtime"));
+                        System.out.println("===========");
+                    }
+                }
+
+                System.out.println("End of Availability: " + availEndTime);
+            }
+
+            if (!gotRecords) {
+                System.out.println("No schedule found for the specified coach and date!");
+                System.out.println("");
+            }
+    
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (coachesAvilability != null) {
+                coachesAvilability.close();
+            }
+            if (coachesClassesSchedule != null) {
+                coachesClassesSchedule.close();
+            }
+        }
+    }
+
 
     //////////////////////////////////////////////////////////////
     //                       CLASSES                           //
@@ -1816,6 +1939,215 @@ public class GymnasticsGymDB {
             if (resultSet != null) {
                 resultSet.close();
             }             
+        }
+    }
+
+    /**
+     * Assigns a coach to a class based on their schedule and class requirements
+     * 
+     * @author Christopher Long
+     *
+     * @apiParams Input parameter list
+     * 
+     * @throws SQLException Connection to database times out
+     */
+    public static void assignClassCoach(HashMap<String, String> apiParams) throws SQLException {
+        PreparedStatement preparedStatement = null;
+        ResultSet coachesAvilability = null;
+        ResultSet classTimes = null;
+        ResultSet coachesClassesSchedule = null;
+        
+        try {
+            // Get DB connection
+            connection = getConnection();
+
+            // Extract parameters
+            String coach_userName = apiParams.get("Coach UserName");
+            String class_name = apiParams.get("Class Name");
+
+            // Prepare SQL statement
+            String sql = "SELECT " +
+                            "Coach_Availability.availStartTime AS starttime, " +
+                            "Coach_Availability.availEndTime AS endtime " +
+                        "FROM " +
+                            "Coach_Availability " +
+                            "JOIN Coach ON ( Coach_Availability.coachID = Coach.CoachID ) " +
+                        "WHERE " +
+                            "Coach.Coach_userName = ? AND " +
+                            "Coach_Availability.availStartTime::date = ( " +
+                                "SELECT " +
+                                    "Class.startTime AS starttime " +
+                                "FROM " +
+                                    "Class " +
+                                    "JOIN Class_Coach ON ( Class.classID = Class_Coach.classID ) " +
+                                "WHERE " +
+                                    "Class.ClassName = ? " +
+                                ")::date AND " +
+                            "Coach_Availability.availStartTime::time < ( " +
+                                "SELECT " +
+                                    "Class.startTime AS starttime " +
+                                "FROM " +
+                                    "Class " +
+                                    "JOIN Class_Coach ON ( Class.classID = Class_Coach.classID ) " +
+                                "WHERE " +
+                                    "Class.ClassName = ? " +
+                                ")::time AND " +
+                            "Coach_Availability.availEndTime::time > ( " +
+                                "SELECT " +
+                                    "( Class.startTime + Class.duration )::time AS endtime " +
+                                "FROM " +
+                                    "Class " +
+                                    "JOIN Class_Coach ON ( Class.classID = Class_Coach.classID ) " +
+                                "WHERE " +
+                                    "Class.ClassName = ? " +
+                                ")::time " +
+                        "ORDER BY " +
+                            "Coach_Availability.availStartTime";
+
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, coach_userName);
+            preparedStatement.setString(2, class_name);
+            preparedStatement.setString(3, class_name);
+            preparedStatement.setString(4, class_name);
+
+            // Execute query
+            coachesAvilability = preparedStatement.executeQuery();
+
+            // Process results
+            boolean gotRecords = false;
+            String availStartTime = "";
+            String availEndTime = "";
+            if (coachesAvilability.next()) {
+                gotRecords = true;
+                availStartTime = coachesAvilability.getString("starttime");
+                availEndTime =  coachesAvilability.getString("endtime");
+            }
+
+            sql =   "SELECT " +
+                        "Class.startTime::time AS starttime, " +
+                        "( Class.startTime + Class.duration )::time AS endtime, " +
+                        "Class.className " +
+                    "FROM " +
+                        "Class " +
+                        "JOIN Class_Coach ON ( Class.classID = Class_Coach.classID ) " +
+                        "JOIN Coach ON ( Class_Coach.coachID = Coach.coachID ) " +
+                    "WHERE " +
+                        "Coach.Coach_userName = ? AND " +
+                        "Class.startTime::date = TO_DATE(?,'YYYY-MM-DD') AND " +
+                        "Class.startTime::time > ?::time AND " +
+                        "( Class.startTime + Class.duration )::time < ?::time " +
+                    "ORDER BY " +
+                        "Class.startTime";
+
+
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, coach_userName);
+            preparedStatement.setString(2, availStartTime);
+            preparedStatement.setString(3, availStartTime);
+            preparedStatement.setString(4, availEndTime);
+
+            // Execute query
+            coachesClassesSchedule = preparedStatement.executeQuery();
+
+
+            sql =   "SELECT " +
+                        "Class.startTime::time AS starttime, " +
+                        "( Class.startTime + Class.duration )::time AS endtime " +
+                    "FROM " +
+                        "Class " +
+                    "WHERE " +
+                        "Class.ClassName = ? " +
+                    "ORDER BY " +
+                        "Class.startTime";
+
+
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, class_name);
+
+            // Execute query
+            classTimes = preparedStatement.executeQuery();
+            String classStartTime = "";
+            String classEndTime = "";
+            if (classTimes.next()) {
+                classStartTime = classTimes.getString("starttime");
+                classEndTime =  classTimes.getString("endtime");
+            }
+
+            boolean coarseOverlap = true;
+            if(gotRecords) {
+
+                while(coachesClassesSchedule != null && coachesClassesSchedule.next()) {
+
+                    LocalTime currentCoarseStarTime = LocalTime.parse(coachesClassesSchedule.getString("starttime"));
+                    LocalTime currentCoarseEndTime =  LocalTime.parse(coachesClassesSchedule.getString("endtime"));
+                    LocalTime classStartTimeLocal = LocalTime.parse(classStartTime);
+                    LocalTime classEndTimeLocal = LocalTime.parse(classEndTime);
+
+                    if (classStartTimeLocal.compareTo(currentCoarseEndTime) < 0 && classStartTimeLocal.compareTo(currentCoarseStarTime) > 0) {
+                        coarseOverlap = true;
+                        break;
+                    } else if (classEndTimeLocal.compareTo(currentCoarseStarTime) > 0 && classEndTimeLocal.compareTo(currentCoarseEndTime) < 0) {
+                        coarseOverlap = true;
+                        break;
+                    } else {
+                        coarseOverlap = false;
+                    }
+                }
+
+            }
+
+            if (!gotRecords) {
+                System.out.println("Course Outside of Coaches Availability!");
+                System.out.println("");
+            } else {
+
+                if(!coarseOverlap) {
+
+                    sql =   "UPDATE Class " +
+                            "SET coachID = (" +
+                            "SELECT Coach.coachID " +
+                            "FROM Coach " +
+                            "WHERE Coach.Coach_userName = ?" +
+                            ") " +
+                            "WHERE Class.ClassName = ?";
+                    
+                    preparedStatement = connection.prepareStatement(sql);
+                    preparedStatement.setString(1, coach_userName);
+                    preparedStatement.setString(2, class_name);
+
+                    connection.setAutoCommit(false);
+
+                    int rowsAffected = preparedStatement.executeUpdate();
+
+                    if (rowsAffected > 0) {
+                        connection.commit();
+                        System.out.println("Coach Added to Coarse");
+                    } else {
+                        System.out.println("Failed to Add Coach to Coarse");
+                    }
+
+                } else {
+                    System.out.println("Overlap with a currently taught course!");
+                    System.out.println("");
+                }
+
+            }
+
+
+    
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (coachesAvilability != null) {
+                coachesAvilability.close();
+            }
+            if (coachesClassesSchedule != null) {
+                coachesClassesSchedule.close();
+            }
         }
     }
 

@@ -21,6 +21,7 @@ public class Coaches {
     public static final String cmdgetCoachInfo = "getCoachInfo";
     public static final String cmdgetCoachAvail = "getCoachAvail";
     public static final String cmdgetCoach_userName = "getCoach_userName";
+    public static final String cmdShowCoachSchedule = "showCoachSchedule";
     
     //////////////////////////////////////////////////////////////
     //                       METHODS                            //
@@ -171,4 +172,34 @@ public class Coaches {
         }
     } 
 
+    /**
+     * Retrieves the availability schedule for a specific coach on a specific date. 
+     * This schedule will only show their available times and exclude the time they are in their assigned classes.
+     * 
+     * @author Christopher Long
+     *
+     * @param Input parameter
+     */
+    public static void showCoachSchedule(String[] params)
+    {
+        System.out.println("");
+        if(params == null || params.length == 0)
+        {
+            System.out.println("showCoachSchedule - Retrieves the availability schedule for a coach on a specific date. ");
+            System.out.println("command: showCoachSchedule Username:xxx Date:xxx");
+        }
+        else
+        {
+            HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "Coach UserName", "Date" });
+            if(apiParams != null)
+            {
+                try {
+                    GymnasticsGymDB.showCoachSchedule(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }            
+        }
+    } 
 }

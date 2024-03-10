@@ -203,6 +203,7 @@ class GymnasticsGymAPI {
         Classes.updateClassEvent(null);
         Classes.updateClassStatus(null);
         Classes.updateClassStartTime(null);
+        Classes.assignClassCoach(null);
 
         EmergencyContacts.updateEmergencyContact(null);
     }

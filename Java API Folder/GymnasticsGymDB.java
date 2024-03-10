@@ -1101,6 +1101,77 @@ public class GymnasticsGymDB {
 
             // Lock the Student_EmergContact and Student tables
             lockStatement = connection.createStatement();
+            lockStatement.execute("LOCK TABLE Coach IN EXCLUSIVE MODE");
+
+            // SQL PreparedStatement
+            String sql = "INSERT INTO Coach( Coach_Username, firstName, " +
+            "lastName, Phonenumber, email) " +
+            "Values( ?, ?, ?, ?, ?)";
+
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, apiParams.get("Username"));
+            preparedStatement.setString(2, apiParams.get("FirstName"));
+            preparedStatement.setString(3, apiParams.get("LastName"));
+            preparedStatement.setString(4, apiParams.get("PhoneNumber"));
+            preparedStatement.setString(5, apiParams.get("Email"));
+            int rows = preparedStatement.executeUpdate();
+
+            // Commit the transaction
+            connection.commit();
+
+            if (rows > 0) {
+                System.out.println("New coach added successfully !");
+                System.out.println("");
+                return true;
+            } else {
+                System.out.println("Adding new coach failed !");
+                System.out.println("");
+                return false;
+            }
+    } catch (SQLException e) {
+        // Rollback the transaction in case of an error
+        if (connection != null) {
+            connection.rollback();
+        }
+
+        e.printStackTrace();
+        return false;
+    } finally {
+        if (preparedStatement != null) {
+            preparedStatement.close();
+        }
+        if (lockStatement != null) {
+            lockStatement.close();
+        }
+        // Reset auto-commit mode
+        if (connection != null) {
+            connection.setAutoCommit(true);
+        }
+    }
+    }
+
+    /**Create a specific coach’s schedule based on the availStartTime and
+     * availEndTime that the coach provided. Meaning, a coach schedule is
+     * made up from the available times that the coach enters in the program.
+     * @author Noa Uritsky
+     * 
+     * @param apiParams
+     * @return
+     * @throws SQLException
+     */
+    public static boolean addNewCoachAvailability(HashMap<String, String> apiParams) throws SQLException {
+        PreparedStatement preparedStatement = null;
+        Statement lockStatement = null;
+
+        try {
+            // Get DB connection
+            Connection connection = getConnection();
+
+            // Start a transaction
+            connection.setAutoCommit(false);
+
+            // Lock the Student_EmergContact and Student tables
+            lockStatement = connection.createStatement();
             lockStatement.execute("LOCK TABLE Coach, Coach_Availability IN EXCLUSIVE MODE");
 
             // SQL PreparedStatement

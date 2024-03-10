@@ -41,8 +41,10 @@ public class Coaches {
         System.out.println("");
         if(params == null || params.length == 0)
         {
-            System.out.println("addNewCoachAvailability - ");
-            System.out.println("command: addNewCoach username:xxx schedulename:xxx" + 
+            System.out.println("addNewCoachAvailability - based on the availStartTime and " +
+                                "availEndTime that the coach provided. Meaning, a coach schedule is" + 
+                                "made up from the available times that the coach enters in the program.");
+            System.out.println("command: addNewCoachAvailability username:xxx schedulename:xxx" + 
                                 "startTime:YYYY-MM-DD HH:MM endTime:YYYY-MM-DD HH:MM)");
         }
         else

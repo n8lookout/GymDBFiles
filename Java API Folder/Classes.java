@@ -85,33 +85,6 @@ public class Classes {
             HashMap<String, String> apiParams = Util.ParseInputParams(new String[] {});
             if (apiParams != null) {
                 try {
-                    GymnasticsGymDB.addNewClass(apiParams);
-                } catch (SQLException e) {
-
-                    e.printStackTrace();
-                }
-            } 
-        }
-
-    }
-
-    /**
-     * Return list of all active classes that do not have a coach assigned
-     * 
-     * @author Anna Rivas
-     *
-     * @params Input parameter
-     */
-    public static void listAllClassesbyMissingCoach(String[] params) {
-        System.out.println("");
-        if (params == null || params.length == 0) {
-            System.out.println(
-                    "listAllClassesbyMissingCoach - Return list of all active classes that do not have a coach assigned");
-            System.out.println("command: listAllClassesbyMissingCoach");
-        } else {
-            HashMap<String, String> apiParams = Util.ParseInputParams(new String[] {});
-            if (apiParams != null) {
-                try {
                     GymnasticsGymDB.listAllClassesbyMissingCoach(apiParams);
                 } catch (SQLException e) {
 

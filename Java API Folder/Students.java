@@ -70,32 +70,6 @@ public class Students {
         }
     }
 
-    /**
-     * Returns a list of all students with their information including their
-     * usernames. The list is ordered by their last names in aplhabetic order.
-     * 
-     * @author Anna Rivas
-     *
-     * @params Input parameter
-     */
-    public static void listAllStudents(String[] params) {
-        System.out.println("");
-        if (params == null || params.length == 0) {
-            System.out.println(
-                    "listAllStudents - Returns a list of all students with their information including their usernames. The list is ordered by their last names in aplhabetic order.");
-            System.out.println("command: listAllStudents");
-        } else {
-            HashMap<String, String> apiParams = Util.ParseInputParams(new String[] {});
-            if (apiParams != null) {
-                try {
-                    GymnasticsGymDB.addNewStudent(apiParams);
-                } catch (SQLException e) {
-
-                    e.printStackTrace();
-                }
-            } 
-        }
-    }
 
     /**
      * Returns a list of all students with their information including their

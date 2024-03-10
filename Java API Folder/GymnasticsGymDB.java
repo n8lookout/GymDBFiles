@@ -1307,9 +1307,8 @@ public class GymnasticsGymDB {
     }
 
     /**
-     * Retrieves the availability schedule for a specific coach on a specific date.
-     * This schedule will only show their available times and exclude the time they
-     * are in their assigned classes.
+     * Retrieves the availability schedule for a specific coach on a specific date. 
+     * This schedule will only show their available times and exclude the time they are in their assigned classes.
      * 
      * @author Christopher Long
      *
@@ -1321,7 +1320,7 @@ public class GymnasticsGymDB {
         PreparedStatement preparedStatement = null;
         ResultSet coachesAvilability = null;
         ResultSet coachesClassesSchedule = null;
-
+        
         try {
             // Get DB connection
             connection = getConnection();
@@ -1331,17 +1330,17 @@ public class GymnasticsGymDB {
             String date = apiParams.get("Date");
 
             // Prepare SQL statement
-            String sql = "SELECT " +
-                    "Coach_Availability.availStartTime::time AS starttime, " +
-                    "Coach_Availability.availEndTime::time AS endtime " +
-                    "FROM " +
-                    "Coach_Availability " +
-                    "JOIN Coach ON ( Coach_Availability.coachID = Coach.CoachID ) " +
-                    "WHERE " +
-                    "Coach.Coach_userName = ? AND " +
-                    "Coach_Availability.availStartTime::date = TO_DATE(?,'YYYY-MM-DD') " +
-                    "ORDER BY " +
-                    "Coach_Availability.availStartTime";
+            String sql =    "SELECT " +
+                                "Coach_Availability.availStartTime::time AS starttime, " +
+                                "Coach_Availability.availEndTime::time AS endtime " +
+                            "FROM " +
+                                "Coach_Availability " +
+                                "JOIN Coach ON ( Coach_Availability.coachID = Coach.CoachID ) " +
+                            "WHERE " +
+                                "Coach.Coach_userName = ? AND " +
+                                "Coach_Availability.availStartTime::date = TO_DATE(?,'YYYY-MM-DD') " +
+                            "ORDER BY " +
+                                "Coach_Availability.availStartTime";
 
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, coach_userName);
@@ -1352,65 +1351,79 @@ public class GymnasticsGymDB {
 
             // Process results
             boolean gotRecords = false;
-            String availStartTime = "";
-            String availEndTime = "";
-            if (coachesAvilability.next()) {
+            List<String> availStartTime = new ArrayList<>();
+            List<String> availEndTime = new ArrayList<>();
+            while (coachesAvilability.next()) {
                 gotRecords = true;
-                availStartTime = coachesAvilability.getString("starttime");
-                availEndTime = coachesAvilability.getString("endtime");
+                availStartTime.add(coachesAvilability.getString("starttime"));
+                availEndTime.add(coachesAvilability.getString("endtime"));
             }
 
-            sql = "SELECT " +
-                    "Class.startTime::time AS starttime, " +
-                    "( Class.startTime + Class.duration )::time AS endtime, " +
-                    "Class.className " +
+            sql =   "SELECT " +
+                        "Class.startTime::time AS starttime, " +
+                        "( Class.startTime + Class.duration )::time AS endtime, " +
+                        "Class.className " +
                     "FROM " +
-                    "Class " +
-                    "JOIN Class_Coach ON ( Class.classID = Class_Coach.classID ) " +
-                    "JOIN Coach ON ( Class_Coach.coachID = Coach.coachID ) " +
+                        "Class " +
+                        "JOIN Class_Coach ON ( Class.classID = Class_Coach.classID ) " +
+                        "JOIN Coach ON ( Class_Coach.coachID = Coach.coachID ) " +
                     "WHERE " +
-                    "Coach.Coach_userName = ? AND " +
-                    "Class.startTime::date = TO_DATE(?,'YYYY-MM-DD') AND " +
-                    "Class.startTime::time > ?::time AND " +
-                    "( Class.startTime + Class.duration )::time < ?::time " +
+                        "Coach.Coach_userName = ? AND " +
+                        "Class.startTime::date = TO_DATE(?,'YYYY-MM-DD') " +
                     "ORDER BY " +
-                    "Class.startTime";
+                        "Class.startTime";
+
 
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, coach_userName);
             preparedStatement.setString(2, date);
-            preparedStatement.setString(3, availStartTime);
-            preparedStatement.setString(4, availEndTime);
 
             // Execute query
             coachesClassesSchedule = preparedStatement.executeQuery();
 
-            if (gotRecords) {
-                System.out.println("Start of Availability: " + availStartTime);
+            List<String> classStartTime = new ArrayList<>();
+            List<String> classEndTime = new ArrayList<>();
+            List<String> className = new ArrayList<>();
+            while (coachesClassesSchedule.next()) {
+                classStartTime.add(coachesClassesSchedule.getString("starttime"));
+                className.add(coachesClassesSchedule.getString("className"));
+                classEndTime.add(coachesClassesSchedule.getString("endtime"));
+            }
 
-                while (coachesClassesSchedule != null && coachesClassesSchedule.next()) {
-                    if (coachesClassesSchedule.getString("starttime").equals(availEndTime)) {
-                        System.out.println("UNAVAILABLE - Teaching " + coachesClassesSchedule.getString("className"));
-                    } else {
-                        System.out.println("===========");
-                        System.out.println(coachesClassesSchedule.getString("starttime"));
-                        System.out.println("UNAVAILABLE - Teaching " + coachesClassesSchedule.getString("className"));
+            if(gotRecords) {
+                int j = 0;
+                for( int i = 0; i < availStartTime.size(); i++ ) {
+
+                    if( i > 0) {
+                        System.out.println("UNAVAILABLE");
                     }
 
-                    if (!coachesClassesSchedule.getString("endtime").equals(availEndTime)) {
-                        System.out.println(coachesClassesSchedule.getString("endtime"));
-                        System.out.println("===========");
+                    System.out.println(availStartTime.get(i) + " Start of Availability");
+
+
+                    for (; j < classStartTime.size(); j++) {
+
+                        if(classEndTime.get(j).compareTo(availEndTime.get(i)) > 0) {
+                            break;
+                        }
+                        System.out.println("=========");
+                        System.out.println("Teaching: " + className.get(j));
+                        System.out.println("Start: " + classStartTime.get(j));
+                        System.out.println("End: " + classEndTime.get(j));
+                        System.out.println("=========");
                     }
+    
+                    System.out.println(availEndTime.get(i) + " End of Availability");
                 }
 
-                System.out.println("End of Availability: " + availEndTime);
             }
 
             if (!gotRecords) {
                 System.out.println("No schedule found for the specified coach and date!");
                 System.out.println("");
             }
-
+    
+            
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -2128,9 +2141,9 @@ public class GymnasticsGymDB {
     public static void assignClassCoach(HashMap<String, String> apiParams) throws SQLException {
         PreparedStatement preparedStatement = null;
         ResultSet coachesAvilability = null;
-        ResultSet classTimes = null;
         ResultSet coachesClassesSchedule = null;
-
+        ResultSet selectedClassTime = null;
+        
         try {
             // Get DB connection
             connection = getConnection();
@@ -2139,173 +2152,176 @@ public class GymnasticsGymDB {
             String coach_userName = apiParams.get("Coach UserName");
             String class_name = apiParams.get("Class Name");
 
+            String sql =    "SELECT " + 
+                                "Class.startTime::time AS startTime, " + 
+                                "( Class.startTime + Class.duration )::time AS endTime, " + 
+                                "Class.startTime::date AS date,  " +
+                                "Class.ClassID " +
+                            "FROM " + 
+                                "Class " + 
+                            "WHERE " + 
+                                "Class.className = ?";
+            
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, class_name);
+
+            // Execute query
+            selectedClassTime = preparedStatement.executeQuery();
+            boolean foundClass = false;
+            String selectedClassStartTime = "";
+            String selectedClassEndTime = "";
+            String date = "";
+            int classID = 0;
+            if (selectedClassTime.next()) {
+                foundClass = true;
+                selectedClassStartTime = selectedClassTime.getString("starttime");
+                selectedClassEndTime = selectedClassTime.getString("endtime");
+                date = selectedClassTime.getString("date");
+                classID = selectedClassTime.getInt("classid");
+            }
+
+
             // Prepare SQL statement
-            String sql = "SELECT " +
-                    "Coach_Availability.availStartTime AS starttime, " +
-                    "Coach_Availability.availEndTime AS endtime " +
-                    "FROM " +
-                    "Coach_Availability " +
-                    "JOIN Coach ON ( Coach_Availability.coachID = Coach.CoachID ) " +
-                    "WHERE " +
-                    "Coach.Coach_userName = ? AND " +
-                    "Coach_Availability.availStartTime::date = ( " +
-                    "SELECT " +
-                    "Class.startTime AS starttime " +
-                    "FROM " +
-                    "Class " +
-                    "JOIN Class_Coach ON ( Class.classID = Class_Coach.classID ) " +
-                    "WHERE " +
-                    "Class.ClassName = ? " +
-                    ")::date AND " +
-                    "Coach_Availability.availStartTime::time < ( " +
-                    "SELECT " +
-                    "Class.startTime AS starttime " +
-                    "FROM " +
-                    "Class " +
-                    "JOIN Class_Coach ON ( Class.classID = Class_Coach.classID ) " +
-                    "WHERE " +
-                    "Class.ClassName = ? " +
-                    ")::time AND " +
-                    "Coach_Availability.availEndTime::time > ( " +
-                    "SELECT " +
-                    "( Class.startTime + Class.duration )::time AS endtime " +
-                    "FROM " +
-                    "Class " +
-                    "JOIN Class_Coach ON ( Class.classID = Class_Coach.classID ) " +
-                    "WHERE " +
-                    "Class.ClassName = ? " +
-                    ")::time " +
-                    "ORDER BY " +
-                    "Coach_Availability.availStartTime";
+                sql =    "SELECT " +
+                                "Coach_Availability.availStartTime::time AS starttime, " +
+                                "Coach_Availability.availEndTime::time AS endtime, " +
+                                "Coach.CoachID " +
+                            "FROM " +
+                                "Coach_Availability " +
+                                "JOIN Coach ON ( Coach_Availability.coachID = Coach.CoachID ) " +
+                            "WHERE " +
+                                "Coach.Coach_userName = ? AND " +
+                                "Coach_Availability.availStartTime::date = TO_DATE(?,'YYYY-MM-DD') " +
+                            "ORDER BY " +
+                                "Coach_Availability.availStartTime";
 
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, coach_userName);
-            preparedStatement.setString(2, class_name);
-            preparedStatement.setString(3, class_name);
-            preparedStatement.setString(4, class_name);
+            preparedStatement.setString(2, date);
 
             // Execute query
             coachesAvilability = preparedStatement.executeQuery();
 
             // Process results
-            boolean gotRecords = false;
-            String availStartTime = "";
-            String availEndTime = "";
-            if (coachesAvilability.next()) {
-                gotRecords = true;
-                availStartTime = coachesAvilability.getString("starttime");
-                availEndTime = coachesAvilability.getString("endtime");
+            boolean coachAvailableForClass = false;
+            List<String> availStartTime = new ArrayList<>();
+            List<String> availEndTime = new ArrayList<>();
+            int coachID = 0;
+            while (coachesAvilability.next()) {
+                coachAvailableForClass = true;
+                availStartTime.add(coachesAvilability.getString("starttime"));
+                availEndTime.add(coachesAvilability.getString("endtime"));
+                coachID = coachesAvilability.getInt("coachid");
             }
 
-            sql = "SELECT " +
-                    "Class.startTime::time AS starttime, " +
-                    "( Class.startTime + Class.duration )::time AS endtime, " +
-                    "Class.className " +
+            sql =   "SELECT " +
+                        "Class.startTime::time AS starttime, " +
+                        "( Class.startTime + Class.duration )::time AS endtime, " +
+                        "Class.className " +
                     "FROM " +
-                    "Class " +
-                    "JOIN Class_Coach ON ( Class.classID = Class_Coach.classID ) " +
-                    "JOIN Coach ON ( Class_Coach.coachID = Coach.coachID ) " +
+                        "Class " +
+                        "JOIN Class_Coach ON ( Class.classID = Class_Coach.classID ) " +
+                        "JOIN Coach ON ( Class_Coach.coachID = Coach.coachID ) " +
                     "WHERE " +
-                    "Coach.Coach_userName = ? AND " +
-                    "Class.startTime::date = TO_DATE(?,'YYYY-MM-DD') AND " +
-                    "Class.startTime::time > ?::time AND " +
-                    "( Class.startTime + Class.duration )::time < ?::time " +
+                        "Coach.Coach_userName = ? AND " +
+                        "Class.startTime::date = TO_DATE(?,'YYYY-MM-DD') " +
                     "ORDER BY " +
-                    "Class.startTime";
+                        "Class.startTime";
+
 
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, coach_userName);
-            preparedStatement.setString(2, availStartTime);
-            preparedStatement.setString(3, availStartTime);
-            preparedStatement.setString(4, availEndTime);
+            preparedStatement.setString(2, date);
 
             // Execute query
             coachesClassesSchedule = preparedStatement.executeQuery();
 
-            sql = "SELECT " +
-                    "Class.startTime::time AS starttime, " +
-                    "( Class.startTime + Class.duration )::time AS endtime " +
-                    "FROM " +
-                    "Class " +
-                    "WHERE " +
-                    "Class.ClassName = ? " +
-                    "ORDER BY " +
-                    "Class.startTime";
-
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, class_name);
-
-            // Execute query
-            classTimes = preparedStatement.executeQuery();
-            String classStartTime = "";
-            String classEndTime = "";
-            if (classTimes.next()) {
-                classStartTime = classTimes.getString("starttime");
-                classEndTime = classTimes.getString("endtime");
+            List<String> classStartTime = new ArrayList<>();
+            List<String> classEndTime = new ArrayList<>();
+            List<String> className = new ArrayList<>();
+            while (coachesClassesSchedule.next()) {
+                classStartTime.add(coachesClassesSchedule.getString("starttime"));
+                className.add(coachesClassesSchedule.getString("className"));
+                classEndTime.add(coachesClassesSchedule.getString("endtime"));
             }
 
-            boolean coarseOverlap = true;
-            if (gotRecords) {
+            if (!foundClass) {
+                System.out.println("Selected Class not found");
+            }
 
-                while (coachesClassesSchedule != null && coachesClassesSchedule.next()) {
+            if(foundClass && !coachAvailableForClass) {
+                System.out.println("Class outside of Coaches Availability");
+            }
+            
+            if(coachAvailableForClass) {
+                int j = 0;
+                for( int i = 0; i < availStartTime.size() && coachAvailableForClass; i++ ) {
 
-                    LocalTime currentCoarseStarTime = LocalTime.parse(coachesClassesSchedule.getString("starttime"));
-                    LocalTime currentCoarseEndTime = LocalTime.parse(coachesClassesSchedule.getString("endtime"));
-                    LocalTime classStartTimeLocal = LocalTime.parse(classStartTime);
-                    LocalTime classEndTimeLocal = LocalTime.parse(classEndTime);
 
-                    if (classStartTimeLocal.compareTo(currentCoarseEndTime) < 0
-                            && classStartTimeLocal.compareTo(currentCoarseStarTime) > 0) {
-                        coarseOverlap = true;
+                    if(selectedClassStartTime.compareTo(availStartTime.get(0)) < 0) {
+                        System.out.println("Selected Class is before Coach Availability");
+                        coachAvailableForClass = false;
                         break;
-                    } else if (classEndTimeLocal.compareTo(currentCoarseStarTime) > 0
-                            && classEndTimeLocal.compareTo(currentCoarseEndTime) < 0) {
-                        coarseOverlap = true;
-                        break;
-                    } else {
-                        coarseOverlap = false;
                     }
+
+                    
+                    for (; j < classStartTime.size(); j++) {
+                        
+                        if(classEndTime.get(j).compareTo(availEndTime.get(i)) > 0) {
+                            break;
+                        }
+
+                        if((selectedClassEndTime.compareTo(classStartTime.get(j)) > 0 &&
+                            selectedClassEndTime.compareTo(classEndTime.get(j)) < 0) ||
+                           (selectedClassStartTime.compareTo(classStartTime.get(j)) > 0 &&
+                            selectedClassStartTime.compareTo(classEndTime.get(j)) < 0) ||
+                            selectedClassStartTime.compareTo(classStartTime.get(j)) == 0 ||
+                            selectedClassEndTime.compareTo(classEndTime.get(j)) == 0) {
+                            System.out.println("Selected Class overlaps with a Class already assigned to the Coach");
+                            coachAvailableForClass = false;
+                            break;
+                        }
+
+                    }
+
+                    if(selectedClassEndTime.compareTo(availEndTime.get(availStartTime.size() - 1)) > 0) {
+                        System.out.println("Selected Class is after Coach Availability");
+                        coachAvailableForClass = false;
+                        break;
+                    }
+    
                 }
 
             }
 
-            if (!gotRecords) {
-                System.out.println("Course Outside of Coaches Availability!");
+            if (!coachAvailableForClass) {
+                System.out.println("Coach not assigned to Class!");
                 System.out.println("");
             } else {
 
-                if (!coarseOverlap) {
+                sql =   "INSERT INTO Class_Coach (coachID,classID ) " +
+                            "VALUES (?, ?)";
 
-                    sql = "UPDATE Class " +
-                            "SET coachID = (" +
-                            "SELECT Coach.coachID " +
-                            "FROM Coach " +
-                            "WHERE Coach.Coach_userName = ?" +
-                            ") " +
-                            "WHERE Class.ClassName = ?";
 
-                    preparedStatement = connection.prepareStatement(sql);
-                    preparedStatement.setString(1, coach_userName);
-                    preparedStatement.setString(2, class_name);
+                preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1, coachID);
+                preparedStatement.setInt(2, classID);
 
-                    connection.setAutoCommit(false);
+                System.out.println("We can add the coach!");
+                connection.setAutoCommit(false);
 
-                    int rowsAffected = preparedStatement.executeUpdate();
+                int rowsAffected = preparedStatement.executeUpdate();
 
-                    if (rowsAffected > 0) {
-                        connection.commit();
-                        System.out.println("Coach Added to Coarse");
-                    } else {
-                        System.out.println("Failed to Add Coach to Coarse");
-                    }
-
+                if (rowsAffected > 0) {
+                    connection.commit();
+                    System.out.println("Coach assigned to Coarse");
                 } else {
-                    System.out.println("Overlap with a currently taught course!");
-                    System.out.println("");
+                    System.out.println("Failed to assign Coach to Coarse");
                 }
 
             }
-
+    
+            
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

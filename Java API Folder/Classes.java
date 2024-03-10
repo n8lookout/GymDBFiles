@@ -279,10 +279,10 @@ public class Classes {
             System.out.println(
                     "updateClassStatus - Updates the status of a specific class (In progress, Canceled, Completed, etc.) to a new status (In progress, Canceled, Completed, etc.)");
             System.out.println(
-                    "command: updateClassStatus ClassName:xxx NewStatus:[Coming Up|In progress|Cancelled|Postponed|Moved up|Completed]");
+                    "command: updateClassStatus ClassName:xxx ClassStatus:[Coming Up|In progress|Cancelled|Postponed|Moved up|Completed]");
             return false;
         } else {
-            HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "ClassName", "NewStatus" });
+            HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "ClassName", "ClassStatus" });
             if (apiParams != null) {
                 try {
                     return GymnasticsGymDB.updateClassStatus(apiParams);
@@ -307,10 +307,10 @@ public class Classes {
         System.out.println("");
         if (params == null || params.length == 0) {
             System.out.println("updateClassEvent - Updates the event of a specific class to a new event");
-            System.out.println("command: updateClassEvent ClassName:xxx NewEvent:xxx");
+            System.out.println("command: updateClassEvent ClassName:xxx Event:xxx");
             return false;
         } else {
-            HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "ClassName", "NewEvent" });
+            HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "ClassName", "Event" });
             if (apiParams != null) {
                 try {
                     return GymnasticsGymDB.updateClassEvent(apiParams);
@@ -336,10 +336,10 @@ public class Classes {
         System.out.println("");
         if (params == null || params.length == 0) {
             System.out.println("updateClassStartTime - Update the start time of a specific class to a new start time");
-            System.out.println("command: updateClassStartTime ClassName:xxx NewStartTime:YYYY-MM-DD HH:MM");
+            System.out.println("command: updateClassStartTime ClassName:xxx StartTime:YYYY-MM-DD HH:MM");
             return false;
         } else {
-            HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "ClassName", "NewStartTime" });
+            HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "ClassName", "StartTime" });
             if (apiParams != null) {
                 try {
                     return GymnasticsGymDB.updateClassStartTime(apiParams);

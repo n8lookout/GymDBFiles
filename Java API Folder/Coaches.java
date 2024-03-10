@@ -176,7 +176,6 @@ public class Coaches {
                 try {
                     GymnasticsGymDB.showCoachSchedule(apiParams);
                 } catch (SQLException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
@@ -195,16 +194,15 @@ public class Coaches {
         if (params == null || params.length == 0) {
             System.out.println("changeCoachSchedule - Change a coach's schedule");
             System.out.println(
-                    "command: changeCoachSchedule CoachUserName:xxx ScheduleName:xxx NewStartTime: YYYY-MM-DD HH:MM NewEndTime: YYYY-MM-DD HH:MM");
+                    "command: changeCoachSchedule UserName:xxx ScheduleName:xxx StartTime: YYYY-MM-DD HH:MM EndTime: YYYY-MM-DD HH:MM");
             return false;
         } else {
             HashMap<String, String> apiParams = Util
-                    .ParseInputParams(new String[] { "coachUserName", "scheduleName", "newStartTime", "newEndTime" });
+                    .ParseInputParams(new String[] { "UserName", "scheduleName", "StartTime", "EndTime" });
             if (apiParams != null) {
                 try {
                     return GymnasticsGymDB.changeCoachSchedule(apiParams);
                 } catch (SQLException e) {
-
                     e.printStackTrace();
                 }
             }

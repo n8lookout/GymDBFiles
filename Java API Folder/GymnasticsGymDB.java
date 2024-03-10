@@ -710,8 +710,8 @@ public class GymnasticsGymDB {
                     "                   WHERE student_userName = ?)";
 
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, apiParams.get("NewDifficultyLevel"));
-            preparedStatement.setString(2, apiParams.get("StudentUserName"));
+            preparedStatement.setString(1, apiParams.get("DifficultyLevel"));
+            preparedStatement.setString(2, apiParams.get("UserName"));
             int rows = preparedStatement.executeUpdate();
 
             // Commit the transaction
@@ -779,7 +779,7 @@ public class GymnasticsGymDB {
 
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, apiParams.get("NewEmerContactUserName"));
-            preparedStatement.setString(2, apiParams.get("StudentUserName"));
+            preparedStatement.setString(2, apiParams.get("UserName"));
             int rows = preparedStatement.executeUpdate();
 
             // Commit the transaction
@@ -846,8 +846,8 @@ public class GymnasticsGymDB {
                     "WHERE student_userName = ?";
 
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setBoolean(1, apiParams.get("NewStudentStatus").equals("Active") ? true : false);
-            preparedStatement.setString(2, apiParams.get("StudentUserName"));
+            preparedStatement.setBoolean(1, apiParams.get("StudentStatus").equals("Active") ? true : false);
+            preparedStatement.setString(2, apiParams.get("UserName"));
             int rows = preparedStatement.executeUpdate();
 
             // Commit the transaction
@@ -921,7 +921,7 @@ public class GymnasticsGymDB {
                     "  AND className = ?";
 
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, apiParams.get("StudentUserName"));
+            preparedStatement.setString(1, apiParams.get("UserName"));
             preparedStatement.setString(2, apiParams.get("ClassName"));
             // System.out.println(sql);
             resultSet = preparedStatement.executeQuery();
@@ -945,7 +945,7 @@ public class GymnasticsGymDB {
                     "(Class2.startTime, Class2.startTime + interval '1 hour'))";
 
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, apiParams.get("StudentUserName"));
+            preparedStatement.setString(1, apiParams.get("UserName"));
             preparedStatement.setString(2, apiParams.get("ClassName"));
             resultSet = preparedStatement.executeQuery();
 
@@ -964,7 +964,7 @@ public class GymnasticsGymDB {
                     "         WHERE className = ?))";
 
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, apiParams.get("StudentUserName"));
+            preparedStatement.setString(1, apiParams.get("UserName"));
             preparedStatement.setString(2, apiParams.get("ClassName"));
             int rows = preparedStatement.executeUpdate();
 
@@ -1308,8 +1308,9 @@ public class GymnasticsGymDB {
     }
 
     /**
-     * Retrieves the availability schedule for a specific coach on a specific date. 
-     * This schedule will only show their available times and exclude the time they are in their assigned classes.
+     * Retrieves the availability schedule for a specific coach on a specific date.
+     * This schedule will only show their available times and exclude the time they
+     * are in their assigned classes.
      * 
      * @author Christopher Long
      *
@@ -1321,7 +1322,7 @@ public class GymnasticsGymDB {
         PreparedStatement preparedStatement = null;
         ResultSet coachesAvilability = null;
         ResultSet coachesClassesSchedule = null;
-        
+
         try {
             // Get DB connection
             connection = getConnection();
@@ -1331,17 +1332,17 @@ public class GymnasticsGymDB {
             String date = apiParams.get("Date");
 
             // Prepare SQL statement
-            String sql =    "SELECT " +
-                                "Coach_Availability.availStartTime::time AS starttime, " +
-                                "Coach_Availability.availEndTime::time AS endtime " +
-                            "FROM " +
-                                "Coach_Availability " +
-                                "JOIN Coach ON ( Coach_Availability.coachID = Coach.CoachID ) " +
-                            "WHERE " +
-                                "Coach.Coach_userName = ? AND " +
-                                "Coach_Availability.availStartTime::date = TO_DATE(?,'YYYY-MM-DD') " +
-                            "ORDER BY " +
-                                "Coach_Availability.availStartTime";
+            String sql = "SELECT " +
+                    "Coach_Availability.availStartTime::time AS starttime, " +
+                    "Coach_Availability.availEndTime::time AS endtime " +
+                    "FROM " +
+                    "Coach_Availability " +
+                    "JOIN Coach ON ( Coach_Availability.coachID = Coach.CoachID ) " +
+                    "WHERE " +
+                    "Coach.Coach_userName = ? AND " +
+                    "Coach_Availability.availStartTime::date = TO_DATE(?,'YYYY-MM-DD') " +
+                    "ORDER BY " +
+                    "Coach_Availability.availStartTime";
 
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, coach_userName);
@@ -1360,20 +1361,19 @@ public class GymnasticsGymDB {
                 availEndTime.add(coachesAvilability.getString("endtime"));
             }
 
-            sql =   "SELECT " +
-                        "Class.startTime::time AS starttime, " +
-                        "( Class.startTime + Class.duration )::time AS endtime, " +
-                        "Class.className " +
+            sql = "SELECT " +
+                    "Class.startTime::time AS starttime, " +
+                    "( Class.startTime + Class.duration )::time AS endtime, " +
+                    "Class.className " +
                     "FROM " +
-                        "Class " +
-                        "JOIN Class_Coach ON ( Class.classID = Class_Coach.classID ) " +
-                        "JOIN Coach ON ( Class_Coach.coachID = Coach.coachID ) " +
+                    "Class " +
+                    "JOIN Class_Coach ON ( Class.classID = Class_Coach.classID ) " +
+                    "JOIN Coach ON ( Class_Coach.coachID = Coach.coachID ) " +
                     "WHERE " +
-                        "Coach.Coach_userName = ? AND " +
-                        "Class.startTime::date = TO_DATE(?,'YYYY-MM-DD') " +
+                    "Coach.Coach_userName = ? AND " +
+                    "Class.startTime::date = TO_DATE(?,'YYYY-MM-DD') " +
                     "ORDER BY " +
-                        "Class.startTime";
-
+                    "Class.startTime";
 
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, coach_userName);
@@ -1391,20 +1391,19 @@ public class GymnasticsGymDB {
                 classEndTime.add(coachesClassesSchedule.getString("endtime"));
             }
 
-            if(gotRecords) {
+            if (gotRecords) {
                 int j = 0;
-                for( int i = 0; i < availStartTime.size(); i++ ) {
+                for (int i = 0; i < availStartTime.size(); i++) {
 
-                    if( i > 0) {
+                    if (i > 0) {
                         System.out.println("UNAVAILABLE");
                     }
 
                     System.out.println(availStartTime.get(i) + " Start of Availability");
 
-
                     for (; j < classStartTime.size(); j++) {
 
-                        if(classEndTime.get(j).compareTo(availEndTime.get(i)) > 0) {
+                        if (classEndTime.get(j).compareTo(availEndTime.get(i)) > 0) {
                             break;
                         }
                         System.out.println("=========");
@@ -1413,7 +1412,7 @@ public class GymnasticsGymDB {
                         System.out.println("End: " + classEndTime.get(j));
                         System.out.println("=========");
                     }
-    
+
                     System.out.println(availEndTime.get(i) + " End of Availability");
                 }
 
@@ -1423,8 +1422,7 @@ public class GymnasticsGymDB {
                 System.out.println("No schedule found for the specified coach and date!");
                 System.out.println("");
             }
-    
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -1472,7 +1470,7 @@ public class GymnasticsGymDB {
                     "AND (Class.startTime, Class.startTime + interval '1 hour') OVERLAPS " +
                     "(coach_availability.availStartTime, coach_availability.availEndTime)";
             preparedStatement = connection.prepareStatement(checkClassesSql);
-            preparedStatement.setString(1, apiParams.get("coachUserName"));
+            preparedStatement.setString(1, apiParams.get("UserName"));
             preparedStatement.setString(2, apiParams.get("scheduleName"));
             ResultSet classesResultSet = preparedStatement.executeQuery();
             // For each class that might be affected, check if it overlaps with the new
@@ -1497,9 +1495,9 @@ public class GymnasticsGymDB {
                     "  AND scheduleName = ?";
 
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, apiParams.get("newStartTime"));
-            preparedStatement.setString(2, apiParams.get("newEndTime"));
-            preparedStatement.setString(3, apiParams.get("coachUserName"));
+            preparedStatement.setString(1, apiParams.get("StartTime"));
+            preparedStatement.setString(2, apiParams.get("EndTime"));
+            preparedStatement.setString(3, apiParams.get("UserName"));
             preparedStatement.setString(4, apiParams.get("scheduleName"));
             int rows = preparedStatement.executeUpdate();
 
@@ -2144,7 +2142,7 @@ public class GymnasticsGymDB {
         ResultSet coachesAvilability = null;
         ResultSet coachesClassesSchedule = null;
         ResultSet selectedClassTime = null;
-        
+
         try {
             // Get DB connection
             connection = getConnection();
@@ -2153,16 +2151,16 @@ public class GymnasticsGymDB {
             String coach_userName = apiParams.get("Coach UserName");
             String class_name = apiParams.get("Class Name");
 
-            String sql =    "SELECT " + 
-                                "Class.startTime::time AS startTime, " + 
-                                "( Class.startTime + Class.duration )::time AS endTime, " + 
-                                "Class.startTime::date AS date,  " +
-                                "Class.ClassID " +
-                            "FROM " + 
-                                "Class " + 
-                            "WHERE " + 
-                                "Class.className = ?";
-            
+            String sql = "SELECT " +
+                    "Class.startTime::time AS startTime, " +
+                    "( Class.startTime + Class.duration )::time AS endTime, " +
+                    "Class.startTime::date AS date,  " +
+                    "Class.ClassID " +
+                    "FROM " +
+                    "Class " +
+                    "WHERE " +
+                    "Class.className = ?";
+
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, class_name);
 
@@ -2181,20 +2179,19 @@ public class GymnasticsGymDB {
                 classID = selectedClassTime.getInt("classid");
             }
 
-
             // Prepare SQL statement
-                sql =    "SELECT " +
-                                "Coach_Availability.availStartTime::time AS starttime, " +
-                                "Coach_Availability.availEndTime::time AS endtime, " +
-                                "Coach.CoachID " +
-                            "FROM " +
-                                "Coach_Availability " +
-                                "JOIN Coach ON ( Coach_Availability.coachID = Coach.CoachID ) " +
-                            "WHERE " +
-                                "Coach.Coach_userName = ? AND " +
-                                "Coach_Availability.availStartTime::date = TO_DATE(?,'YYYY-MM-DD') " +
-                            "ORDER BY " +
-                                "Coach_Availability.availStartTime";
+            sql = "SELECT " +
+                    "Coach_Availability.availStartTime::time AS starttime, " +
+                    "Coach_Availability.availEndTime::time AS endtime, " +
+                    "Coach.CoachID " +
+                    "FROM " +
+                    "Coach_Availability " +
+                    "JOIN Coach ON ( Coach_Availability.coachID = Coach.CoachID ) " +
+                    "WHERE " +
+                    "Coach.Coach_userName = ? AND " +
+                    "Coach_Availability.availStartTime::date = TO_DATE(?,'YYYY-MM-DD') " +
+                    "ORDER BY " +
+                    "Coach_Availability.availStartTime";
 
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, coach_userName);
@@ -2215,20 +2212,19 @@ public class GymnasticsGymDB {
                 coachID = coachesAvilability.getInt("coachid");
             }
 
-            sql =   "SELECT " +
-                        "Class.startTime::time AS starttime, " +
-                        "( Class.startTime + Class.duration )::time AS endtime, " +
-                        "Class.className " +
+            sql = "SELECT " +
+                    "Class.startTime::time AS starttime, " +
+                    "( Class.startTime + Class.duration )::time AS endtime, " +
+                    "Class.className " +
                     "FROM " +
-                        "Class " +
-                        "JOIN Class_Coach ON ( Class.classID = Class_Coach.classID ) " +
-                        "JOIN Coach ON ( Class_Coach.coachID = Coach.coachID ) " +
+                    "Class " +
+                    "JOIN Class_Coach ON ( Class.classID = Class_Coach.classID ) " +
+                    "JOIN Coach ON ( Class_Coach.coachID = Coach.coachID ) " +
                     "WHERE " +
-                        "Coach.Coach_userName = ? AND " +
-                        "Class.startTime::date = TO_DATE(?,'YYYY-MM-DD') " +
+                    "Coach.Coach_userName = ? AND " +
+                    "Class.startTime::date = TO_DATE(?,'YYYY-MM-DD') " +
                     "ORDER BY " +
-                        "Class.startTime";
-
+                    "Class.startTime";
 
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, coach_userName);
@@ -2250,34 +2246,33 @@ public class GymnasticsGymDB {
                 System.out.println("Selected Class not found");
             }
 
-            if(foundClass && !coachAvailableForClass) {
+            if (foundClass && !coachAvailableForClass) {
                 System.out.println("Class outside of Coaches Availability");
             }
-            
-            if(coachAvailableForClass) {
+
+            if (coachAvailableForClass) {
                 int j = 0;
-                for( int i = 0; i < availStartTime.size() && coachAvailableForClass; i++ ) {
+                for (int i = 0; i < availStartTime.size() && coachAvailableForClass; i++) {
 
-
-                    if(selectedClassStartTime.compareTo(availStartTime.get(0)) < 0) {
+                    if (selectedClassStartTime.compareTo(availStartTime.get(0)) < 0) {
                         System.out.println("Selected Class is before Coach Availability");
                         coachAvailableForClass = false;
                         break;
                     }
 
-                    
                     for (; j < classStartTime.size(); j++) {
-                        
-                        if(classEndTime.get(j).compareTo(availEndTime.get(i)) > 0) {
+
+                        if (classEndTime.get(j).compareTo(availEndTime.get(i)) > 0) {
                             break;
                         }
 
-                        if((selectedClassEndTime.compareTo(classStartTime.get(j)) > 0 &&
-                            selectedClassEndTime.compareTo(classEndTime.get(j)) < 0) ||
-                           (selectedClassStartTime.compareTo(classStartTime.get(j)) > 0 &&
-                            selectedClassStartTime.compareTo(classEndTime.get(j)) < 0) ||
-                            selectedClassStartTime.compareTo(classStartTime.get(j)) == 0 ||
-                            selectedClassEndTime.compareTo(classEndTime.get(j)) == 0) {
+                        if ((selectedClassEndTime.compareTo(classStartTime.get(j)) > 0 &&
+                                selectedClassEndTime.compareTo(classEndTime.get(j)) < 0) ||
+                                (selectedClassStartTime.compareTo(classStartTime.get(j)) > 0 &&
+                                        selectedClassStartTime.compareTo(classEndTime.get(j)) < 0)
+                                ||
+                                selectedClassStartTime.compareTo(classStartTime.get(j)) == 0 ||
+                                selectedClassEndTime.compareTo(classEndTime.get(j)) == 0) {
                             System.out.println("Selected Class overlaps with a Class already assigned to the Coach");
                             coachAvailableForClass = false;
                             break;
@@ -2285,12 +2280,12 @@ public class GymnasticsGymDB {
 
                     }
 
-                    if(selectedClassEndTime.compareTo(availEndTime.get(availStartTime.size() - 1)) > 0) {
+                    if (selectedClassEndTime.compareTo(availEndTime.get(availStartTime.size() - 1)) > 0) {
                         System.out.println("Selected Class is after Coach Availability");
                         coachAvailableForClass = false;
                         break;
                     }
-    
+
                 }
 
             }
@@ -2300,9 +2295,8 @@ public class GymnasticsGymDB {
                 System.out.println("");
             } else {
 
-                sql =   "INSERT INTO Class_Coach (coachID,classID ) " +
-                            "VALUES (?, ?)";
-
+                sql = "INSERT INTO Class_Coach (coachID,classID ) " +
+                        "VALUES (?, ?)";
 
                 preparedStatement = connection.prepareStatement(sql);
                 preparedStatement.setInt(1, coachID);
@@ -2321,8 +2315,7 @@ public class GymnasticsGymDB {
                 }
 
             }
-    
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -2369,7 +2362,7 @@ public class GymnasticsGymDB {
                     "WHERE className = ?";
 
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, apiParams.get("NewStatus"));
+            preparedStatement.setString(1, apiParams.get("ClassStatus"));
             preparedStatement.setString(2, apiParams.get("ClassName"));
             int rows = preparedStatement.executeUpdate();
 
@@ -2438,7 +2431,7 @@ public class GymnasticsGymDB {
                     "WHERE className = ?";
 
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, apiParams.get("NewEvent"));
+            preparedStatement.setString(1, apiParams.get("Event"));
             preparedStatement.setString(2, apiParams.get("ClassName"));
             int rows = preparedStatement.executeUpdate();
 
@@ -2505,7 +2498,7 @@ public class GymnasticsGymDB {
                     "WHERE className = ?";
 
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, apiParams.get("NewStartTime"));
+            preparedStatement.setString(1, apiParams.get("StartTime"));
             preparedStatement.setString(2, apiParams.get("ClassName"));
             int rows = preparedStatement.executeUpdate();
 
@@ -2579,9 +2572,9 @@ public class GymnasticsGymDB {
             preparedStatement = connection.prepareStatement(sql);
             // preparedStatement.setString(1, apiParams.get("NewFirstName"));
             // preparedStatement.setString(2, apiParams.get("NewLastName"));
-            preparedStatement.setString(1, apiParams.get("newPhoneNum"));
-            preparedStatement.setString(2, apiParams.get("newEmail"));
-            preparedStatement.setString(3, apiParams.get("userName"));
+            preparedStatement.setString(1, apiParams.get("PhoneNumber"));
+            preparedStatement.setString(2, apiParams.get("Email"));
+            preparedStatement.setString(3, apiParams.get("UserName"));
             int rows = preparedStatement.executeUpdate();
 
             // Commit the transaction

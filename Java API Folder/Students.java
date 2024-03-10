@@ -280,7 +280,7 @@ public class Students {
                     "command: updateStudentDiffLevel UserName:xxx DifficultyLevel:[Beginner|Intermediate|Advanced]");
         } else {
             HashMap<String, String> apiParams = Util
-                    .ParseInputParams(new String[] { "StudentUserName", "NewDifficultyLevel" });
+                    .ParseInputParams(new String[] { "UserName", "DifficultyLevel" });
             if (apiParams != null) {
                 try {
                     return GymnasticsGymDB.updateStudentDiffLevel(apiParams);
@@ -305,10 +305,10 @@ public class Students {
         System.out.println("");
         if (params == null || params.length == 0) {
             System.out.println("updateStudentStatus - Update Student Status");
-            System.out.println("command: updateStudentStatus StudentUserName:xxx NewStudentStatus:[Active|Inactive]");
+            System.out.println("command: updateStudentStatus UserName:xxx StudentStatus:[Active|Inactive]");
         } else {
             HashMap<String, String> apiParams = Util
-                    .ParseInputParams(new String[] { "StudentUserName", "NewStudentStatus" });
+                    .ParseInputParams(new String[] { "UserName", "StudentStatus" });
             if (apiParams != null) {
                 try {
                     return GymnasticsGymDB.updateStudentStatus(apiParams);
@@ -333,10 +333,10 @@ public class Students {
         System.out.println("");
         if (params == null || params.length == 0) {
             System.out.println("updateStudentEmerContact - Update Student Emergency Contact");
-            System.out.println("command: updateStudentEmerContact StudentUserName:xxx NewEmerContactUserName:xxx");
+            System.out.println("command: updateStudentEmerContact UserName:xxx NewEmerContactUserName:xxx");
         } else {
             HashMap<String, String> apiParams = Util
-                    .ParseInputParams(new String[] { "StudentUserName", "NewEmerContactUserName" });
+                    .ParseInputParams(new String[] { "UserName", "NewEmerContactUserName" });
             if (apiParams != null) {
                 try {
                     return GymnasticsGymDB.updateStudentEmerContact(apiParams);
@@ -364,9 +364,9 @@ public class Students {
         System.out.println("");
         if (params == null || params.length == 0) {
             System.out.println("addStudentToClass - Add Student to Class");
-            System.out.println("command: addStudentToClass StudentUserName:xxx ClassName:xxx");
+            System.out.println("command: addStudentToClass UserName:xxx ClassName:xxx");
         } else {
-            HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "StudentUserName", "ClassName" });
+            HashMap<String, String> apiParams = Util.ParseInputParams(new String[] { "UserName", "ClassName" });
             if (apiParams != null) {
                 try {
                     return GymnasticsGymDB.addStudentToClass(apiParams);

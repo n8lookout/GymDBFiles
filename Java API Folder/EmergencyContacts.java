@@ -37,11 +37,11 @@ public class EmergencyContacts {
         if (params == null || params.length == 0) {
             System.out.println(
                     "updateEmergencyContact - Update emergency contact information for a specific emergency contact");
-            System.out.println("command: updateEmergencyContact UserName:xxx NewPhoneNum:xxx NewEmail:xxx");
+            System.out.println("command: updateEmergencyContact UserName:xxx PhoneNum:xxx Email:xxx");
             return false;
         } else {
             HashMap<String, String> apiParams = Util
-                    .ParseInputParams(new String[] { "userName", "newPhoneNum", "newEmail" });
+                    .ParseInputParams(new String[] { "UserName", "PhoneNumber", "Email" });
             if (apiParams != null) {
                 try {
                     return GymnasticsGymDB.updateEmergencyContact(apiParams);

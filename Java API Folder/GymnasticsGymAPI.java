@@ -1,7 +1,9 @@
 /**
  * CSS 475 Team Project
+ * 
  * @team Hex Girls
- * @authors Anna Rivas, Nasheeta Lott, Christopher Long, Nathaniel Fincham, Noa Uritsky
+ * @authors Anna Rivas, Nasheeta Lott, Christopher Long, Nathaniel Fincham, Noa
+ *          Uritsky
  * @version 3/8/2024
  */
 
@@ -9,6 +11,7 @@ class GymnasticsGymAPI {
 
     /**
      * Metin Method
+     * 
      * @author The Team
      *
      */
@@ -19,30 +22,28 @@ class GymnasticsGymAPI {
         System.out.println("");
 
         String cmd = "";
-        while(!cmd.equalsIgnoreCase("exit"))
-        {
+        while (!cmd.equalsIgnoreCase("exit")) {
             System.out.print("GymnasticsGymSystem-# ");
             cmd = System.console().readLine();
 
             String[] mainCmdArr = cmd.split(" ", 2);
 
-            if(mainCmdArr.length > 1)
-            {
+            if (mainCmdArr.length > 1) {
                 System.out.println("Providing more than one command not supported");
                 System.out.println("");
                 continue;
             }
 
-            switch(mainCmdArr[0]) {
+            switch (mainCmdArr[0]) {
 
                 // General commands
                 case "?":
                 case "help":
                     listOfApis();
-                  break;
-                  case "exit":
-                  // quitting
-                  break;                  
+                    break;
+                case "exit":
+                    // quitting
+                    break;
 
                 // Students
                 case Students.cmdlistAllStudents:
@@ -72,6 +73,18 @@ class GymnasticsGymAPI {
                 case Students.cmdgetEmerContact_userName:
                     Students.getEmerContact_userName(mainCmdArr);
                     break;
+                case Students.cmdupdateStudentDiffLevel:
+                    Students.updateStudentDiffLevel(mainCmdArr);
+                    break;
+                case Students.cmdupdateStudentStatus:
+                    Students.updateStudentStatus(mainCmdArr);
+                    break;
+                case Students.cmdupdateStudentEmerContact:
+                    Students.updateStudentEmerContact(mainCmdArr);
+                    break;
+                case Students.cmdaddStudentToClass:
+                    Students.addStudentToClass(mainCmdArr);
+                    break;
                 case Students.cmdAddNewStudent:
                     Students.addNewStudent(mainCmdArr);
                     break;
@@ -88,7 +101,7 @@ class GymnasticsGymAPI {
                     break;
                 case Coaches.cmdlistAllAvailCoachByDateRange:
                     Coaches.listAllAvailCoachByDateRange(mainCmdArr);
-                    break;                
+                    break;
                 case Coaches.cmdgetCoachInfo:
                     Coaches.getCoachInfo(mainCmdArr);
                     break;
@@ -98,43 +111,64 @@ class GymnasticsGymAPI {
                 case Coaches.cmdgetCoach_userName:
                     Coaches.getCoach_userName(mainCmdArr);
                     break;
-
+                case Coaches.cmdShowCoachSchedule:
+                    Coaches.showCoachSchedule(mainCmdArr);
+                    break;
+                case Coaches.cmdchangeCoachSchedule:
+                    Coaches.changeCoachSchedule(mainCmdArr);
+                    break;
                 // Classes
                 case Classes.cmdaddNewClass:
                     Classes.addNewClass(mainCmdArr);
                     break;
                 case Classes.cmdlistAllClassesbyMissingCoach:
                     Classes.listAllClassesbyMissingCoach(mainCmdArr);
-                    break;                
+                    break;
                 case Classes.cmdlistAllClassesByDate:
                     Classes.listAllClassesByDate(mainCmdArr);
-                    break; 
+                    break;
                 case Classes.cmdlistAllClassAttendees:
                     Classes.listAllClassAttendees(mainCmdArr);
-                    break; 
+                    break;
                 case Classes.cmdlistClassByDifficultyLevel:
                     Classes.listClassByDifficultyLevel(mainCmdArr);
-                    break; 
+                    break;
                 case Classes.cmdlistClassByEvent:
                     Classes.listClassByEvent(mainCmdArr);
-                    break; 
+                    break;
                 case Classes.cmdlistClassByEventandDiffLevel:
                     Classes.listClassByEventandDiffLevel(mainCmdArr);
                     break;
                 case Classes.cmdsendStatusNotification:
                     Classes.sendStatusNotification(mainCmdArr);
-                    break; 
+                    break;
                 case Classes.cmdgetClassStatus:
                     Classes.getClassStatus(mainCmdArr);
-                    break; 
+                    break;
                 case Classes.cmdgetClassEvent:
                     Classes.getClassEvent(mainCmdArr);
-                    break; 
+                    break;
+                case Classes.cmdassignClassCoach:
+                    Classes.assignClassCoach(mainCmdArr);
+                case Classes.cmdupdateClassEvent:
+                    Classes.updateClassEvent(mainCmdArr);
+                    break;
+                case Classes.cmdupdateClassStatus:
+                    Classes.updateClassStatus(mainCmdArr);
+                    break;
+                case Classes.cmdupdateClassStartTime:
+                    Classes.updateClassStartTime(mainCmdArr);
+                    break;
+
+                // Emergency Contacts
+                case EmergencyContacts.cmdupdateEmergencyContact:
+                    EmergencyContacts.updateEmergencyContact(mainCmdArr);
+                    break;
 
                 default:
                     System.out.println("Command not recognized, please try again");
-              }
-              System.out.println("");
+            }
+            System.out.println("");
         }
 
         GymnasticsGymDB.disconnect();
@@ -142,11 +176,11 @@ class GymnasticsGymAPI {
 
     /**
      * List all available APIs
+     * 
      * @author The Team
      *
-     */    
-    private static void listOfApis()
-    {
+     */
+    private static void listOfApis() {
         Students.listAllStudents(null);
         Students.listAllStudentsByDiffLevel(null);
         Students.listAllStudentsByStatus(null);
@@ -156,12 +190,12 @@ class GymnasticsGymAPI {
         Students.getStudentDiffLevel(null);
         Students.getStudent_userName(null);
         Students.getEmerContact_userName(null);
+        Students.updateStudentDiffLevel(null);
+        Students.updateStudentStatus(null);
+        Students.updateStudentEmerContact(null);
+        Students.addStudentToClass(null);
         Students.addNewStudent(null);
-        // Students.updateStudentDiffLevel(null);
-        // Students.updateStudentStatus(null);
-        // Students.updateStudentEmerContact(null);
-        // Students.updateStudentSchedule(null);
-        // Students.addStudentToClass(null);
+
 
         Coaches.addNewCoach(null);
         Coaches.addNewCoachAvailability(null);
@@ -170,6 +204,8 @@ class GymnasticsGymAPI {
         Coaches.getCoachInfo(null);
         Coaches.getCoachAvail(null);
         Coaches.getCoach_userName(null);
+        Coaches.showCoachSchedule(null);
+        Coaches.changeCoachSchedule(null);
 
         Classes.addNewClass(null);
         Classes.listAllClassesbyMissingCoach(null);
@@ -182,10 +218,11 @@ class GymnasticsGymAPI {
         Classes.getClassStatus(null);
         Classes.getClassEvent(null);
         // Classes.updateClassCoach(null);
-        // Classes.updateClassEvent(null);
-        // Classes.updateClassStatus(null);
-        // Classes.updateClassStartTime(null);
+        Classes.updateClassEvent(null);
+        Classes.updateClassStatus(null);
+        Classes.updateClassStartTime(null);
+        Classes.assignClassCoach(null);
 
-        // EmergencyContacts.updateEmergencyContact(null);
-    }      
+        EmergencyContacts.updateEmergencyContact(null);
+    }
 }

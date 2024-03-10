@@ -78,14 +78,7 @@ public class Util {
         boolean valueOk = true;
 
         switch (paramName) {
-            case "                // Check to see if value is longer than 15 characters\r\n" + //
-                    "                if(paramValue.length() > 15)\r\n" + //
-                    "                {\r\n" + //
-                    "                    System.out.println(\" - Unexpected value, value can not be longer than 15 characters\");\r\n"
-                    + //
-                    "                    valueOk = false;\r\n" + //
-                    "                }\r\n" + //
-                    "":
+            case "DifficultyLevel":
                 if (!paramValue.equals("Beginner") && !paramValue.equals("Intermediate")
                         && !paramValue.equals("Advanced")) {
                     System.out.println(" - Unexpected value, expecting [Beginner|Intermediate|Advanced]");

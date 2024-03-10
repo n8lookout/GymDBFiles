@@ -21,12 +21,77 @@ public class Coaches {
     public static final String cmdgetCoachInfo = "getCoachInfo";
     public static final String cmdgetCoachAvail = "getCoachAvail";
     public static final String cmdgetCoach_userName = "getCoach_userName";
+    public static final String cmdaddNewCoach = "addNewCoach";
+    public static final String cmdaddNewCoachAvailability = "addNewCoachAvailability";
     public static final String cmdShowCoachSchedule = "showCoachSchedule";
     public static final String cmdchangeCoachSchedule = "changeCoachSchedule";
 
     //////////////////////////////////////////////////////////////
     // METHODS //
     //////////////////////////////////////////////////////////////
+
+    /**Create a specific coach’s schedule based on the availStartTime and
+     * availEndTime that the coach provided. Meaning, a coach schedule is
+     * made up from the available times that the coach enters in the program.
+     * @author Noa Uritsky
+     * 
+     * @param params
+     */
+    public static void addNewCoachAvailability(String[] params){
+        System.out.println("");
+        if(params == null || params.length == 0)
+        {
+            System.out.println("addNewCoachAvailability - based on the availStartTime and " +
+                                "availEndTime that the coach provided. Meaning, a coach schedule is" + 
+                                "made up from the available times that the coach enters in the program.");
+            System.out.println("command: addNewCoachAvailability username:xxx schedulename:xxx" + 
+                                "startTime:YYYY-MM-DD HH:MM endTime:YYYY-MM-DD HH:MM)");
+        }
+        else
+        {
+            HashMap<String, String> apiParams = Util.ParseInputParams(new String[] {"Username",
+                                "ScheduleName", "StartTime", "EndTime"});
+            if(apiParams != null)
+            {
+                try {
+                    GymnasticsGymDB.addNewCoachAvailability(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            } 
+        }
+    }
+
+    /**Insert newCoachInfo will add a new coach to the system with their contact information
+     * @author Noa Uritsky
+     * 
+     * @param params
+     */
+    public static void addNewCoach(String[] params){
+        System.out.println("");
+        if(params == null || params.length == 0)
+        {
+            System.out.println("addNewCoach - Insert newCoachInfo will add a new coach to the" +
+                                " system with their contact information");
+            System.out.println("command: addNewCoach username:xxx firstName:xxx" + 
+                                "lastName:xxx phoneNumber:xxx email:xxx)");
+        }
+        else
+        {
+            HashMap<String, String> apiParams = Util.ParseInputParams(new String[] {"Username",
+                                "FirstName", "LastName", "PhoneNumber", "Email"});
+            if(apiParams != null)
+            {
+                try {
+                    GymnasticsGymDB.addNewCoach(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            } 
+        }
+    }
 
     /**
      * Return list of all coaches

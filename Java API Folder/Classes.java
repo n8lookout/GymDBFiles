@@ -29,10 +29,44 @@ public class Classes {
     public static final String cmdupdateClassEvent = "updateClassEvent";
     public static final String cmdupdateClassStartTime = "updateClassStartTime";
     public static final String cmdassignClassCoach = "assignClassCoach";
+    public static final String cmdaddNewClass = "addNewClass";
+
 
     //////////////////////////////////////////////////////////////
     // METHODS //
     //////////////////////////////////////////////////////////////
+
+
+    /**Insert newClassInfointo system which allows for scheduling and categorizing 
+     * based on type and difficulty
+     * @author Noa Uritsky
+     * 
+     * @param params
+     */
+    public static void addNewClass(String[] params){
+        System.out.println("");
+        if(params == null || params.length == 0)
+        {
+            System.out.println("addNewClass - insert new class info into system");
+            System.out.println("command: addNewClass className:xxx startTime:YYYY-MM-DD HH:MM " + 
+                                "duration:XXM eventName:xxx difficultyName:xxx statusName:xxx)");
+        }
+        else
+        {
+            HashMap<String, String> apiParams = Util.ParseInputParams(new String[] {"className", 
+            "startTime", "duration", "event", "difficulty", "status"});
+            if(apiParams != null)
+            {
+                try {
+                    GymnasticsGymDB.addNewClass(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            } 
+        }
+
+    }
 
     /**
      * Return list of all active classes that do not have a coach assigned

@@ -85,7 +85,17 @@ class GymnasticsGymAPI {
                 case Students.cmdaddStudentToClass:
                     Students.addStudentToClass(mainCmdArr);
                     break;
+                case Students.cmdAddNewStudent:
+                    Students.addNewStudent(mainCmdArr);
+                    break;
+
                 // Coaches
+                case Coaches.cmdaddNewCoachAvailability:
+                    Coaches.addNewCoachAvailability(mainCmdArr);
+                    break;
+                case Coaches.cmdaddNewCoach:
+                    Coaches.addNewCoach(mainCmdArr);
+                    break;
                 case Coaches.cmdlistAllCoaches:
                     Coaches.listAllCoaches(mainCmdArr);
                     break;
@@ -108,6 +118,9 @@ class GymnasticsGymAPI {
                     Coaches.changeCoachSchedule(mainCmdArr);
                     break;
                 // Classes
+                case Classes.cmdaddNewClass:
+                    Classes.addNewClass(mainCmdArr);
+                    break;
                 case Classes.cmdlistAllClassesbyMissingCoach:
                     Classes.listAllClassesbyMissingCoach(mainCmdArr);
                     break;
@@ -181,7 +194,11 @@ class GymnasticsGymAPI {
         Students.updateStudentStatus(null);
         Students.updateStudentEmerContact(null);
         Students.addStudentToClass(null);
+        Students.addNewStudent(null);
 
+
+        Coaches.addNewCoach(null);
+        Coaches.addNewCoachAvailability(null);
         Coaches.listAllCoaches(null);
         Coaches.listAllAvailCoachByDateRange(null);
         Coaches.getCoachInfo(null);
@@ -190,6 +207,7 @@ class GymnasticsGymAPI {
         Coaches.showCoachSchedule(null);
         Coaches.changeCoachSchedule(null);
 
+        Classes.addNewClass(null);
         Classes.listAllClassesbyMissingCoach(null);
         Classes.listAllClassesByDate(null);
         Classes.listAllClassAttendees(null);

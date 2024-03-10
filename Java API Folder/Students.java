@@ -29,10 +29,47 @@ public class Students {
     public static final String cmdupdateStudentStatus = "updateStudentStatus";
     public static final String cmdupdateStudentEmerContact = "updateStudentEmerContact";
     public static final String cmdaddStudentToClass = "addStudentToClass";
+    public static final String cmdupdateStudentSchedule = "updateStudentSchedule";
+    public static final String cmdAddNewStudent = "addNewStudent";
 
     //////////////////////////////////////////////////////////////
     // METHODS //
     //////////////////////////////////////////////////////////////
+
+    /**Insert newStudentInfo will register new students into the system with their
+     * personal and contact information and will automatically set the student’s
+     * status to Active
+     * @author Noa Uritsky
+     * 
+     * @param params
+     */
+    public static void addNewStudent(String[] params)
+    {
+        System.out.println("");
+        if(params == null || params.length == 0)
+        {
+            System.out.println("addNewStudent - Insert newStudentInfo will register new  " +
+                                "students into the systemwith their personal and contact information " +
+                                "and will automatically set the student’s status to Active");
+            System.out.println("command: addNewStudent username:xxx firstName:xxx" + 
+                                "lastName:xxx birthDate:YYYY-MM-DD phoneNumber:xxx email:xxx)");
+        }
+        else
+        {
+            HashMap<String, String> apiParams = Util.ParseInputParams(new String[] {"Username",
+                                "FirstName", "LastName", "BirthDate", "PhoneNumber", "Email"});
+            if(apiParams != null)
+            {
+                try {
+                    GymnasticsGymDB.addNewStudent(apiParams);
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            } 
+        }
+    }
+
 
     /**
      * Returns a list of all students with their information including their

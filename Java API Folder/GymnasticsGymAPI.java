@@ -72,8 +72,17 @@ class GymnasticsGymAPI {
                 case Students.cmdgetEmerContact_userName:
                     Students.getEmerContact_userName(mainCmdArr);
                     break;
+                case Students.cmdAddNewStudent:
+                    Students.addNewStudent(mainCmdArr);
+                    break;
 
                 // Coaches
+                case Coaches.cmdaddNewCoachAvailability:
+                    Coaches.addNewCoachAvailability(mainCmdArr);
+                    break;
+                case Coaches.cmdaddNewCoach:
+                    Coaches.addNewCoach(mainCmdArr);
+                    break;
                 case Coaches.cmdlistAllCoaches:
                     Coaches.listAllCoaches(mainCmdArr);
                     break;
@@ -91,6 +100,9 @@ class GymnasticsGymAPI {
                     break;
 
                 // Classes
+                case Classes.cmdaddNewClass:
+                    Classes.addNewClass(mainCmdArr);
+                    break;
                 case Classes.cmdlistAllClassesbyMissingCoach:
                     Classes.listAllClassesbyMissingCoach(mainCmdArr);
                     break;                
@@ -144,18 +156,22 @@ class GymnasticsGymAPI {
         Students.getStudentDiffLevel(null);
         Students.getStudent_userName(null);
         Students.getEmerContact_userName(null);
+        Students.addNewStudent(null);
         // Students.updateStudentDiffLevel(null);
         // Students.updateStudentStatus(null);
         // Students.updateStudentEmerContact(null);
         // Students.updateStudentSchedule(null);
         // Students.addStudentToClass(null);
 
+        Coaches.addNewCoach(null);
+        Coaches.addNewCoachAvailability(null);
         Coaches.listAllCoaches(null);
         Coaches.listAllAvailCoachByDateRange(null);
         Coaches.getCoachInfo(null);
         Coaches.getCoachAvail(null);
         Coaches.getCoach_userName(null);
 
+        Classes.addNewClass(null);
         Classes.listAllClassesbyMissingCoach(null);
         Classes.listAllClassesByDate(null);
         Classes.listAllClassAttendees(null);

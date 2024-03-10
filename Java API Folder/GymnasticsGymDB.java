@@ -109,6 +109,78 @@ public class GymnasticsGymDB {
     //                       STUDENTS                           //
     //////////////////////////////////////////////////////////////
 
+    /**Insert newStudentInfo will register new students into the system with their
+     * personal and contact information and will automatically set the student’s
+     * status to Active
+     * @author Noa Uritsky
+     * 
+     * @param apiParams
+     * @return
+     * @throws SQLException
+     */
+    public static boolean addNewStudent(HashMap<String, String> apiParams) throws SQLException {
+        PreparedStatement preparedStatement = null;
+        Statement lockStatement = null;
+
+        try {
+            // Get DB connection
+            Connection connection = getConnection();
+
+            // Start a transaction
+            connection.setAutoCommit(false);
+
+            // Lock the Student_EmergContact and Student tables
+            lockStatement = connection.createStatement();
+            lockStatement.execute("LOCK TABLE Student IN EXCLUSIVE MODE");
+
+            // SQL PreparedStatement
+            String sql = "INSERT INTO Student(student_Username, firstName, lastName, " +
+            "birthDate, phoneNumber, email, isActive) " +
+            "Values( ?, ?, ?, ?::date, ?, ?, TRUE)";
+
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, apiParams.get("Username"));
+            preparedStatement.setString(2, apiParams.get("FirstName"));
+            preparedStatement.setString(3, apiParams.get("LastName"));
+            preparedStatement.setString(4, apiParams.get("BirthDate"));
+            preparedStatement.setString(5, apiParams.get("PhoneNumber"));
+            preparedStatement.setString(6, apiParams.get("Email"));
+            int rows = preparedStatement.executeUpdate();
+
+            // Commit the transaction
+            connection.commit();
+
+            if (rows > 0) {
+                System.out.println("New student added successfully !");
+                System.out.println("");
+                return true;
+            } else {
+                System.out.println("Adding new student failed !");
+                System.out.println("");
+                return false;
+            }
+    } catch (SQLException e) {
+        // Rollback the transaction in case of an error
+        if (connection != null) {
+            connection.rollback();
+        }
+
+        e.printStackTrace();
+        return false;
+    } finally {
+        if (preparedStatement != null) {
+            preparedStatement.close();
+        }
+        if (lockStatement != null) {
+            lockStatement.close();
+        }
+        // Reset auto-commit mode
+        if (connection != null) {
+            connection.setAutoCommit(true);
+        }
+    }
+    }
+
     /**
      * Returns a list of all students with their information including their usernames. The list is ordered by their last names in aplhabetic order.
      * @author Anna Rivas
@@ -926,6 +998,75 @@ public class GymnasticsGymDB {
     //                       COACHES                            //
     //////////////////////////////////////////////////////////////
 
+    /**Insert newCoachInfo will add a new coach to the system with their contact information
+     * @author Noa Uritsky
+     * 
+     * @param apiParams
+     * @return
+     * @throws SQLException
+     */
+    public static boolean addNewCoach(HashMap<String, String> apiParams) throws SQLException {
+        PreparedStatement preparedStatement = null;
+        Statement lockStatement = null;
+
+        try {
+            // Get DB connection
+            Connection connection = getConnection();
+
+            // Start a transaction
+            connection.setAutoCommit(false);
+
+            // Lock the Student_EmergContact and Student tables
+            lockStatement = connection.createStatement();
+            lockStatement.execute("LOCK TABLE Coach, Coach_Availability IN EXCLUSIVE MODE");
+
+            // SQL PreparedStatement
+            String sql = "INSERT INTO Coach_Availability( coachID, scheduleName, " +
+            "availstartTime, availendTime) " +
+            "Values( (SELECT coachID FROM Coach WHERE Coach_Username = ?), ?, " + 
+             "?::timestamp, ?::timestamp)";
+
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, apiParams.get("Username"));
+            preparedStatement.setString(2, apiParams.get("ScheduleName"));
+            preparedStatement.setString(3, apiParams.get("StartTime"));
+            preparedStatement.setString(4, apiParams.get("EndTime"));
+            int rows = preparedStatement.executeUpdate();
+
+            // Commit the transaction
+            connection.commit();
+
+            if (rows > 0) {
+                System.out.println("New coach availability added successfully !");
+                System.out.println("");
+                return true;
+            } else {
+                System.out.println("Adding new coach availability failed !");
+                System.out.println("");
+                return false;
+            }
+    } catch (SQLException e) {
+        // Rollback the transaction in case of an error
+        if (connection != null) {
+            connection.rollback();
+        }
+
+        e.printStackTrace();
+        return false;
+    } finally {
+        if (preparedStatement != null) {
+            preparedStatement.close();
+        }
+        if (lockStatement != null) {
+            lockStatement.close();
+        }
+        // Reset auto-commit mode
+        if (connection != null) {
+            connection.setAutoCommit(true);
+        }
+    }
+    }
+
     /**
      * Return list of all coaches
      * @author Anna Rivas
@@ -1229,6 +1370,79 @@ public class GymnasticsGymDB {
     //////////////////////////////////////////////////////////////
     //                       CLASSES                           //
     //////////////////////////////////////////////////////////////
+
+    /**Insert newClassInfointo system which allows for scheduling and categorizing 
+     * based on type and difficulty
+     * @author Noa Uritsky
+     * 
+     * @param apiParams
+     * @throws SQLException
+     */
+    public static boolean addNewClass(HashMap<String, String> apiParams) throws SQLException {
+        PreparedStatement preparedStatement = null;
+        Statement lockStatement = null;
+
+        try {
+            // Get DB connection
+            Connection connection = getConnection();
+
+            // Start a transaction
+            connection.setAutoCommit(false);
+
+            // Lock the Student_EmergContact and Student tables
+            lockStatement = connection.createStatement();
+            lockStatement.execute("LOCK TABLE Class, DifficultyLevel, Event, Class_Status IN EXCLUSIVE MODE");
+
+            // SQL PreparedStatement
+            String sql = "INSERT INTO Class(className, startTime, duration, eventID, " +
+            "difficultyID, statusID) " +
+            "Values( ?, TO_TIMESTAMP(?,'YYYY-MM-DD HH24:MI'), ?::interval," +
+            "(SELECT eventID FROM Event WHERE eventName = ?), " +
+            "(SELECT difficultyID FROM DifficultyLevel WHERE difficultyName = ?), "+
+            "(SELECT statusID FROM Class_Status WHERE statusName = ?)) ";
+
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, apiParams.get("className"));
+            preparedStatement.setString(2, apiParams.get("startTime"));
+            preparedStatement.setString(3, apiParams.get("duration"));
+            preparedStatement.setString(4, apiParams.get("event"));
+            preparedStatement.setString(5, apiParams.get("difficulty"));
+            preparedStatement.setString(6, apiParams.get("status"));
+            int rows = preparedStatement.executeUpdate();
+
+            // Commit the transaction
+            connection.commit();
+
+            if (rows > 0) {
+                System.out.println("New class added successfully !");
+                System.out.println("");
+                return true;
+            } else {
+                System.out.println("Adding new class failed !");
+                System.out.println("");
+                return false;
+            }
+    } catch (SQLException e) {
+        // Rollback the transaction in case of an error
+        if (connection != null) {
+            connection.rollback();
+        }
+
+        e.printStackTrace();
+        return false;
+    } finally {
+        if (preparedStatement != null) {
+            preparedStatement.close();
+        }
+        if (lockStatement != null) {
+            lockStatement.close();
+        }
+        // Reset auto-commit mode
+        if (connection != null) {
+            connection.setAutoCommit(true);
+        }
+    }
+}
 
     /**
      * Return list of all active classes that don’t have a coach assigned

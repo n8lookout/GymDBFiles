@@ -187,6 +187,14 @@ public class Util {
                     valueOk = false;
                 }
                 break;
+            case "BirthDate":
+                try {
+                    LocalDate.parse(paramValue, df);
+                } catch (DateTimeParseException e) {
+                    valueOk = false;
+                    System.out.println(" - Unexpected value, expecting Date format yyyy-MM-dd");
+                }
+                break;
             default:
                 // Check for null value or empty string; else do nothing
                 if (paramValue == null || paramValue.length() == 0) {

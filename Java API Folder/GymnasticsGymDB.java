@@ -121,6 +121,7 @@ public class GymnasticsGymDB {
     public static boolean addNewStudent(HashMap<String, String> apiParams) throws SQLException {
         PreparedStatement preparedStatement = null;
         Statement lockStatement = null;
+        ResultSet verifSet = null;
 
         try {
             // Get DB connection
@@ -133,8 +134,18 @@ public class GymnasticsGymDB {
             lockStatement = connection.createStatement();
             lockStatement.execute("LOCK TABLE Student IN EXCLUSIVE MODE");
 
+            //check to make sure username does not already exist
+            String sql = "SELECT studentID FROM student WHERE student_username = ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, apiParams.get("Username"));
+            verifSet = preparedStatement.executeQuery();
+            if(verifSet != null && verifSet.next()){
+                System.out.println("Username already exists. Enter different username");
+                return false;
+            }
+
             // SQL PreparedStatement
-            String sql = "INSERT INTO Student(student_Username, firstName, lastName, " +
+            sql = "INSERT INTO Student(student_Username, firstName, lastName, " +
             "birthDate, phoneNumber, email, isActive) " +
             "Values( ?, ?, ?, ?::date, ?, ?, TRUE)";
 
@@ -1091,6 +1102,7 @@ public class GymnasticsGymDB {
     public static boolean addNewCoach(HashMap<String, String> apiParams) throws SQLException {
         PreparedStatement preparedStatement = null;
         Statement lockStatement = null;
+        ResultSet verifSet = null;
 
         try {
             // Get DB connection
@@ -1099,12 +1111,22 @@ public class GymnasticsGymDB {
             // Start a transaction
             connection.setAutoCommit(false);
 
-            // Lock the Student_EmergContact and Student tables
+            // Lock the tables
             lockStatement = connection.createStatement();
             lockStatement.execute("LOCK TABLE Coach IN EXCLUSIVE MODE");
 
+            //check to make sure username does not already exist
+            String sql = "SELECT coachID FROM coach WHERE coach_username = ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, apiParams.get("Username"));
+            verifSet = preparedStatement.executeQuery();
+            if(verifSet != null && verifSet.next()){
+                System.out.println("Username already exists. Enter different username");
+                return false;
+            }
+
             // SQL PreparedStatement
-            String sql = "INSERT INTO Coach( Coach_Username, firstName, " +
+            sql = "INSERT INTO Coach( Coach_Username, firstName, " +
             "lastName, Phonenumber, email) " +
             "Values( ?, ?, ?, ?, ?)";
 
@@ -1162,6 +1184,7 @@ public class GymnasticsGymDB {
     public static boolean addNewCoachAvailability(HashMap<String, String> apiParams) throws SQLException {
         PreparedStatement preparedStatement = null;
         Statement lockStatement = null;
+        ResultSet verifSet = null;
 
         try {
             // Get DB connection
@@ -1174,8 +1197,28 @@ public class GymnasticsGymDB {
             lockStatement = connection.createStatement();
             lockStatement.execute("LOCK TABLE Coach, Coach_Availability IN EXCLUSIVE MODE");
 
+            //check to make sure coach username exists
+            String sql = "SELECT coachID FROM coach WHERE coach_username = ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, apiParams.get("Username"));
+            verifSet = preparedStatement.executeQuery();
+            if(verifSet == null || !verifSet.next()){
+                System.out.println("Coach Username does not exists. Enter different username");
+                return false;
+            }
+            verifSet = null;
+            //check to make sure schedule name does not already exist
+            sql = "SELECT coachScheduleID FROM coach_availability WHERE scheduleName = ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, apiParams.get("ScheduleName"));
+            verifSet = preparedStatement.executeQuery();
+            if(verifSet != null && verifSet.next()){
+                System.out.println("A shedule of that name already exist.");
+                return false;
+            }
+
             // SQL PreparedStatement
-            String sql = "INSERT INTO Coach_Availability( coachID, scheduleName, " +
+            sql = "INSERT INTO Coach_Availability( coachID, scheduleName, " +
             "availstartTime, availendTime) " +
             "Values( (SELECT coachID FROM Coach WHERE Coach_Username = ?), ?, " + 
              "?::timestamp, ?::timestamp)";
@@ -2834,6 +2877,8 @@ public class GymnasticsGymDB {
     public static boolean addNewEmergencyContact(HashMap<String, String> apiParams) throws SQLException {
         PreparedStatement preparedStatement = null;
         Statement lockStatement = null;
+        ResultSet verifSet = null;
+
         try {
             // Get DB connection
             Connection connection = getConnection();
@@ -2845,8 +2890,28 @@ public class GymnasticsGymDB {
             lockStatement = connection.createStatement();
             lockStatement.execute("LOCK TABLE Emergency_Contact, Student_EmergContact IN EXCLUSIVE MODE");
 
+            //check if student username exists
+            String sql = "SELECT studentID FROM student WHERE student_username = ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, apiParams.get("Student_Username"));
+            verifSet = preparedStatement.executeQuery();
+            if(verifSet == null || !verifSet.next()){
+                System.out.println("Student Username does not exist. Check student registration");
+                return false;
+            }
+            verifSet = null;
+            //check to make sure emergcon_username does not already exist
+            sql = "SELECT EmergencyContactID FROM Emergency_Contact WHERE emergcon_username = ?";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, apiParams.get("EmergencyContact_Username"));
+            verifSet = preparedStatement.executeQuery();
+            if(verifSet != null && verifSet.next()){
+                System.out.println("Emergency Contact Username already exists. Enter different username");
+                return false;
+            }
+
             // SQL PreparedStatement
-            String sql = "INSERT INTO Emergency_Contact(emergcon_userName, " +
+            sql = "INSERT INTO Emergency_Contact(emergcon_userName, " +
                         " firstName, lastName, phoneNumber, email) " +
                         "Values(?, ?, ?, ?, ?)";
 

@@ -164,6 +164,9 @@ class GymnasticsGymAPI {
                 case EmergencyContacts.cmdupdateEmergencyContact:
                     EmergencyContacts.updateEmergencyContact(mainCmdArr);
                     break;
+                case EmergencyContacts.cmdaddNewEmergencyContact:
+                    EmergencyContacts.addNewEmergencyContact(mainCmdArr);
+                    break;
 
                 default:
                     System.out.println("Command not recognized, please try again");
@@ -224,5 +227,6 @@ class GymnasticsGymAPI {
         Classes.assignClassCoach(null);
 
         EmergencyContacts.updateEmergencyContact(null);
+        EmergencyContacts.addNewEmergencyContact(null);
     }
 }

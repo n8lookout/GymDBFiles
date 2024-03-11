@@ -37,7 +37,7 @@ public class Coaches {
      * 
      * @param params
      */
-    public static void addNewCoachAvailability(String[] params){
+    public static boolean addNewCoachAvailability(String[] params){
         System.out.println("");
         if(params == null || params.length == 0)
         {
@@ -46,6 +46,7 @@ public class Coaches {
                                 "made up from the available times that the coach enters in the program.");
             System.out.println("command: addNewCoachAvailability username:xxx schedulename:xxx" + 
                                 "startTime:YYYY-MM-DD HH:MM endTime:YYYY-MM-DD HH:MM)");
+            return false;
         }
         else
         {
@@ -54,12 +55,13 @@ public class Coaches {
             if(apiParams != null)
             {
                 try {
-                    GymnasticsGymDB.addNewCoachAvailability(apiParams);
+                    return GymnasticsGymDB.addNewCoachAvailability(apiParams);
                 } catch (SQLException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-            } 
+            }
+            return false;
         }
     }
 
@@ -68,7 +70,7 @@ public class Coaches {
      * 
      * @param params
      */
-    public static void addNewCoach(String[] params){
+    public static boolean addNewCoach(String[] params){
         System.out.println("");
         if(params == null || params.length == 0)
         {
@@ -76,6 +78,7 @@ public class Coaches {
                                 " system with their contact information");
             System.out.println("command: addNewCoach username:xxx firstName:xxx" + 
                                 "lastName:xxx phoneNumber:xxx email:xxx)");
+            return false;
         }
         else
         {
@@ -84,12 +87,14 @@ public class Coaches {
             if(apiParams != null)
             {
                 try {
-                    GymnasticsGymDB.addNewCoach(apiParams);
+                    return GymnasticsGymDB.addNewCoach(apiParams);
                 } catch (SQLException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             } 
+
+            return false;
         }
     }
 

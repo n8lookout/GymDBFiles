@@ -18,10 +18,39 @@ public class EmergencyContacts {
     //////////////////////////////////////////////////////////////
 
     public static final String cmdupdateEmergencyContact = "updateEmergencyContact";
+    public static final String cmdaddNewEmergencyContact = "addNewEmergencyContact";
 
     //////////////////////////////////////////////////////////////
     // METHODS //
     //////////////////////////////////////////////////////////////
+
+    /**Insert newEmerContactInfo and associates the EmergencyContact to a student
+     * @author Noa Uritsky
+     * 
+     * @param params
+     */
+    public static boolean addNewEmergencyContact(String[] params){
+        System.out.println("");
+        if (params == null || params.length == 0) {
+            System.out.println("addNewEmergencyContact - Insert newEmerContactInfo and"+
+                                " associates the EmergencyContact to a student");
+            System.out.println("command: student_userName:xxx emergcon_userName:xxx" +
+            " firstName:xxx lastName:xxx phoneNumber:xxx email:xxx");
+            return false;
+        } else {
+            HashMap<String, String> apiParams = Util
+                    .ParseInputParams(new String[] { "Student_Username", "EmergencyContact_Username",
+                    "FirstName", "LastName", "PhoneNumber", "Email" });
+            if (apiParams != null) {
+                try {
+                    return GymnasticsGymDB.addNewEmergencyContact(apiParams);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return false;
+    }
 
     /**
      * Update emergency contact information for a specific emergency contact

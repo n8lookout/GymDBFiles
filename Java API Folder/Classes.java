@@ -43,13 +43,14 @@ public class Classes {
      * 
      * @param params
      */
-    public static void addNewClass(String[] params){
+    public static boolean addNewClass(String[] params){
         System.out.println("");
         if(params == null || params.length == 0)
         {
             System.out.println("addNewClass - insert new class info into system");
             System.out.println("command: addNewClass className:xxx startTime:YYYY-MM-DD HH:MM " + 
                                 "duration:XXM eventName:xxx difficultyName:xxx statusName:xxx)");
+            return false;
         }
         else
         {
@@ -58,12 +59,13 @@ public class Classes {
             if(apiParams != null)
             {
                 try {
-                    GymnasticsGymDB.addNewClass(apiParams);
+                    return GymnasticsGymDB.addNewClass(apiParams);
                 } catch (SQLException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             } 
+            return false;
         }
 
     }

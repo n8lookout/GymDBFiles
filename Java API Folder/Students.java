@@ -43,7 +43,7 @@ public class Students {
      * 
      * @param params
      */
-    public static void addNewStudent(String[] params)
+    public static boolean addNewStudent(String[] params)
     {
         System.out.println("");
         if(params == null || params.length == 0)
@@ -53,6 +53,7 @@ public class Students {
                                 "and will automatically set the student’s status to Active");
             System.out.println("command: addNewStudent username:xxx firstName:xxx" + 
                                 "lastName:xxx birthDate:YYYY-MM-DD phoneNumber:xxx email:xxx)");
+            return false;
         }
         else
         {
@@ -61,12 +62,13 @@ public class Students {
             if(apiParams != null)
             {
                 try {
-                    GymnasticsGymDB.addNewStudent(apiParams);
+                    return GymnasticsGymDB.addNewStudent(apiParams);
                 } catch (SQLException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             } 
+            return false;
         }
     }
 

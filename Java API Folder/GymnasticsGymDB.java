@@ -26,7 +26,7 @@ public class GymnasticsGymDB {
     // JDBC URL, username, and password of PostgreSQL server
     private static final String URL = "jdbc:postgresql://localhost:5432/gymnasticsgym";
     private static final String USER = "postgres";
-    private static final String PASSWORD = "2606";
+    private static final String PASSWORD = "Phushkola2$";
     private static Connection connection = null;
 
     //////////////////////////////////////////////////////////////
@@ -2824,6 +2824,82 @@ public class GymnasticsGymDB {
     // Emergency Contact //
     //////////////////////////////////////////////////////////////
 
+    /**Insert newEmerContactInfo and associates the EmergencyContact to a student
+     * @Author Noa Uritsky
+     * 
+     * @param apiParams
+     * @return
+     * @throws SQLException
+     */
+    public static boolean addNewEmergencyContact(HashMap<String, String> apiParams) throws SQLException {
+        PreparedStatement preparedStatement = null;
+        Statement lockStatement = null;
+        try {
+            // Get DB connection
+            Connection connection = getConnection();
+
+            // Start a transaction
+            connection.setAutoCommit(false);
+
+            // Lock the EmergencyContact table
+            lockStatement = connection.createStatement();
+            lockStatement.execute("LOCK TABLE Emergency_Contact, Student_EmergContact IN EXCLUSIVE MODE");
+
+            // SQL PreparedStatement
+            String sql = "INSERT INTO Emergency_Contact(emergcon_userName, " +
+                        " firstName, lastName, phoneNumber, email) " +
+                        "Values(?, ?, ?, ?, ?)";
+
+            preparedStatement = connection.prepareStatement(sql);
+            
+            preparedStatement.setString(1, apiParams.get("EmergencyContact_Username"));
+            preparedStatement.setString(2, apiParams.get("FirstName"));
+            preparedStatement.setString(3, apiParams.get("LastName"));
+            preparedStatement.setString(4, apiParams.get("PhoneNumber"));
+            preparedStatement.setString(5, apiParams.get("Email"));
+            int rows = preparedStatement.executeUpdate();
+
+            sql = "INSERT INTO Student_EmergContact(Student_Username, Emergcon_Username) " +
+                "Values(?, ?)";
+            
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, apiParams.get("Student_Username"));
+            preparedStatement.setString(2, apiParams.get("EmergencyContact_Username"));
+            int rows2 = preparedStatement.executeUpdate();
+
+            // Commit the transaction
+            connection.commit();
+
+            if (rows > 0 && rows2 > 0) {
+                System.out.println("Emergency contact added successfully !");
+                System.out.println("");
+                return true;
+            } else {
+                System.out.println("Adding emergency contact failed !");
+                System.out.println("");
+                return false;
+            }
+        } catch (SQLException e) {
+            // Rollback the transaction in case of an error
+            if (connection != null) {
+                connection.rollback();
+            }
+
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (lockStatement != null) {
+                lockStatement.close();
+            }
+            // Reset auto-commit mode
+            if (connection != null) {
+                connection.setAutoCommit(true);
+            }
+        }
+    }
     /**
      * Updates the emegency contact information for a specfic contact
      * User will provide emergcon_username and the new contact information (first

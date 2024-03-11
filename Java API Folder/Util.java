@@ -92,14 +92,14 @@ public class Util {
                 }
                 break;
             case "ClassStatus":
-                // Check to see if status is not = 'Coming up', 'In progess', 'Cancelled',
+                // Check to see if status is not = 'Coming up', 'In progress', 'Cancelled',
                 // 'Postponed', 'Moved up', 'Completed', or null
-                if (!paramValue.equals("Coming up") && !paramValue.equals("In progess")
+                if (!paramValue.equals("Coming up") && !paramValue.equals("In progress")
                         && !paramValue.equals("Cancelled")
                         && !paramValue.equals("Postponed") && !paramValue.equals("Moved up")
                         && !paramValue.equals("Completed")) {
                     System.out.println(
-                            " - Unexpected value, expecting [Coming up|In progess|Cancelled|Postponed|Moved up|Completed]");
+                            " - Unexpected value, expecting [Coming up|In progress|Cancelled|Postponed|Moved up|Completed]");
                     valueOk = false;
                 }
                 break;

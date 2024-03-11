@@ -836,17 +836,35 @@ public class GymnasticsGymDB {
      * Pass student's username and new emergency contact username
      * Returns boolean for success or failure
      * 
-     * @author @n8lookout
+     * @author @n8lookout (with assitance of Anna Rivas)
      * 
      * @param apiParams
      * @throws SQLException
      */
     public static boolean updateStudentEmerContact(HashMap<String, String> apiParams) throws SQLException {
         PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatementEmerContact = null;
+        ResultSet resultSet = null;
         Statement lockStatement = null;
         try {
             // Get DB connection
             Connection connection = getConnection();
+
+            // SQL PreparedStatement
+            String sqlEmer = "SELECT Emergency_Contact.emergcon_userName " +
+                    "FROM Emergency_Contact " +
+                    "WHERE Emergency_Contact.emergcon_userName = ?";
+
+            preparedStatementEmerContact = connection.prepareStatement(sqlEmer);
+            preparedStatementEmerContact.setString(1, apiParams.get("NewEmerContactUserName"));
+            resultSet = preparedStatementEmerContact.executeQuery();
+
+            if(resultSet == null || !resultSet.next())
+            {
+                System.out.println("Emergency contact User Name do not exists !");
+                System.out.println("");
+                return false;
+            }
 
             // Start a transaction
             connection.setAutoCommit(false);
@@ -886,6 +904,14 @@ public class GymnasticsGymDB {
             e.printStackTrace();
             return false;
         } finally {
+            if(preparedStatementEmerContact != null)
+            {
+                preparedStatementEmerContact.close();
+            }
+            if(resultSet != null)
+            {
+                resultSet.close();
+            }
             if (preparedStatement != null) {
                 preparedStatement.close();
             }
@@ -974,18 +1000,48 @@ public class GymnasticsGymDB {
      * Check if student has other classes at the same time
      * Returns boolean for success or failure
      * 
-     * @author @n8lookout
+     * @author @n8lookout (with assitance of Anna Rivas)
      * 
      * @param apiParams
      * @throws SQLException
      */
     public static boolean addStudentToClass(HashMap<String, String> apiParams) throws SQLException {
         PreparedStatement preparedStatement = null;
+        PreparedStatement preparedStatementS = null;
+        PreparedStatement preparedStatementC = null;
+        ResultSet resultSetS = null;
+        ResultSet resultSetC = null;
         ResultSet resultSet = null;
         Statement lockStatement = null;
         try {
             // Get DB connection
             Connection connection = getConnection();
+
+            String sqlS = "SELECT Student.student_userName " +
+                    "FROM Student " +
+                    "WHERE Student.student_userName = ?";
+            preparedStatementS = connection.prepareStatement(sqlS);
+            preparedStatementS.setString(1, apiParams.get("UserName"));
+            resultSetS = preparedStatementS.executeQuery();
+            if(resultSetS == null || !resultSetS.next())
+            {
+                System.out.println("Student UserName do not exists !");
+                System.out.println("");
+                return false;
+            }
+
+            String sqlC = "SELECT Class.className " +
+            "FROM Class " +
+            "WHERE Class.className = ?";
+            preparedStatementC = connection.prepareStatement(sqlC);
+            preparedStatementC.setString(1, apiParams.get("ClassName"));
+            resultSetC = preparedStatementC.executeQuery();
+            if(resultSetC == null || !resultSetC.next())
+            {
+                System.out.println("Class Name do not exists !");
+                System.out.println("");
+                return false;
+            }
 
             // Start a transaction
             connection.setAutoCommit(false);
@@ -1075,8 +1131,20 @@ public class GymnasticsGymDB {
             if (preparedStatement != null) {
                 preparedStatement.close();
             }
+            if (preparedStatementS != null) {
+                preparedStatementS.close();
+            }
+            if (preparedStatementC != null) {
+                preparedStatementC.close();
+            }
             if (resultSet != null) {
                 resultSet.close();
+            }
+            if (resultSetS != null) {
+                resultSetS.close();
+            }
+            if (resultSetC != null) {
+                resultSetC.close();
             }
             if (lockStatement != null) {
                 lockStatement.close();

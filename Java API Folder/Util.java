@@ -172,6 +172,12 @@ public class Util {
                 }            
                 break;
             case "StartTime":
+                try {
+                    LocalDate.parse(paramValue, dtf);
+                } catch (DateTimeParseException e) {
+                    valueOk = false;
+                    System.out.println(" - Unexpected value, expecting DateTime format yyyy-MM-dd HH:mm");
+                }
             case "EndTime":
                 try {
                     LocalDate.parse(paramValue, dtf);
@@ -181,6 +187,13 @@ public class Util {
                 }
                 break;
             case "Date":
+                try {
+                    LocalDate.parse(paramValue, df);
+                } catch (DateTimeParseException e) {
+                    valueOk = false;
+                    System.out.println(" - Unexpected value, expecting Date format yyyy-MM-dd");
+                }
+            break;
             case "BirthDate":
                 try {
                     LocalDate.parse(paramValue, df);

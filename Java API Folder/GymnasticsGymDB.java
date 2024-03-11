@@ -1894,11 +1894,11 @@ public class GymnasticsGymDB {
 
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, apiParams.get("className"));
-            preparedStatement.setString(2, apiParams.get("startTime"));
+            preparedStatement.setString(2, apiParams.get("StartTime"));
             preparedStatement.setString(3, apiParams.get("duration"));
-            preparedStatement.setString(4, apiParams.get("event"));
-            preparedStatement.setString(5, apiParams.get("difficulty"));
-            preparedStatement.setString(6, apiParams.get("status"));
+            preparedStatement.setString(4, apiParams.get("Event"));
+            preparedStatement.setString(5, apiParams.get("DifficultyLevel"));
+            preparedStatement.setString(6, apiParams.get("ClassStatus"));
             int rows = preparedStatement.executeUpdate();
 
             // Commit the transaction

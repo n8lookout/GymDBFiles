@@ -114,46 +114,64 @@ public class Util {
                 }
             case "UserName":
                 // Check to see if value is longer than 15 characters
-                if (paramValue.length() > 15) {
+                if(paramValue == null || paramValue.length() == 0)
+                {
+                    System.out.println(" - Unexpected value, value can not be null or empty");
+                    valueOk = false;
+                }                    
+                else if (paramValue.length() > 15) {
                     System.out.println(" - Unexpected value, value can not be longer than 15 characters");
                     valueOk = false;
                 }
                 break;
             case "FirstName":
                 // Check to see if value is longer than 15 characters
-                if (paramValue.length() > 15) {
+                if(paramValue == null || paramValue.length() == 0)
+                {
+                    System.out.println(" - Unexpected value, value can not be null or empty");
+                    valueOk = false;
+                }                    
+                else if (paramValue.length() > 15) {
                     System.out.println(" - Unexpected value, value can not be longer than 15 characters");
                     valueOk = false;
                 }
                 break;
             case "LastName":
                 // Check to see if value is longer than 15 characters
-                if (paramValue.length() > 25) {
+                if(paramValue == null || paramValue.length() == 0)
+                {
+                    System.out.println(" - Unexpected value, value can not be null or empty");
+                    valueOk = false;
+                }                    
+                else if (paramValue.length() > 25) {
                     System.out.println(" - Unexpected value, value can not be longer than 15 characters");
                     valueOk = false;
                 }
                 break;
             case "ClassName":
                 // Check to see if value is longer than 15 characters
-                if (paramValue.length() > 15) {
+                if(paramValue == null || paramValue.length() == 0)
+                {
+                    System.out.println(" - Unexpected value, value can not be null or empty");
+                    valueOk = false;
+                }                    
+                else if (paramValue.length() > 15) {
                     System.out.println(" - Unexpected value, value can not be longer than 15 characters");
                     valueOk = false;
                 }
                 break;
             case "EventName":
-                if (paramValue.length() == 0) {
-                    System.out.println(" - Unexpected value, value can not be empty");
+                if(paramValue == null || paramValue.length() == 0)
+                {
+                    System.out.println(" - Unexpected value, value can not be null or empty");
                     valueOk = false;
-                }
+                }                    
+                else if (paramValue.length() > 20) {
+                    System.out.println(" - Unexpected value, value can not be longer than 20 characters");
+                    valueOk = false;
+                }            
                 break;
             case "StartTime":
-                try {
-                    LocalDate.parse(paramValue, dtf);
-                } catch (DateTimeParseException e) {
-                    valueOk = false;
-                    System.out.println(" - Unexpected value, expecting DateTime format yyyy-MM-dd HH:mm");
-                }
-                break;
             case "EndTime":
                 try {
                     LocalDate.parse(paramValue, dtf);
@@ -163,6 +181,7 @@ public class Util {
                 }
                 break;
             case "Date":
+            case "BirthDate":
                 try {
                     LocalDate.parse(paramValue, df);
                 } catch (DateTimeParseException e) {
@@ -185,14 +204,6 @@ public class Util {
                 if (paramValue.length() > 35 || !matcher.matches()) {
                     System.out.println(" - Unexpected value, expecting valid email address");
                     valueOk = false;
-                }
-                break;
-            case "BirthDate":
-                try {
-                    LocalDate.parse(paramValue, df);
-                } catch (DateTimeParseException e) {
-                    valueOk = false;
-                    System.out.println(" - Unexpected value, expecting Date format yyyy-MM-dd");
                 }
                 break;
             default:

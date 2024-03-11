@@ -1893,7 +1893,7 @@ public class GymnasticsGymDB {
             "(SELECT statusID FROM Class_Status WHERE statusName = ?)) ";
 
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, apiParams.get("className"));
+            preparedStatement.setString(1, apiParams.get("ClassName"));
             preparedStatement.setString(2, apiParams.get("StartTime"));
             preparedStatement.setString(3, apiParams.get("duration"));
             preparedStatement.setString(4, apiParams.get("Event"));

@@ -54,7 +54,7 @@ public class Classes {
         }
         else
         {
-            HashMap<String, String> apiParams = Util.ParseInputParams(new String[] {"className", 
+            HashMap<String, String> apiParams = Util.ParseInputParams(new String[] {"ClassName", 
             "StartTime", "duration", "Event", "DifficultyLevel", "ClassStatus"});
             if(apiParams != null)
             {
